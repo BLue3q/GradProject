@@ -1,0 +1,9 @@
+{
+  "variables": [
+    {"name": "arr", "type": "int", "size": [3, 3], "values": []},
+    {"name": "arr", "type": "int", "size": 3, "values": []},
+    {"name": "arrr", "type": "int", "size": [3, 3], "values": [[3, 3, 3]]},
+    {"name": "arrr", "type": "string", "size": 3, "values": ["ahmad", 'a', 4, 4]},
+    {"name": "a", "type": "char", "value": "a"}
+  ]
+}
