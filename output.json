@@ -1,9 +1,158 @@
-{
-  "variables": [
-    {"name": "arr", "type": "int", "size": [3, 3], "values": []},
-    {"name": "arr", "type": "int", "size": 3, "values": []},
-    {"name": "arrr", "type": "int", "size": [3, 3], "values": [[3, 3, 3]]},
-    {"name": "arrr", "type": "string", "size": 3, "values": ["ahmad", 'a', 4, 4]},
-    {"name": "a", "type": "char", "value": "a"}
-  ]
-}
+[
+  {
+    "type": "declaration",
+    "data_type": "char",
+    "declarations": [
+      {
+        "name": "x",
+        "scope": "global"
+      },
+      {
+        "name": "y",
+        "scope": "global"
+      },
+      {
+        "name": "z",
+        "value": 3,
+        "scope": "global"
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "float",
+    "declarations": [
+      {
+        "name": "y",
+        "value": 3.14,
+        "scope": "global"
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "arr",
+        "dimensions": [
+          5
+        ],
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "scope": "global"
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "char",
+    "declarations": [
+      {
+        "name": "arr",
+        "dimensions": [
+          3,
+          2
+        ],
+        "values": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "scope": "global"
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "double",
+    "declarations": [
+      {
+        "name": "matrix",
+        "dimensions": [
+          2,
+          3
+        ],
+        "values": [
+          [
+            1.1,
+            2.2,
+            3.3
+          ],
+          [
+            4.4,
+            5.5,
+            6.6
+          ]
+        ],
+        "scope": "global"
+      }
+    ]
+  },
+  {
+    "type": "main function",
+    "name": "main",
+    "return_type": "int",
+    "body": [
+      {
+        "type": "declaration",
+        "data_type": "char",
+        "declarations": [
+          {
+            "name": "x",
+            "scope": "function:main"
+          },
+          {
+            "name": "y",
+            "scope": "function:main"
+          },
+          {
+            "name": "z",
+            "value": 3,
+            "scope": "function:main"
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "return_type": "int",
+        "name": "ahmad",
+        "params": [
+          {
+            "type": "parameter",
+            "data_type": "string",
+            "name": "work",
+            "scope": "function:ahmad"
+          }
+        ],
+        "body": [
+          {
+            "type": "declaration",
+            "data_type": "int",
+            "declarations": [
+              {
+                "name": "work",
+                "value": 1,
+                "scope": "function:ahmad"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
