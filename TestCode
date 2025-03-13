@@ -1,9 +1,0 @@
-#include<iostream>
-using namespace std;
-int arr[3][3];
-int arr[3];
-int arrr[3][3]={{3,3,4}};
-string arrr[3]={"ahmad",'a',4,4};
-char a='a';
-int main(){
-}
