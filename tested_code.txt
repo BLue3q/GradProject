@@ -1,12 +1,20 @@
 #include <iostream> 
 using namespace std;
-char x,y,z=3;
 float y = 3.14;
-int arr[5] = {1, 2, 3, 4, 5};
-char arr[3][2] = {{1,2},{3,2},{1,3}};
 double matrix[2][3] = {{1.1, 2.2, 3.3}, {4.4, 5.5, 6.6}};
+
 int main() {
-char x,y,z=3;
-int ahmad(string work){
-int work=1;}
+int ahmad1(){
+    string ahmad="perfect";
+}
+char x;
+int ahmad111(string work){
+int work=1;
+int declaredfun2(){
+        int declaredfun3(){
+            ahmad1();
+            int x=1;
+        }    
+    }
+}
 }

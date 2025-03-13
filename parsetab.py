@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CHAR_LITERAL COMMA EQUALS IDENTIFIER LBRACE LBRACKET LPAREN MAIN NUMBER RBRACE RBRACKET RPAREN SEMICOLON STRING_LITERAL TYPEstmt_list : stmt_list stmt\n                 | stmt\n                 | emptyempty :stmt : TYPE var_list SEMICOLON\n            | TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE\n            | TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACEvar_list : declarator\n                | var_list COMMA declaratordeclarator : IDENTIFIER\n                  | IDENTIFIER EQUALS value\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACEarray_values : value\n                    | array_values COMMA valuearray_values_2d : LBRACE array_values RBRACE\n                       | array_values_2d COMMA LBRACE array_values RBRACEparam_list : empty\n                  | param_list COMMA param\n                  | paramparam : TYPE IDENTIFIERvalue : NUMBER\n             | STRING_LITERAL\n             | CHAR_LITERAL'
+_lr_signature = 'CHAR_LITERAL COMMA EQUALS IDENTIFIER LBRACE LBRACKET LPAREN MAIN NUMBER RBRACE RBRACKET RPAREN SEMICOLON STRING_LITERAL TYPEstmt_list : stmt_list stmt\n                 | stmt\n                 | emptyempty :stmt : TYPE var_list SEMICOLON\n            | TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE\n            | TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE\n            | IDENTIFIER LPAREN arg_list RPAREN SEMICOLON\n            var_list : declarator\n                | var_list COMMA declaratordeclarator : IDENTIFIER\n                  | IDENTIFIER EQUALS value\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET\n                  | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE\n                  array_values : value\n                    | array_values COMMA valuearray_values_2d : LBRACE array_values RBRACE\n                       | array_values_2d COMMA LBRACE array_values RBRACEparam_list : empty\n                  | param_list COMMA param\n                  | paramparam : TYPE IDENTIFIERarg_list : empty\n                | arg_list COMMA value\n                | valuevalue : NUMBER\n             | STRING_LITERAL\n             | CHAR_LITERAL'
     
-_lr_action_items = {'TYPE':([0,1,2,3,5,10,12,30,32,33,37,38,41,42,],[4,4,-2,-3,-1,-5,18,18,4,4,4,4,-7,-6,]),'$end':([0,1,2,3,5,10,41,42,],[-4,0,-2,-3,-1,-5,-7,-6,]),'RBRACE':([2,3,5,10,23,24,25,32,33,37,38,41,42,44,45,50,52,53,56,58,59,],[-2,-3,-1,-5,-24,-25,-26,-4,-4,41,42,-7,-6,47,-16,-17,54,56,-18,59,-19,]),'IDENTIFIER':([4,11,18,],[7,17,28,]),'MAIN':([4,],[8,]),'SEMICOLON':([6,7,9,16,17,22,23,24,25,31,43,47,54,],[10,-10,-8,-9,-10,-11,-24,-25,-26,-12,-14,-13,-15,]),'COMMA':([6,7,9,12,16,17,19,20,21,22,23,24,25,28,31,34,43,44,45,47,50,52,53,54,56,58,59,],[11,-10,-8,-4,-9,-10,30,-20,-22,-11,-24,-25,-26,-23,-12,-21,-14,48,-16,-13,-17,55,48,-15,-18,48,-19,]),'LPAREN':([7,8,],[12,15,]),'EQUALS':([7,17,31,43,],[13,13,36,46,]),'LBRACKET':([7,17,31,],[14,14,35,]),'RPAREN':([12,15,19,20,21,28,34,],[-4,27,29,-20,-22,-23,-21,]),'NUMBER':([13,14,35,40,48,51,57,],[23,26,39,23,23,23,23,]),'STRING_LITERAL':([13,40,48,51,57,],[24,24,24,24,24,]),'CHAR_LITERAL':([13,40,48,51,57,],[25,25,25,25,25,]),'RBRACKET':([26,39,],[31,43,]),'LBRACE':([27,29,36,46,49,55,],[32,33,40,49,51,57,]),}
+_lr_action_items = {'TYPE':([0,1,2,3,6,12,14,37,39,40,42,46,47,50,51,],[4,4,-2,-3,-1,-5,26,26,4,-8,4,4,4,-7,-6,]),'IDENTIFIER':([0,1,2,3,4,6,12,13,26,39,40,42,46,47,50,51,],[5,5,-2,-3,8,-1,-5,25,35,5,-8,5,5,5,-7,-6,]),'$end':([0,1,2,3,6,12,40,50,51,],[-4,0,-2,-3,-1,-5,-8,-7,-6,]),'RBRACE':([2,3,6,12,21,22,23,39,40,42,46,47,50,51,53,54,59,61,62,65,67,68,],[-2,-3,-1,-5,-28,-29,-30,-4,-8,-4,50,51,-7,-6,56,-17,-18,63,65,-19,68,-20,]),'MAIN':([4,],[9,]),'LPAREN':([5,8,9,],[11,14,17,]),'SEMICOLON':([7,8,10,21,22,23,24,25,30,33,38,52,56,63,],[12,-11,-9,-28,-29,-30,-10,-11,-12,40,-13,-15,-14,-16,]),'COMMA':([7,8,10,11,14,18,19,20,21,22,23,24,25,27,28,29,30,35,38,41,43,52,53,54,56,59,61,62,63,65,67,68,],[13,-11,-9,-4,-4,34,-25,-27,-28,-29,-30,-10,-11,37,-21,-23,-12,-24,-13,-26,-22,-15,57,-17,-14,-18,64,57,-16,-19,57,-20,]),'EQUALS':([8,25,38,52,],[15,15,45,55,]),'LBRACKET':([8,25,38,],[16,16,44,]),'RPAREN':([11,14,17,18,19,20,21,22,23,27,28,29,35,41,43,],[-4,-4,32,33,-25,-27,-28,-29,-30,36,-21,-23,-24,-26,-22,]),'NUMBER':([11,15,16,34,44,49,57,60,66,],[21,21,31,21,48,21,21,21,21,]),'STRING_LITERAL':([11,15,34,49,57,60,66,],[22,22,22,22,22,22,22,]),'CHAR_LITERAL':([11,15,34,49,57,60,66,],[23,23,23,23,23,23,23,]),'RBRACKET':([31,48,],[38,52,]),'LBRACE':([32,36,45,55,58,64,],[39,42,49,58,60,66,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'stmt_list':([0,32,33,],[1,37,38,]),'stmt':([0,1,32,33,37,38,],[2,5,2,2,5,5,]),'empty':([0,12,32,33,],[3,20,3,3,]),'var_list':([4,],[6,]),'declarator':([4,11,],[9,16,]),'param_list':([12,],[19,]),'param':([12,30,],[21,34,]),'value':([13,40,48,51,57,],[22,45,50,45,45,]),'array_values':([40,51,57,],[44,53,58,]),'array_values_2d':([49,],[52,]),}
+_lr_goto_items = {'stmt_list':([0,39,42,],[1,46,47,]),'stmt':([0,1,39,42,46,47,],[2,6,2,2,6,6,]),'empty':([0,11,14,39,42,],[3,19,28,3,3,]),'var_list':([4,],[7,]),'declarator':([4,13,],[10,24,]),'arg_list':([11,],[18,]),'value':([11,15,34,49,57,60,66,],[20,30,41,54,59,54,54,]),'param_list':([14,],[27,]),'param':([14,37,],[29,43,]),'array_values':([49,60,66,],[53,62,67,]),'array_values_2d':([58,],[61,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,30 +27,34 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> stmt_list","S'",1,None,None,None),
-  ('stmt_list -> stmt_list stmt','stmt_list',2,'p_stmt_list','myparser.py',7),
-  ('stmt_list -> stmt','stmt_list',1,'p_stmt_list','myparser.py',8),
-  ('stmt_list -> empty','stmt_list',1,'p_stmt_list','myparser.py',9),
-  ('empty -> <empty>','empty',0,'p_empty','myparser.py',18),
-  ('stmt -> TYPE var_list SEMICOLON','stmt',3,'p_stmt','myparser.py',23),
-  ('stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE','stmt',8,'p_stmt','myparser.py',24),
-  ('stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE','stmt',7,'p_stmt','myparser.py',25),
-  ('var_list -> declarator','var_list',1,'p_var_list','myparser.py',49),
-  ('var_list -> var_list COMMA declarator','var_list',3,'p_var_list','myparser.py',50),
-  ('declarator -> IDENTIFIER','declarator',1,'p_declarator','myparser.py',57),
-  ('declarator -> IDENTIFIER EQUALS value','declarator',3,'p_declarator','myparser.py',58),
-  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET','declarator',4,'p_declarator','myparser.py',59),
-  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE','declarator',8,'p_declarator','myparser.py',60),
-  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET','declarator',7,'p_declarator','myparser.py',61),
-  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE','declarator',11,'p_declarator','myparser.py',62),
-  ('array_values -> value','array_values',1,'p_array_values','myparser.py',79),
-  ('array_values -> array_values COMMA value','array_values',3,'p_array_values','myparser.py',80),
-  ('array_values_2d -> LBRACE array_values RBRACE','array_values_2d',3,'p_array_values_2d','myparser.py',87),
-  ('array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE','array_values_2d',5,'p_array_values_2d','myparser.py',88),
-  ('param_list -> empty','param_list',1,'p_param_list','myparser.py',94),
-  ('param_list -> param_list COMMA param','param_list',3,'p_param_list','myparser.py',95),
-  ('param_list -> param','param_list',1,'p_param_list','myparser.py',96),
-  ('param -> TYPE IDENTIFIER','param',2,'p_param','myparser.py',105),
-  ('value -> NUMBER','value',1,'p_value','myparser.py',108),
-  ('value -> STRING_LITERAL','value',1,'p_value','myparser.py',109),
-  ('value -> CHAR_LITERAL','value',1,'p_value','myparser.py',110),
+  ('stmt_list -> stmt_list stmt','stmt_list',2,'p_stmt_list','myparser.py',18),
+  ('stmt_list -> stmt','stmt_list',1,'p_stmt_list','myparser.py',19),
+  ('stmt_list -> empty','stmt_list',1,'p_stmt_list','myparser.py',20),
+  ('empty -> <empty>','empty',0,'p_empty','myparser.py',27),
+  ('stmt -> TYPE var_list SEMICOLON','stmt',3,'p_stmt','myparser.py',31),
+  ('stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE','stmt',8,'p_stmt','myparser.py',32),
+  ('stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE','stmt',7,'p_stmt','myparser.py',33),
+  ('stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON','stmt',5,'p_stmt','myparser.py',34),
+  ('var_list -> declarator','var_list',1,'p_var_list','myparser.py',97),
+  ('var_list -> var_list COMMA declarator','var_list',3,'p_var_list','myparser.py',98),
+  ('declarator -> IDENTIFIER','declarator',1,'p_declarator','myparser.py',105),
+  ('declarator -> IDENTIFIER EQUALS value','declarator',3,'p_declarator','myparser.py',106),
+  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET','declarator',4,'p_declarator','myparser.py',107),
+  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE','declarator',8,'p_declarator','myparser.py',108),
+  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET','declarator',7,'p_declarator','myparser.py',109),
+  ('declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE','declarator',11,'p_declarator','myparser.py',110),
+  ('array_values -> value','array_values',1,'p_array_values','myparser.py',132),
+  ('array_values -> array_values COMMA value','array_values',3,'p_array_values','myparser.py',133),
+  ('array_values_2d -> LBRACE array_values RBRACE','array_values_2d',3,'p_array_values_2d','myparser.py',137),
+  ('array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE','array_values_2d',5,'p_array_values_2d','myparser.py',138),
+  ('param_list -> empty','param_list',1,'p_param_list','myparser.py',142),
+  ('param_list -> param_list COMMA param','param_list',3,'p_param_list','myparser.py',143),
+  ('param_list -> param','param_list',1,'p_param_list','myparser.py',144),
+  ('param -> TYPE IDENTIFIER','param',2,'p_param','myparser.py',151),
+  ('arg_list -> empty','arg_list',1,'p_arg_list','myparser.py',159),
+  ('arg_list -> arg_list COMMA value','arg_list',3,'p_arg_list','myparser.py',160),
+  ('arg_list -> value','arg_list',1,'p_arg_list','myparser.py',161),
+  ('value -> NUMBER','value',1,'p_value','myparser.py',168),
+  ('value -> STRING_LITERAL','value',1,'p_value','myparser.py',169),
+  ('value -> CHAR_LITERAL','value',1,'p_value','myparser.py',170),
 ]

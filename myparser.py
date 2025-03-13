@@ -1,6 +1,21 @@
 import ply.yacc as yacc
 from mylexer import tokens
 import json
+#line with scoop
+#2 dic 
+# first dic fun 
+# sc dic decl  ass same var 
+# Stack to track current scopes
+scope_stack = []
+
+def set_scope(scope_name):
+    """Helper function to manage scope changes in the scope stack."""
+    scope_stack.append(scope_name)
+
+def pop_scope():
+    """Helper function to remove the last scope from the stack."""
+    if scope_stack:
+        scope_stack.pop()
 
 def p_stmt_list(p):
     '''stmt_list : stmt_list stmt
@@ -18,43 +33,67 @@ def p_empty(p):
 def p_stmt(p):
     '''stmt : TYPE var_list SEMICOLON
             | TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
-            | TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE'''
+            | TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+            | IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
+            '''
     if len(p) == 4:
-        # Global declaration: Add 'global' scope
+        # Variable declaration
+        current_scope = scope_stack[-1] if scope_stack else 'global'
         for var in p[2]:
-            var['scope'] = 'global'
+            var['scope'] = current_scope
         p[0] = {
             'type': 'declaration',
             'data_type': p[1],
             'declarations': p[2]
         }
     elif len(p) == 9:
-        # Function: Annotate params and body with function scope
+        # Function definition
         func_name = p[2]
+        set_scope(f'function:{func_name}')
         for param in p[4]:
             param['scope'] = f'function:{func_name}'
+
         for stmt in p[7]:
-            if stmt and stmt.get('type') == 'declaration':
-                for decl in stmt['declarations']:
-                    decl['scope'] = f'function:{func_name}'
+            if stmt:
+                if stmt.get('type') == 'declaration':
+                    for decl in stmt['declarations']:
+                        decl['scope'] = f'function:{func_name}'
+                elif stmt.get('type') == 'function_call':
+                    stmt['scope'] = f'function:{func_name}'
+
         p[0] = {
-            'type': 'function',
+            'type': 'function declaration',
             'return_type': p[1],
             'name': func_name,
             'params': p[4],
             'body': p[7]
         }
+        pop_scope()
     elif len(p) == 8:
-        # Main function: Annotate body with 'main' scope
+        # Main function
+        set_scope('function:main')
         for stmt in p[6]:
-            if stmt and stmt.get('type') == 'declaration':
-                for decl in stmt['declarations']:
-                    decl['scope'] = 'function:main'
+            if stmt:
+                if stmt.get('type') == 'declaration':
+                    for decl in stmt['declarations']:
+                        decl['scope'] = 'main'
+                elif stmt.get('type') == 'function_call':
+                    stmt['scope'] = 'main'
         p[0] = {
             'type': 'main function',
             'name': 'main',
             'return_type': p[1],
             'body': p[6]
+        }
+        pop_scope()
+    elif len(p) == 6:
+        # Function call
+        current_scope = scope_stack[-1] if scope_stack else 'global'
+        p[0] = {
+            'type': 'function_call',
+            'name': p[1],
+            'args': p[3],
+            'scope': current_scope
         }
 
 def p_var_list(p):
@@ -71,20 +110,25 @@ def p_declarator(p):
                   | IDENTIFIER LBRACKET NUMBER RBRACKET
                   | IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
                   | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-                  | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE'''
+                  | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+                  '''
     decl = {'name': p[1]}
-    if len(p) == 5:
+    if len(p) == 5:  # 1d arrays alone
         decl['dimensions'] = [p[3]]
-    elif len(p) == 9:
+    elif len(p) == 9:  # 1d array with values
         decl['dimensions'] = [p[3]]
         decl['values'] = p[7]
-    elif len(p) == 8:
+    elif len(p) == 8:  # 2d arrays alone
         decl['dimensions'] = [p[3], p[6]]
-    elif len(p) == 12:
+    elif len(p) == 12:  # 2d arrays with values
         decl['dimensions'] = [p[3], p[6]]
         decl['values'] = p[10]
-    elif len(p) == 4:
+    elif len(p) == 4:  # IDENTIFIER EQUALS value
         decl['value'] = p[3]
+
+    # Scope assignment for declaration inside function
+    current_scope = scope_stack[-1] if scope_stack else 'global'
+    decl['scope'] = current_scope
     p[0] = decl
 
 def p_array_values(p):
@@ -113,6 +157,15 @@ def p_param(p):
         'data_type': p[1],
         'name': p[2]
     }
+    
+def p_arg_list(p):
+    '''arg_list : empty
+                | arg_list COMMA value
+                | value'''
+    if len(p) == 2:
+        p[0] = [] if p[1] is None else [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 def p_value(p):
     '''value : NUMBER
@@ -121,11 +174,11 @@ def p_value(p):
     p[0] = p[1]
 
 def p_error(p):
-    print(f"Syntax error at line:{p.lineno} before what look like a '{p.value}'" if p else "Syntax error at EOF")
+    print(f"Syntax error at line:{p.lineno} before what looks like a '{p.value}'" if p else "Syntax error at EOF")
 
 parser = yacc.yacc()
 
 def generate_json(ast, filename='output.json'):
     with open(filename, 'w') as f:
         json.dump(ast, f, indent=2)
-    print(f"If there was no any syntax error detected ! The correct JSON output is written into {filename}")
+    print(f"If there was no syntax error detected, the correct JSON output is written into {filename}")

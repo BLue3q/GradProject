@@ -10,57 +10,62 @@ Rule 4     empty -> <empty>
 Rule 5     stmt -> TYPE var_list SEMICOLON
 Rule 6     stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
 Rule 7     stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
-Rule 8     var_list -> declarator
-Rule 9     var_list -> var_list COMMA declarator
-Rule 10    declarator -> IDENTIFIER
-Rule 11    declarator -> IDENTIFIER EQUALS value
-Rule 12    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET
-Rule 13    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
-Rule 14    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-Rule 15    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
-Rule 16    array_values -> value
-Rule 17    array_values -> array_values COMMA value
-Rule 18    array_values_2d -> LBRACE array_values RBRACE
-Rule 19    array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE
-Rule 20    param_list -> empty
-Rule 21    param_list -> param_list COMMA param
-Rule 22    param_list -> param
-Rule 23    param -> TYPE IDENTIFIER
-Rule 24    value -> NUMBER
-Rule 25    value -> STRING_LITERAL
-Rule 26    value -> CHAR_LITERAL
+Rule 8     stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
+Rule 9     var_list -> declarator
+Rule 10    var_list -> var_list COMMA declarator
+Rule 11    declarator -> IDENTIFIER
+Rule 12    declarator -> IDENTIFIER EQUALS value
+Rule 13    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET
+Rule 14    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
+Rule 15    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
+Rule 16    declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+Rule 17    array_values -> value
+Rule 18    array_values -> array_values COMMA value
+Rule 19    array_values_2d -> LBRACE array_values RBRACE
+Rule 20    array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE
+Rule 21    param_list -> empty
+Rule 22    param_list -> param_list COMMA param
+Rule 23    param_list -> param
+Rule 24    param -> TYPE IDENTIFIER
+Rule 25    arg_list -> empty
+Rule 26    arg_list -> arg_list COMMA value
+Rule 27    arg_list -> value
+Rule 28    value -> NUMBER
+Rule 29    value -> STRING_LITERAL
+Rule 30    value -> CHAR_LITERAL
 
 Terminals, with rules where they appear
 
-CHAR_LITERAL         : 26
-COMMA                : 9 17 19 21
-EQUALS               : 11 13 15
-IDENTIFIER           : 6 10 11 12 13 14 15 23
-LBRACE               : 6 7 13 15 18 19
-LBRACKET             : 12 13 14 14 15 15
-LPAREN               : 6 7
+CHAR_LITERAL         : 30
+COMMA                : 10 18 20 22 26
+EQUALS               : 12 14 16
+IDENTIFIER           : 6 8 11 12 13 14 15 16 24
+LBRACE               : 6 7 14 16 19 20
+LBRACKET             : 13 14 15 15 16 16
+LPAREN               : 6 7 8
 MAIN                 : 7
-NUMBER               : 12 13 14 14 15 15 24
-RBRACE               : 6 7 13 15 18 19
-RBRACKET             : 12 13 14 14 15 15
-RPAREN               : 6 7
-SEMICOLON            : 5
-STRING_LITERAL       : 25
-TYPE                 : 5 6 7 23
+NUMBER               : 13 14 15 15 16 16 28
+RBRACE               : 6 7 14 16 19 20
+RBRACKET             : 13 14 15 15 16 16
+RPAREN               : 6 7 8
+SEMICOLON            : 5 8
+STRING_LITERAL       : 29
+TYPE                 : 5 6 7 24
 error                : 
 
 Nonterminals, with rules where they appear
 
-array_values         : 13 17 18 19
-array_values_2d      : 15 19
-declarator           : 8 9
-empty                : 3 20
-param                : 21 22
-param_list           : 6 21
+arg_list             : 8 26
+array_values         : 14 18 19 20
+array_values_2d      : 16 20
+declarator           : 9 10
+empty                : 3 21 25
+param                : 22 23
+param_list           : 6 22
 stmt                 : 1 2
 stmt_list            : 1 6 7 0
-value                : 11 16 17
-var_list             : 5 9
+value                : 12 17 18 26 27
+var_list             : 5 10
 
 Parsing method: LALR
 
@@ -73,13 +78,17 @@ state 0
     (5) stmt -> . TYPE var_list SEMICOLON
     (6) stmt -> . TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> . TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+    (8) stmt -> . IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
     (4) empty -> .
 
   ! shift/reduce conflict for TYPE resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
     TYPE            shift and go to state 4
+    IDENTIFIER      shift and go to state 5
     $end            reduce using rule 4 (empty -> .)
 
   ! TYPE            [ reduce using rule 4 (empty -> .) ]
+  ! IDENTIFIER      [ reduce using rule 4 (empty -> .) ]
 
     stmt_list                      shift and go to state 1
     stmt                           shift and go to state 2
@@ -92,16 +101,19 @@ state 1
     (5) stmt -> . TYPE var_list SEMICOLON
     (6) stmt -> . TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> . TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+    (8) stmt -> . IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
 
     TYPE            shift and go to state 4
+    IDENTIFIER      shift and go to state 5
 
-    stmt                           shift and go to state 5
+    stmt                           shift and go to state 6
 
 state 2
 
     (2) stmt_list -> stmt .
 
     TYPE            reduce using rule 2 (stmt_list -> stmt .)
+    IDENTIFIER      reduce using rule 2 (stmt_list -> stmt .)
     $end            reduce using rule 2 (stmt_list -> stmt .)
     RBRACE          reduce using rule 2 (stmt_list -> stmt .)
 
@@ -111,6 +123,7 @@ state 3
     (3) stmt_list -> empty .
 
     TYPE            reduce using rule 3 (stmt_list -> empty .)
+    IDENTIFIER      reduce using rule 3 (stmt_list -> empty .)
     $end            reduce using rule 3 (stmt_list -> empty .)
     RBRACE          reduce using rule 3 (stmt_list -> empty .)
 
@@ -120,286 +133,364 @@ state 4
     (5) stmt -> TYPE . var_list SEMICOLON
     (6) stmt -> TYPE . IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> TYPE . MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
-    (8) var_list -> . declarator
-    (9) var_list -> . var_list COMMA declarator
-    (10) declarator -> . IDENTIFIER
-    (11) declarator -> . IDENTIFIER EQUALS value
-    (12) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET
-    (13) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
-    (14) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-    (15) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (9) var_list -> . declarator
+    (10) var_list -> . var_list COMMA declarator
+    (11) declarator -> . IDENTIFIER
+    (12) declarator -> . IDENTIFIER EQUALS value
+    (13) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET
+    (14) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
+    (15) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
+    (16) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    IDENTIFIER      shift and go to state 7
-    MAIN            shift and go to state 8
+    IDENTIFIER      shift and go to state 8
+    MAIN            shift and go to state 9
 
-    var_list                       shift and go to state 6
-    declarator                     shift and go to state 9
+    var_list                       shift and go to state 7
+    declarator                     shift and go to state 10
 
 state 5
 
-    (1) stmt_list -> stmt_list stmt .
+    (8) stmt -> IDENTIFIER . LPAREN arg_list RPAREN SEMICOLON
 
-    TYPE            reduce using rule 1 (stmt_list -> stmt_list stmt .)
-    $end            reduce using rule 1 (stmt_list -> stmt_list stmt .)
-    RBRACE          reduce using rule 1 (stmt_list -> stmt_list stmt .)
+    LPAREN          shift and go to state 11
 
 
 state 6
 
-    (5) stmt -> TYPE var_list . SEMICOLON
-    (9) var_list -> var_list . COMMA declarator
+    (1) stmt_list -> stmt_list stmt .
 
-    SEMICOLON       shift and go to state 10
-    COMMA           shift and go to state 11
+    TYPE            reduce using rule 1 (stmt_list -> stmt_list stmt .)
+    IDENTIFIER      reduce using rule 1 (stmt_list -> stmt_list stmt .)
+    $end            reduce using rule 1 (stmt_list -> stmt_list stmt .)
+    RBRACE          reduce using rule 1 (stmt_list -> stmt_list stmt .)
 
 
 state 7
 
-    (6) stmt -> TYPE IDENTIFIER . LPAREN param_list RPAREN LBRACE stmt_list RBRACE
-    (10) declarator -> IDENTIFIER .
-    (11) declarator -> IDENTIFIER . EQUALS value
-    (12) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET
-    (13) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
-    (14) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-    (15) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (5) stmt -> TYPE var_list . SEMICOLON
+    (10) var_list -> var_list . COMMA declarator
 
-    LPAREN          shift and go to state 12
-    SEMICOLON       reduce using rule 10 (declarator -> IDENTIFIER .)
-    COMMA           reduce using rule 10 (declarator -> IDENTIFIER .)
-    EQUALS          shift and go to state 13
-    LBRACKET        shift and go to state 14
+    SEMICOLON       shift and go to state 12
+    COMMA           shift and go to state 13
 
 
 state 8
 
-    (7) stmt -> TYPE MAIN . LPAREN RPAREN LBRACE stmt_list RBRACE
+    (6) stmt -> TYPE IDENTIFIER . LPAREN param_list RPAREN LBRACE stmt_list RBRACE
+    (11) declarator -> IDENTIFIER .
+    (12) declarator -> IDENTIFIER . EQUALS value
+    (13) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET
+    (14) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
+    (16) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    LPAREN          shift and go to state 15
+    LPAREN          shift and go to state 14
+    SEMICOLON       reduce using rule 11 (declarator -> IDENTIFIER .)
+    COMMA           reduce using rule 11 (declarator -> IDENTIFIER .)
+    EQUALS          shift and go to state 15
+    LBRACKET        shift and go to state 16
 
 
 state 9
 
-    (8) var_list -> declarator .
+    (7) stmt -> TYPE MAIN . LPAREN RPAREN LBRACE stmt_list RBRACE
 
-    SEMICOLON       reduce using rule 8 (var_list -> declarator .)
-    COMMA           reduce using rule 8 (var_list -> declarator .)
+    LPAREN          shift and go to state 17
 
 
 state 10
 
-    (5) stmt -> TYPE var_list SEMICOLON .
+    (9) var_list -> declarator .
 
-    TYPE            reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
-    $end            reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
-    RBRACE          reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
+    SEMICOLON       reduce using rule 9 (var_list -> declarator .)
+    COMMA           reduce using rule 9 (var_list -> declarator .)
 
 
 state 11
 
-    (9) var_list -> var_list COMMA . declarator
-    (10) declarator -> . IDENTIFIER
-    (11) declarator -> . IDENTIFIER EQUALS value
-    (12) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET
-    (13) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
-    (14) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-    (15) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
-
-    IDENTIFIER      shift and go to state 17
-
-    declarator                     shift and go to state 16
-
-state 12
-
-    (6) stmt -> TYPE IDENTIFIER LPAREN . param_list RPAREN LBRACE stmt_list RBRACE
-    (20) param_list -> . empty
-    (21) param_list -> . param_list COMMA param
-    (22) param_list -> . param
+    (8) stmt -> IDENTIFIER LPAREN . arg_list RPAREN SEMICOLON
+    (25) arg_list -> . empty
+    (26) arg_list -> . arg_list COMMA value
+    (27) arg_list -> . value
     (4) empty -> .
-    (23) param -> . TYPE IDENTIFIER
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
 
     RPAREN          reduce using rule 4 (empty -> .)
     COMMA           reduce using rule 4 (empty -> .)
-    TYPE            shift and go to state 18
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
 
-    param_list                     shift and go to state 19
-    empty                          shift and go to state 20
-    param                          shift and go to state 21
+    arg_list                       shift and go to state 18
+    empty                          shift and go to state 19
+    value                          shift and go to state 20
+
+state 12
+
+    (5) stmt -> TYPE var_list SEMICOLON .
+
+    TYPE            reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
+    IDENTIFIER      reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
+    $end            reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
+    RBRACE          reduce using rule 5 (stmt -> TYPE var_list SEMICOLON .)
+
 
 state 13
 
-    (11) declarator -> IDENTIFIER EQUALS . value
-    (24) value -> . NUMBER
-    (25) value -> . STRING_LITERAL
-    (26) value -> . CHAR_LITERAL
+    (10) var_list -> var_list COMMA . declarator
+    (11) declarator -> . IDENTIFIER
+    (12) declarator -> . IDENTIFIER EQUALS value
+    (13) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET
+    (14) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
+    (15) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
+    (16) declarator -> . IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    NUMBER          shift and go to state 23
-    STRING_LITERAL  shift and go to state 24
-    CHAR_LITERAL    shift and go to state 25
+    IDENTIFIER      shift and go to state 25
 
-    value                          shift and go to state 22
+    declarator                     shift and go to state 24
 
 state 14
 
-    (12) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET
-    (13) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
-    (14) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-    (15) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (6) stmt -> TYPE IDENTIFIER LPAREN . param_list RPAREN LBRACE stmt_list RBRACE
+    (21) param_list -> . empty
+    (22) param_list -> . param_list COMMA param
+    (23) param_list -> . param
+    (4) empty -> .
+    (24) param -> . TYPE IDENTIFIER
 
-    NUMBER          shift and go to state 26
+    RPAREN          reduce using rule 4 (empty -> .)
+    COMMA           reduce using rule 4 (empty -> .)
+    TYPE            shift and go to state 26
 
+    param_list                     shift and go to state 27
+    empty                          shift and go to state 28
+    param                          shift and go to state 29
 
 state 15
 
-    (7) stmt -> TYPE MAIN LPAREN . RPAREN LBRACE stmt_list RBRACE
+    (12) declarator -> IDENTIFIER EQUALS . value
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
 
-    RPAREN          shift and go to state 27
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
 
+    value                          shift and go to state 30
 
 state 16
 
-    (9) var_list -> var_list COMMA declarator .
+    (13) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET
+    (14) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET LBRACKET NUMBER RBRACKET
+    (16) declarator -> IDENTIFIER LBRACKET . NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    SEMICOLON       reduce using rule 9 (var_list -> var_list COMMA declarator .)
-    COMMA           reduce using rule 9 (var_list -> var_list COMMA declarator .)
+    NUMBER          shift and go to state 31
 
 
 state 17
 
-    (10) declarator -> IDENTIFIER .
-    (11) declarator -> IDENTIFIER . EQUALS value
-    (12) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET
-    (13) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
-    (14) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
-    (15) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (7) stmt -> TYPE MAIN LPAREN . RPAREN LBRACE stmt_list RBRACE
 
-    SEMICOLON       reduce using rule 10 (declarator -> IDENTIFIER .)
-    COMMA           reduce using rule 10 (declarator -> IDENTIFIER .)
-    EQUALS          shift and go to state 13
-    LBRACKET        shift and go to state 14
+    RPAREN          shift and go to state 32
 
 
 state 18
 
-    (23) param -> TYPE . IDENTIFIER
+    (8) stmt -> IDENTIFIER LPAREN arg_list . RPAREN SEMICOLON
+    (26) arg_list -> arg_list . COMMA value
 
-    IDENTIFIER      shift and go to state 28
+    RPAREN          shift and go to state 33
+    COMMA           shift and go to state 34
 
 
 state 19
 
-    (6) stmt -> TYPE IDENTIFIER LPAREN param_list . RPAREN LBRACE stmt_list RBRACE
-    (21) param_list -> param_list . COMMA param
+    (25) arg_list -> empty .
 
-    RPAREN          shift and go to state 29
-    COMMA           shift and go to state 30
+    RPAREN          reduce using rule 25 (arg_list -> empty .)
+    COMMA           reduce using rule 25 (arg_list -> empty .)
 
 
 state 20
 
-    (20) param_list -> empty .
+    (27) arg_list -> value .
 
-    RPAREN          reduce using rule 20 (param_list -> empty .)
-    COMMA           reduce using rule 20 (param_list -> empty .)
+    RPAREN          reduce using rule 27 (arg_list -> value .)
+    COMMA           reduce using rule 27 (arg_list -> value .)
 
 
 state 21
 
-    (22) param_list -> param .
+    (28) value -> NUMBER .
 
-    RPAREN          reduce using rule 22 (param_list -> param .)
-    COMMA           reduce using rule 22 (param_list -> param .)
+    RPAREN          reduce using rule 28 (value -> NUMBER .)
+    COMMA           reduce using rule 28 (value -> NUMBER .)
+    SEMICOLON       reduce using rule 28 (value -> NUMBER .)
+    RBRACE          reduce using rule 28 (value -> NUMBER .)
 
 
 state 22
 
-    (11) declarator -> IDENTIFIER EQUALS value .
+    (29) value -> STRING_LITERAL .
 
-    SEMICOLON       reduce using rule 11 (declarator -> IDENTIFIER EQUALS value .)
-    COMMA           reduce using rule 11 (declarator -> IDENTIFIER EQUALS value .)
+    RPAREN          reduce using rule 29 (value -> STRING_LITERAL .)
+    COMMA           reduce using rule 29 (value -> STRING_LITERAL .)
+    SEMICOLON       reduce using rule 29 (value -> STRING_LITERAL .)
+    RBRACE          reduce using rule 29 (value -> STRING_LITERAL .)
 
 
 state 23
 
-    (24) value -> NUMBER .
+    (30) value -> CHAR_LITERAL .
 
-    SEMICOLON       reduce using rule 24 (value -> NUMBER .)
-    COMMA           reduce using rule 24 (value -> NUMBER .)
-    RBRACE          reduce using rule 24 (value -> NUMBER .)
+    RPAREN          reduce using rule 30 (value -> CHAR_LITERAL .)
+    COMMA           reduce using rule 30 (value -> CHAR_LITERAL .)
+    SEMICOLON       reduce using rule 30 (value -> CHAR_LITERAL .)
+    RBRACE          reduce using rule 30 (value -> CHAR_LITERAL .)
 
 
 state 24
 
-    (25) value -> STRING_LITERAL .
+    (10) var_list -> var_list COMMA declarator .
 
-    SEMICOLON       reduce using rule 25 (value -> STRING_LITERAL .)
-    COMMA           reduce using rule 25 (value -> STRING_LITERAL .)
-    RBRACE          reduce using rule 25 (value -> STRING_LITERAL .)
+    SEMICOLON       reduce using rule 10 (var_list -> var_list COMMA declarator .)
+    COMMA           reduce using rule 10 (var_list -> var_list COMMA declarator .)
 
 
 state 25
 
-    (26) value -> CHAR_LITERAL .
+    (11) declarator -> IDENTIFIER .
+    (12) declarator -> IDENTIFIER . EQUALS value
+    (13) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET
+    (14) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
+    (16) declarator -> IDENTIFIER . LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    SEMICOLON       reduce using rule 26 (value -> CHAR_LITERAL .)
-    COMMA           reduce using rule 26 (value -> CHAR_LITERAL .)
-    RBRACE          reduce using rule 26 (value -> CHAR_LITERAL .)
+    SEMICOLON       reduce using rule 11 (declarator -> IDENTIFIER .)
+    COMMA           reduce using rule 11 (declarator -> IDENTIFIER .)
+    EQUALS          shift and go to state 15
+    LBRACKET        shift and go to state 16
 
 
 state 26
 
-    (12) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET
-    (13) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET EQUALS LBRACE array_values RBRACE
-    (14) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET LBRACKET NUMBER RBRACKET
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (24) param -> TYPE . IDENTIFIER
 
-    RBRACKET        shift and go to state 31
+    IDENTIFIER      shift and go to state 35
 
 
 state 27
 
-    (7) stmt -> TYPE MAIN LPAREN RPAREN . LBRACE stmt_list RBRACE
+    (6) stmt -> TYPE IDENTIFIER LPAREN param_list . RPAREN LBRACE stmt_list RBRACE
+    (22) param_list -> param_list . COMMA param
 
-    LBRACE          shift and go to state 32
+    RPAREN          shift and go to state 36
+    COMMA           shift and go to state 37
 
 
 state 28
 
-    (23) param -> TYPE IDENTIFIER .
+    (21) param_list -> empty .
 
-    RPAREN          reduce using rule 23 (param -> TYPE IDENTIFIER .)
-    COMMA           reduce using rule 23 (param -> TYPE IDENTIFIER .)
+    RPAREN          reduce using rule 21 (param_list -> empty .)
+    COMMA           reduce using rule 21 (param_list -> empty .)
 
 
 state 29
 
-    (6) stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN . LBRACE stmt_list RBRACE
+    (23) param_list -> param .
 
-    LBRACE          shift and go to state 33
+    RPAREN          reduce using rule 23 (param_list -> param .)
+    COMMA           reduce using rule 23 (param_list -> param .)
 
 
 state 30
 
-    (21) param_list -> param_list COMMA . param
-    (23) param -> . TYPE IDENTIFIER
+    (12) declarator -> IDENTIFIER EQUALS value .
 
-    TYPE            shift and go to state 18
+    SEMICOLON       reduce using rule 12 (declarator -> IDENTIFIER EQUALS value .)
+    COMMA           reduce using rule 12 (declarator -> IDENTIFIER EQUALS value .)
 
-    param                          shift and go to state 34
 
 state 31
 
-    (12) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET .
-    (13) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET . EQUALS LBRACE array_values RBRACE
-    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET . LBRACKET NUMBER RBRACKET
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET . LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (13) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET
+    (14) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET EQUALS LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET LBRACKET NUMBER RBRACKET
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER . RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    SEMICOLON       reduce using rule 12 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET .)
-    COMMA           reduce using rule 12 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET .)
-    EQUALS          shift and go to state 36
-    LBRACKET        shift and go to state 35
+    RBRACKET        shift and go to state 38
 
 
 state 32
+
+    (7) stmt -> TYPE MAIN LPAREN RPAREN . LBRACE stmt_list RBRACE
+
+    LBRACE          shift and go to state 39
+
+
+state 33
+
+    (8) stmt -> IDENTIFIER LPAREN arg_list RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 40
+
+
+state 34
+
+    (26) arg_list -> arg_list COMMA . value
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
+
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
+
+    value                          shift and go to state 41
+
+state 35
+
+    (24) param -> TYPE IDENTIFIER .
+
+    RPAREN          reduce using rule 24 (param -> TYPE IDENTIFIER .)
+    COMMA           reduce using rule 24 (param -> TYPE IDENTIFIER .)
+
+
+state 36
+
+    (6) stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN . LBRACE stmt_list RBRACE
+
+    LBRACE          shift and go to state 42
+
+
+state 37
+
+    (22) param_list -> param_list COMMA . param
+    (24) param -> . TYPE IDENTIFIER
+
+    TYPE            shift and go to state 26
+
+    param                          shift and go to state 43
+
+state 38
+
+    (13) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET .
+    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET . EQUALS LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET . LBRACKET NUMBER RBRACKET
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET . LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
+
+    SEMICOLON       reduce using rule 13 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET .)
+    COMMA           reduce using rule 13 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET .)
+    EQUALS          shift and go to state 45
+    LBRACKET        shift and go to state 44
+
+
+state 39
 
     (7) stmt -> TYPE MAIN LPAREN RPAREN LBRACE . stmt_list RBRACE
     (1) stmt_list -> . stmt_list stmt
@@ -408,19 +499,41 @@ state 32
     (5) stmt -> . TYPE var_list SEMICOLON
     (6) stmt -> . TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> . TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+    (8) stmt -> . IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
     (4) empty -> .
 
   ! shift/reduce conflict for TYPE resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
     TYPE            shift and go to state 4
+    IDENTIFIER      shift and go to state 5
     RBRACE          reduce using rule 4 (empty -> .)
 
   ! TYPE            [ reduce using rule 4 (empty -> .) ]
+  ! IDENTIFIER      [ reduce using rule 4 (empty -> .) ]
 
-    stmt_list                      shift and go to state 37
+    stmt_list                      shift and go to state 46
     stmt                           shift and go to state 2
     empty                          shift and go to state 3
 
-state 33
+state 40
+
+    (8) stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON .
+
+    TYPE            reduce using rule 8 (stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON .)
+    IDENTIFIER      reduce using rule 8 (stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON .)
+    $end            reduce using rule 8 (stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON .)
+    RBRACE          reduce using rule 8 (stmt -> IDENTIFIER LPAREN arg_list RPAREN SEMICOLON .)
+
+
+state 41
+
+    (26) arg_list -> arg_list COMMA value .
+
+    RPAREN          reduce using rule 26 (arg_list -> arg_list COMMA value .)
+    COMMA           reduce using rule 26 (arg_list -> arg_list COMMA value .)
+
+
+state 42
 
     (6) stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE . stmt_list RBRACE
     (1) stmt_list -> . stmt_list stmt
@@ -429,274 +542,287 @@ state 33
     (5) stmt -> . TYPE var_list SEMICOLON
     (6) stmt -> . TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> . TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+    (8) stmt -> . IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
     (4) empty -> .
 
   ! shift/reduce conflict for TYPE resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
     TYPE            shift and go to state 4
+    IDENTIFIER      shift and go to state 5
     RBRACE          reduce using rule 4 (empty -> .)
 
   ! TYPE            [ reduce using rule 4 (empty -> .) ]
+  ! IDENTIFIER      [ reduce using rule 4 (empty -> .) ]
 
-    stmt_list                      shift and go to state 38
+    stmt_list                      shift and go to state 47
     stmt                           shift and go to state 2
     empty                          shift and go to state 3
 
-state 34
+state 43
 
-    (21) param_list -> param_list COMMA param .
+    (22) param_list -> param_list COMMA param .
 
-    RPAREN          reduce using rule 21 (param_list -> param_list COMMA param .)
-    COMMA           reduce using rule 21 (param_list -> param_list COMMA param .)
-
-
-state 35
-
-    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET . NUMBER RBRACKET
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET . NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
-
-    NUMBER          shift and go to state 39
+    RPAREN          reduce using rule 22 (param_list -> param_list COMMA param .)
+    COMMA           reduce using rule 22 (param_list -> param_list COMMA param .)
 
 
-state 36
+state 44
 
-    (13) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS . LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET . NUMBER RBRACKET
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET . NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    LBRACE          shift and go to state 40
+    NUMBER          shift and go to state 48
 
 
-state 37
+state 45
+
+    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS . LBRACE array_values RBRACE
+
+    LBRACE          shift and go to state 49
+
+
+state 46
 
     (7) stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list . RBRACE
     (1) stmt_list -> stmt_list . stmt
     (5) stmt -> . TYPE var_list SEMICOLON
     (6) stmt -> . TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> . TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+    (8) stmt -> . IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
 
-    RBRACE          shift and go to state 41
+    RBRACE          shift and go to state 50
     TYPE            shift and go to state 4
+    IDENTIFIER      shift and go to state 5
 
-    stmt                           shift and go to state 5
+    stmt                           shift and go to state 6
 
-state 38
+state 47
 
     (6) stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list . RBRACE
     (1) stmt_list -> stmt_list . stmt
     (5) stmt -> . TYPE var_list SEMICOLON
     (6) stmt -> . TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
     (7) stmt -> . TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+    (8) stmt -> . IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
 
-    RBRACE          shift and go to state 42
+    RBRACE          shift and go to state 51
     TYPE            shift and go to state 4
+    IDENTIFIER      shift and go to state 5
 
-    stmt                           shift and go to state 5
+    stmt                           shift and go to state 6
 
-state 39
+state 48
 
-    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER . RBRACKET
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER . RBRACKET EQUALS LBRACE array_values_2d RBRACE
+    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER . RBRACKET
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER . RBRACKET EQUALS LBRACE array_values_2d RBRACE
 
-    RBRACKET        shift and go to state 43
+    RBRACKET        shift and go to state 52
 
 
-state 40
+state 49
 
-    (13) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE . array_values RBRACE
-    (16) array_values -> . value
-    (17) array_values -> . array_values COMMA value
-    (24) value -> . NUMBER
-    (25) value -> . STRING_LITERAL
-    (26) value -> . CHAR_LITERAL
+    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE . array_values RBRACE
+    (17) array_values -> . value
+    (18) array_values -> . array_values COMMA value
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
 
-    NUMBER          shift and go to state 23
-    STRING_LITERAL  shift and go to state 24
-    CHAR_LITERAL    shift and go to state 25
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
 
-    array_values                   shift and go to state 44
-    value                          shift and go to state 45
+    array_values                   shift and go to state 53
+    value                          shift and go to state 54
 
-state 41
+state 50
 
     (7) stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .
 
     TYPE            reduce using rule 7 (stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .)
+    IDENTIFIER      reduce using rule 7 (stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .)
     $end            reduce using rule 7 (stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .)
     RBRACE          reduce using rule 7 (stmt -> TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .)
 
 
-state 42
+state 51
 
     (6) stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE .
 
     TYPE            reduce using rule 6 (stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE .)
+    IDENTIFIER      reduce using rule 6 (stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE .)
     $end            reduce using rule 6 (stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE .)
     RBRACE          reduce using rule 6 (stmt -> TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE .)
 
 
-state 43
-
-    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET .
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET . EQUALS LBRACE array_values_2d RBRACE
-
-    SEMICOLON       reduce using rule 14 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET .)
-    COMMA           reduce using rule 14 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET .)
-    EQUALS          shift and go to state 46
-
-
-state 44
-
-    (13) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values . RBRACE
-    (17) array_values -> array_values . COMMA value
-
-    RBRACE          shift and go to state 47
-    COMMA           shift and go to state 48
-
-
-state 45
-
-    (16) array_values -> value .
-
-    RBRACE          reduce using rule 16 (array_values -> value .)
-    COMMA           reduce using rule 16 (array_values -> value .)
-
-
-state 46
-
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS . LBRACE array_values_2d RBRACE
-
-    LBRACE          shift and go to state 49
-
-
-state 47
-
-    (13) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE .
-
-    SEMICOLON       reduce using rule 13 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE .)
-    COMMA           reduce using rule 13 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE .)
-
-
-state 48
-
-    (17) array_values -> array_values COMMA . value
-    (24) value -> . NUMBER
-    (25) value -> . STRING_LITERAL
-    (26) value -> . CHAR_LITERAL
-
-    NUMBER          shift and go to state 23
-    STRING_LITERAL  shift and go to state 24
-    CHAR_LITERAL    shift and go to state 25
-
-    value                          shift and go to state 50
-
-state 49
-
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE . array_values_2d RBRACE
-    (18) array_values_2d -> . LBRACE array_values RBRACE
-    (19) array_values_2d -> . array_values_2d COMMA LBRACE array_values RBRACE
-
-    LBRACE          shift and go to state 51
-
-    array_values_2d                shift and go to state 52
-
-state 50
-
-    (17) array_values -> array_values COMMA value .
-
-    RBRACE          reduce using rule 17 (array_values -> array_values COMMA value .)
-    COMMA           reduce using rule 17 (array_values -> array_values COMMA value .)
-
-
-state 51
-
-    (18) array_values_2d -> LBRACE . array_values RBRACE
-    (16) array_values -> . value
-    (17) array_values -> . array_values COMMA value
-    (24) value -> . NUMBER
-    (25) value -> . STRING_LITERAL
-    (26) value -> . CHAR_LITERAL
-
-    NUMBER          shift and go to state 23
-    STRING_LITERAL  shift and go to state 24
-    CHAR_LITERAL    shift and go to state 25
-
-    array_values                   shift and go to state 53
-    value                          shift and go to state 45
-
 state 52
 
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d . RBRACE
-    (19) array_values_2d -> array_values_2d . COMMA LBRACE array_values RBRACE
+    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET .
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET . EQUALS LBRACE array_values_2d RBRACE
 
-    RBRACE          shift and go to state 54
-    COMMA           shift and go to state 55
+    SEMICOLON       reduce using rule 15 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET .)
+    COMMA           reduce using rule 15 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET .)
+    EQUALS          shift and go to state 55
 
 
 state 53
 
-    (18) array_values_2d -> LBRACE array_values . RBRACE
-    (17) array_values -> array_values . COMMA value
+    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values . RBRACE
+    (18) array_values -> array_values . COMMA value
 
     RBRACE          shift and go to state 56
-    COMMA           shift and go to state 48
+    COMMA           shift and go to state 57
 
 
 state 54
 
-    (15) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE .
+    (17) array_values -> value .
 
-    SEMICOLON       reduce using rule 15 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE .)
-    COMMA           reduce using rule 15 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE .)
+    RBRACE          reduce using rule 17 (array_values -> value .)
+    COMMA           reduce using rule 17 (array_values -> value .)
 
 
 state 55
 
-    (19) array_values_2d -> array_values_2d COMMA . LBRACE array_values RBRACE
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS . LBRACE array_values_2d RBRACE
 
-    LBRACE          shift and go to state 57
+    LBRACE          shift and go to state 58
 
 
 state 56
 
-    (18) array_values_2d -> LBRACE array_values RBRACE .
+    (14) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE .
 
-    RBRACE          reduce using rule 18 (array_values_2d -> LBRACE array_values RBRACE .)
-    COMMA           reduce using rule 18 (array_values_2d -> LBRACE array_values RBRACE .)
+    SEMICOLON       reduce using rule 14 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE .)
+    COMMA           reduce using rule 14 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values RBRACE .)
 
 
 state 57
 
-    (19) array_values_2d -> array_values_2d COMMA LBRACE . array_values RBRACE
-    (16) array_values -> . value
-    (17) array_values -> . array_values COMMA value
-    (24) value -> . NUMBER
-    (25) value -> . STRING_LITERAL
-    (26) value -> . CHAR_LITERAL
+    (18) array_values -> array_values COMMA . value
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
 
-    NUMBER          shift and go to state 23
-    STRING_LITERAL  shift and go to state 24
-    CHAR_LITERAL    shift and go to state 25
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
 
-    array_values                   shift and go to state 58
-    value                          shift and go to state 45
+    value                          shift and go to state 59
 
 state 58
 
-    (19) array_values_2d -> array_values_2d COMMA LBRACE array_values . RBRACE
-    (17) array_values -> array_values . COMMA value
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE . array_values_2d RBRACE
+    (19) array_values_2d -> . LBRACE array_values RBRACE
+    (20) array_values_2d -> . array_values_2d COMMA LBRACE array_values RBRACE
 
-    RBRACE          shift and go to state 59
-    COMMA           shift and go to state 48
+    LBRACE          shift and go to state 60
 
+    array_values_2d                shift and go to state 61
 
 state 59
 
-    (19) array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE .
+    (18) array_values -> array_values COMMA value .
 
-    RBRACE          reduce using rule 19 (array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE .)
-    COMMA           reduce using rule 19 (array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE .)
+    RBRACE          reduce using rule 18 (array_values -> array_values COMMA value .)
+    COMMA           reduce using rule 18 (array_values -> array_values COMMA value .)
+
+
+state 60
+
+    (19) array_values_2d -> LBRACE . array_values RBRACE
+    (17) array_values -> . value
+    (18) array_values -> . array_values COMMA value
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
+
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
+
+    array_values                   shift and go to state 62
+    value                          shift and go to state 54
+
+state 61
+
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d . RBRACE
+    (20) array_values_2d -> array_values_2d . COMMA LBRACE array_values RBRACE
+
+    RBRACE          shift and go to state 63
+    COMMA           shift and go to state 64
+
+
+state 62
+
+    (19) array_values_2d -> LBRACE array_values . RBRACE
+    (18) array_values -> array_values . COMMA value
+
+    RBRACE          shift and go to state 65
+    COMMA           shift and go to state 57
+
+
+state 63
+
+    (16) declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE .
+
+    SEMICOLON       reduce using rule 16 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE .)
+    COMMA           reduce using rule 16 (declarator -> IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE .)
+
+
+state 64
+
+    (20) array_values_2d -> array_values_2d COMMA . LBRACE array_values RBRACE
+
+    LBRACE          shift and go to state 66
+
+
+state 65
+
+    (19) array_values_2d -> LBRACE array_values RBRACE .
+
+    RBRACE          reduce using rule 19 (array_values_2d -> LBRACE array_values RBRACE .)
+    COMMA           reduce using rule 19 (array_values_2d -> LBRACE array_values RBRACE .)
+
+
+state 66
+
+    (20) array_values_2d -> array_values_2d COMMA LBRACE . array_values RBRACE
+    (17) array_values -> . value
+    (18) array_values -> . array_values COMMA value
+    (28) value -> . NUMBER
+    (29) value -> . STRING_LITERAL
+    (30) value -> . CHAR_LITERAL
+
+    NUMBER          shift and go to state 21
+    STRING_LITERAL  shift and go to state 22
+    CHAR_LITERAL    shift and go to state 23
+
+    array_values                   shift and go to state 67
+    value                          shift and go to state 54
+
+state 67
+
+    (20) array_values_2d -> array_values_2d COMMA LBRACE array_values . RBRACE
+    (18) array_values -> array_values . COMMA value
+
+    RBRACE          shift and go to state 68
+    COMMA           shift and go to state 57
+
+
+state 68
+
+    (20) array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE .
+
+    RBRACE          reduce using rule 20 (array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE .)
+    COMMA           reduce using rule 20 (array_values_2d -> array_values_2d COMMA LBRACE array_values RBRACE .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for TYPE in state 0 resolved as shift
-WARNING: shift/reduce conflict for TYPE in state 32 resolved as shift
-WARNING: shift/reduce conflict for TYPE in state 33 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 0 resolved as shift
+WARNING: shift/reduce conflict for TYPE in state 39 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 39 resolved as shift
+WARNING: shift/reduce conflict for TYPE in state 42 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 42 resolved as shift

@@ -1,78 +1,11 @@
 [
   {
     "type": "declaration",
-    "data_type": "char",
-    "declarations": [
-      {
-        "name": "x",
-        "scope": "global"
-      },
-      {
-        "name": "y",
-        "scope": "global"
-      },
-      {
-        "name": "z",
-        "value": 3,
-        "scope": "global"
-      }
-    ]
-  },
-  {
-    "type": "declaration",
     "data_type": "float",
     "declarations": [
       {
         "name": "y",
         "value": 3.14,
-        "scope": "global"
-      }
-    ]
-  },
-  {
-    "type": "declaration",
-    "data_type": "int",
-    "declarations": [
-      {
-        "name": "arr",
-        "dimensions": [
-          5
-        ],
-        "values": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
-        "scope": "global"
-      }
-    ]
-  },
-  {
-    "type": "declaration",
-    "data_type": "char",
-    "declarations": [
-      {
-        "name": "arr",
-        "dimensions": [
-          3,
-          2
-        ],
-        "values": [
-          [
-            1,
-            2
-          ],
-          [
-            3,
-            2
-          ],
-          [
-            1,
-            3
-          ]
-        ],
         "scope": "global"
       }
     ]
@@ -109,34 +42,44 @@
     "return_type": "int",
     "body": [
       {
+        "type": "function declaration",
+        "return_type": "int",
+        "name": "ahmad1",
+        "params": [],
+        "body": [
+          {
+            "type": "declaration",
+            "data_type": "string",
+            "declarations": [
+              {
+                "name": "ahmad",
+                "value": "perfect",
+                "scope": "function:ahmad1"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "declaration",
         "data_type": "char",
         "declarations": [
           {
             "name": "x",
-            "scope": "function:main"
-          },
-          {
-            "name": "y",
-            "scope": "function:main"
-          },
-          {
-            "name": "z",
-            "value": 3,
-            "scope": "function:main"
+            "scope": "main"
           }
         ]
       },
       {
-        "type": "function",
+        "type": "function declaration",
         "return_type": "int",
-        "name": "ahmad",
+        "name": "ahmad111",
         "params": [
           {
             "type": "parameter",
             "data_type": "string",
             "name": "work",
-            "scope": "function:ahmad"
+            "scope": "function:ahmad111"
           }
         ],
         "body": [
@@ -147,7 +90,40 @@
               {
                 "name": "work",
                 "value": 1,
-                "scope": "function:ahmad"
+                "scope": "function:ahmad111"
+              }
+            ]
+          },
+          {
+            "type": "function declaration",
+            "return_type": "int",
+            "name": "declaredfun2",
+            "params": [],
+            "body": [
+              {
+                "type": "function declaration",
+                "return_type": "int",
+                "name": "declaredfun3",
+                "params": [],
+                "body": [
+                  {
+                    "type": "function_call",
+                    "name": "ahmad1",
+                    "args": [],
+                    "scope": "function:declaredfun3"
+                  },
+                  {
+                    "type": "declaration",
+                    "data_type": "int",
+                    "declarations": [
+                      {
+                        "name": "x",
+                        "value": 1,
+                        "scope": "function:declaredfun3"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
