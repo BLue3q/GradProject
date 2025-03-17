@@ -6,9 +6,10 @@ double matrix[2][3] = {{1.1, 2.2, 3.3}, {4.4, 5.5, 6.6}};
 int main() {
 int ahmad1(){
     string ahmad="perfect";
+    int alaa=3;
 }
 char x;
-int ahmad111(string work){
+int ahmad111(string work,int done){
 int work=1;
 int declaredfun2(){
         int declaredfun3(){

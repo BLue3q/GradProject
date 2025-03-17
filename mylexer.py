@@ -19,14 +19,17 @@ def t_NAMESPACE(t):
 
 def t_MAIN(t):
     r'\bmain\b'
+    t.lineno = t.lexer.lineno
     return t
 
 def t_TYPE(t):
     r'\b(int|float|double|char|string)\b'
+    t.lineno = t.lexer.lineno
     return t
 
 def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
+    t.lineno = t.lexer.lineno
     return t
 
 def t_NUMBER(t):

@@ -39,15 +39,15 @@ def p_stmt(p):
     if len(p) == 4:
         # Variable declaration
         current_scope = scope_stack[-1] if scope_stack else 'global'
-        for var in p[2]:
-            var['scope'] = current_scope
         p[0] = {
             'type': 'declaration',
             'data_type': p[1],
-            'declarations': p[2]
+            'declarations': p[2],
+            'line': p.lineno(1)  
         }
     elif len(p) == 9:
         # Function definition
+        current_scope = scope_stack[-1] if scope_stack else 'global'
         func_name = p[2]
         set_scope(f'function:{func_name}')
         for param in p[4]:
@@ -66,7 +66,9 @@ def p_stmt(p):
             'return_type': p[1],
             'name': func_name,
             'params': p[4],
-            'body': p[7]
+            'body': p[7],
+            'scope' : func_name,
+            'line' : p.lineno(2)  
         }
         pop_scope()
     elif len(p) == 8:
@@ -83,7 +85,9 @@ def p_stmt(p):
             'type': 'main function',
             'name': 'main',
             'return_type': p[1],
-            'body': p[6]
+            'body': p[6],
+            'line': p.lineno(2)  
+
         }
         pop_scope()
     elif len(p) == 6:
@@ -93,7 +97,9 @@ def p_stmt(p):
             'type': 'function_call',
             'name': p[1],
             'args': p[3],
-            'scope': current_scope
+            'scope': current_scope,
+            'line' : p.lineno(1)  
+
         }
 
 def p_var_list(p):

@@ -8,7 +8,8 @@
         "value": 3.14,
         "scope": "global"
       }
-    ]
+    ],
+    "line": 3
   },
   {
     "type": "declaration",
@@ -34,7 +35,8 @@
         ],
         "scope": "global"
       }
-    ]
+    ],
+    "line": 4
   },
   {
     "type": "main function",
@@ -56,9 +58,24 @@
                 "value": "perfect",
                 "scope": "function:ahmad1"
               }
-            ]
+            ],
+            "line": 8
+          },
+          {
+            "type": "declaration",
+            "data_type": "int",
+            "declarations": [
+              {
+                "name": "alaa",
+                "value": 3,
+                "scope": "function:ahmad1"
+              }
+            ],
+            "line": 9
           }
-        ]
+        ],
+        "scope": "ahmad1",
+        "line": 7
       },
       {
         "type": "declaration",
@@ -68,7 +85,8 @@
             "name": "x",
             "scope": "main"
           }
-        ]
+        ],
+        "line": 11
       },
       {
         "type": "function declaration",
@@ -79,6 +97,12 @@
             "type": "parameter",
             "data_type": "string",
             "name": "work",
+            "scope": "function:ahmad111"
+          },
+          {
+            "type": "parameter",
+            "data_type": "int",
+            "name": "done",
             "scope": "function:ahmad111"
           }
         ],
@@ -92,7 +116,8 @@
                 "value": 1,
                 "scope": "function:ahmad111"
               }
-            ]
+            ],
+            "line": 13
           },
           {
             "type": "function declaration",
@@ -110,7 +135,8 @@
                     "type": "function_call",
                     "name": "ahmad1",
                     "args": [],
-                    "scope": "function:declaredfun3"
+                    "scope": "function:declaredfun3",
+                    "line": 16
                   },
                   {
                     "type": "declaration",
@@ -121,14 +147,22 @@
                         "value": 1,
                         "scope": "function:declaredfun3"
                       }
-                    ]
+                    ],
+                    "line": 17
                   }
-                ]
+                ],
+                "scope": "declaredfun3",
+                "line": 15
               }
-            ]
+            ],
+            "scope": "declaredfun2",
+            "line": 14
           }
-        ]
+        ],
+        "scope": "ahmad111",
+        "line": 12
       }
-    ]
+    ],
+    "line": 6
   }
 ]
