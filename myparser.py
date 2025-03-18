@@ -1,12 +1,9 @@
 import ply.yacc as yacc
 from mylexer import tokens
 import json
-#line with scoop
-#2 dic 
-# first dic fun 
-# sc dic decl  ass same var 
-# Stack to track current scopes
 scope_stack = []
+declarations_dict = {}  # Stores variables and arrays
+functions_dict = {}  # Stores functions
 
 def set_scope(scope_name):
     """Helper function to manage scope changes in the scope stack."""
@@ -21,13 +18,16 @@ def p_stmt_list(p):
     '''stmt_list : stmt_list stmt
                  | stmt
                  | empty'''
+    
     if len(p) == 2:
         p[0] = [p[1]] if p[1] is not None else []
+
     else:
         p[0] = p[1] + [p[2]]
 
 def p_empty(p):
     '''empty :'''
+
     p[0] = None
 
 def p_stmt(p):
@@ -35,16 +35,20 @@ def p_stmt(p):
             | TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
             | TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
             | IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
+            | IDENTIFIER EQUALS value SEMICOLON  
             '''
+    
     if len(p) == 4:
         # Variable declaration
         current_scope = scope_stack[-1] if scope_stack else 'global'
+
         p[0] = {
             'type': 'declaration',
             'data_type': p[1],
-            'declarations': p[2],
-            'line': p.lineno(1)  
+            'line': p.lineno(1),
+            'declarations': p[2]
         }
+
     elif len(p) == 9:
         # Function definition
         current_scope = scope_stack[-1] if scope_stack else 'global'
@@ -60,17 +64,21 @@ def p_stmt(p):
                         decl['scope'] = f'function:{func_name}'
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = f'function:{func_name}'
+                elif stmt.get('type') == 'assignment':
+                    stmt['scope'] = f'function:{func_name}'
+                    
 
         p[0] = {
-            'type': 'function declaration',
-            'return_type': p[1],
             'name': func_name,
+            'type': 'function declaration',
+            'line' : p.lineno(2),
+            'return_type': p[1],
             'params': p[4],
             'body': p[7],
-            'scope' : func_name,
-            'line' : p.lineno(2)  
+            'scope' : func_name
         }
         pop_scope()
+
     elif len(p) == 8:
         # Main function
         set_scope('function:main')
@@ -81,32 +89,50 @@ def p_stmt(p):
                         decl['scope'] = 'main'
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = 'main'
-        p[0] = {
-            'type': 'main function',
-            'name': 'main',
-            'return_type': p[1],
-            'body': p[6],
-            'line': p.lineno(2)  
+                elif stmt.get('type') == 'assignment':
+                    stmt['scope'] = f'main'
 
+        p[0] = {
+            'name': 'main',
+            'type': 'the standard Main_Function ',
+            'line': p.lineno(2),
+            'return_type': p[1],
+            'body': p[6]
         }
         pop_scope()
+
     elif len(p) == 6:
         # Function call
         current_scope = scope_stack[-1] if scope_stack else 'global'
-        p[0] = {
-            'type': 'function_call',
-            'name': p[1],
-            'args': p[3],
-            'scope': current_scope,
-            'line' : p.lineno(1)  
 
+        p[0] = { 
+            'name': p[1],
+            'type': 'function_call',
+            'line' : p.lineno(1),
+            'args': p[3],
+            'scope': current_scope
         }
+
+    elif len(p) == 5:
+        # Assignment statement (IDENTIFIER EQUALS value SEMICOLON)
+        current_scope = scope_stack[-1] if scope_stack else 'global'
+        
+        p[0] = {
+            'name': p[1],
+            'type': 'assignment',
+            'line': p.lineno(1),
+            'value': p[3],
+            'scope': current_scope
+        }
+
 
 def p_var_list(p):
     '''var_list : declarator
                 | var_list COMMA declarator'''
+    
     if len(p) == 2:
         p[0] = [p[1]]
+
     else:
         p[0] = p[1] + [p[3]]
 
@@ -118,23 +144,31 @@ def p_declarator(p):
                   | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET
                   | IDENTIFIER LBRACKET NUMBER RBRACKET LBRACKET NUMBER RBRACKET EQUALS LBRACE array_values_2d RBRACE
                   '''
+    
+    
     decl = {'name': p[1]}
+
     if len(p) == 5:  # 1d arrays alone
         decl['dimensions'] = [p[3]]
+
     elif len(p) == 9:  # 1d array with values
         decl['dimensions'] = [p[3]]
         decl['values'] = p[7]
+
     elif len(p) == 8:  # 2d arrays alone
         decl['dimensions'] = [p[3], p[6]]
+
     elif len(p) == 12:  # 2d arrays with values
         decl['dimensions'] = [p[3], p[6]]
         decl['values'] = p[10]
+
     elif len(p) == 4:  # IDENTIFIER EQUALS value
         decl['value'] = p[3]
 
     # Scope assignment for declaration inside function
     current_scope = scope_stack[-1] if scope_stack else 'global'
     decl['scope'] = current_scope
+
     p[0] = decl
 
 def p_array_values(p):
@@ -168,8 +202,10 @@ def p_arg_list(p):
     '''arg_list : empty
                 | arg_list COMMA value
                 | value'''
+    
     if len(p) == 2:
         p[0] = [] if p[1] is None else [p[1]]
+
     else:
         p[0] = p[1] + [p[3]]
 
@@ -177,6 +213,7 @@ def p_value(p):
     '''value : NUMBER
              | STRING_LITERAL
              | CHAR_LITERAL'''
+    
     p[0] = p[1]
 
 def p_error(p):
