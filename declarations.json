@@ -1,0 +1,26 @@
+{
+  "global:x": {
+    "name": "x",
+    "value": 4,
+    "type": "float",
+    "scope": "global"
+  },
+  "global:xx": {
+    "name": "xx",
+    "value": 3,
+    "type": "float",
+    "scope": "global"
+  },
+  "global:y": {
+    "name": "y",
+    "value": 3,
+    "type": "int",
+    "scope": "global"
+  },
+  "global:xxx": {
+    "name": "xxx",
+    "value": 1,
+    "type": "int",
+    "scope": "global"
+  }
+}

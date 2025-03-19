@@ -1,0 +1,260 @@
+{
+  "ahmad1": {
+    "name": "ahmad1",
+    "type": "function declaration",
+    "line": 4,
+    "return_type": "int",
+    "params": [],
+    "body": [
+      {
+        "name": [
+          {
+            "name": "y",
+            "value": 3,
+            "type": "int",
+            "scope": "function:ahmad1"
+          }
+        ],
+        "type": "declaration",
+        "data_type": "int",
+        "line": 5,
+        "declarations": [
+          {
+            "name": "y",
+            "value": 3,
+            "type": "int",
+            "scope": "function:ahmad1"
+          }
+        ]
+      }
+    ]
+  },
+  "declaredfun3": {
+    "name": "declaredfun3",
+    "type": "function declaration",
+    "line": 11,
+    "return_type": "int",
+    "params": [],
+    "body": [
+      {
+        "name": "ahmad1",
+        "type": "function_call",
+        "line": 12,
+        "args": [],
+        "declared_body": [
+          {
+            "name": [
+              {
+                "name": "y",
+                "value": 3,
+                "type": "int",
+                "scope": "function:ahmad1"
+              }
+            ],
+            "type": "declaration",
+            "data_type": "int",
+            "line": 5,
+            "declarations": [
+              {
+                "name": "y",
+                "value": 3,
+                "type": "int",
+                "scope": "function:ahmad1"
+              }
+            ]
+          }
+        ],
+        "scope": "function:declaredfun3"
+      },
+      {
+        "name": [
+          {
+            "name": "xxx",
+            "value": 1,
+            "type": "int",
+            "scope": "function:declaredfun3"
+          }
+        ],
+        "type": "declaration",
+        "data_type": "int",
+        "line": 13,
+        "declarations": [
+          {
+            "name": "xxx",
+            "value": 1,
+            "type": "int",
+            "scope": "function:declaredfun3"
+          }
+        ]
+      },
+      {
+        "name": "x",
+        "type": "assignment",
+        "line": 14,
+        "value": 3,
+        "scope": "function:declaredfun3"
+      }
+    ]
+  },
+  "declaredfun2": {
+    "name": "declaredfun2",
+    "type": "function declaration",
+    "line": 10,
+    "return_type": "int",
+    "params": [],
+    "body": [
+      {
+        "name": "declaredfun3",
+        "type": "function declaration",
+        "line": 11,
+        "return_type": "int",
+        "params": [],
+        "body": [
+          {
+            "name": "ahmad1",
+            "type": "function_call",
+            "line": 12,
+            "args": [],
+            "declared_body": [
+              {
+                "name": [
+                  {
+                    "name": "y",
+                    "value": 3,
+                    "type": "int",
+                    "scope": "function:ahmad1"
+                  }
+                ],
+                "type": "declaration",
+                "data_type": "int",
+                "line": 5,
+                "declarations": [
+                  {
+                    "name": "y",
+                    "value": 3,
+                    "type": "int",
+                    "scope": "function:ahmad1"
+                  }
+                ]
+              }
+            ],
+            "scope": "function:declaredfun3"
+          },
+          {
+            "name": [
+              {
+                "name": "xxx",
+                "value": 1,
+                "type": "int",
+                "scope": "function:declaredfun3"
+              }
+            ],
+            "type": "declaration",
+            "data_type": "int",
+            "line": 13,
+            "declarations": [
+              {
+                "name": "xxx",
+                "value": 1,
+                "type": "int",
+                "scope": "function:declaredfun3"
+              }
+            ]
+          },
+          {
+            "name": "x",
+            "type": "assignment",
+            "line": 14,
+            "value": 3,
+            "scope": "function:declaredfun3"
+          }
+        ]
+      }
+    ]
+  },
+  "ahmad111": {
+    "name": "ahmad111",
+    "type": "function declaration",
+    "line": 9,
+    "return_type": "int",
+    "params": [],
+    "body": [
+      {
+        "name": "declaredfun2",
+        "type": "function declaration",
+        "line": 10,
+        "return_type": "int",
+        "params": [],
+        "body": [
+          {
+            "name": "declaredfun3",
+            "type": "function declaration",
+            "line": 11,
+            "return_type": "int",
+            "params": [],
+            "body": [
+              {
+                "name": "ahmad1",
+                "type": "function_call",
+                "line": 12,
+                "args": [],
+                "declared_body": [
+                  {
+                    "name": [
+                      {
+                        "name": "y",
+                        "value": 3,
+                        "type": "int",
+                        "scope": "function:ahmad1"
+                      }
+                    ],
+                    "type": "declaration",
+                    "data_type": "int",
+                    "line": 5,
+                    "declarations": [
+                      {
+                        "name": "y",
+                        "value": 3,
+                        "type": "int",
+                        "scope": "function:ahmad1"
+                      }
+                    ]
+                  }
+                ],
+                "scope": "function:declaredfun3"
+              },
+              {
+                "name": [
+                  {
+                    "name": "xxx",
+                    "value": 1,
+                    "type": "int",
+                    "scope": "function:declaredfun3"
+                  }
+                ],
+                "type": "declaration",
+                "data_type": "int",
+                "line": 13,
+                "declarations": [
+                  {
+                    "name": "xxx",
+                    "value": 1,
+                    "type": "int",
+                    "scope": "function:declaredfun3"
+                  }
+                ]
+              },
+              {
+                "name": "x",
+                "type": "assignment",
+                "line": 14,
+                "value": 3,
+                "scope": "function:declaredfun3"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

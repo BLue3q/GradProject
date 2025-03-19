@@ -4,6 +4,7 @@ import json
 scope_stack = []
 declarations_dict = {}  # Stores variables and arrays
 functions_dict = {}  # Stores functions
+current_scope = scope_stack[-1] if scope_stack else 'global'
 
 def set_scope(scope_name):
     """Helper function to manage scope changes in the scope stack."""
@@ -11,8 +12,7 @@ def set_scope(scope_name):
 
 def pop_scope():
     """Helper function to remove the last scope from the stack."""
-    if scope_stack:
-        scope_stack.pop()
+    scope_stack.pop()
 
 def p_stmt_list(p):
     '''stmt_list : stmt_list stmt
@@ -37,21 +37,26 @@ def p_stmt(p):
             | IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
             | IDENTIFIER EQUALS value SEMICOLON  
             '''
-    
     if len(p) == 4:
-        # Variable declaration
-        current_scope = scope_stack[-1] if scope_stack else 'global'
-
-        p[0] = {
+        # Variable declaration        
+        for decl in p[2]:
+            decl['type'] = p[1]  
+            decl['scope'] = current_scope
+            key = f"{current_scope}:{decl['name']}"
+            
+            p[0] = {
+            'name': p[2],
             'type': 'declaration',
             'data_type': p[1],
             'line': p.lineno(1),
             'declarations': p[2]
+            
         }
+            declarations_dict[key] = decl.copy()
+            
 
     elif len(p) == 9:
         # Function definition
-        current_scope = scope_stack[-1] if scope_stack else 'global'
         func_name = p[2]
         set_scope(f'function:{func_name}')
         for param in p[4]:
@@ -67,7 +72,7 @@ def p_stmt(p):
                 elif stmt.get('type') == 'assignment':
                     stmt['scope'] = f'function:{func_name}'
                     
-
+     
         p[0] = {
             'name': func_name,
             'type': 'function declaration',
@@ -75,9 +80,11 @@ def p_stmt(p):
             'return_type': p[1],
             'params': p[4],
             'body': p[7],
-            'scope' : func_name
         }
+        functions_dict[func_name] = p[0]
         pop_scope()
+        
+        
 
     elif len(p) == 8:
         # Main function
@@ -103,19 +110,20 @@ def p_stmt(p):
 
     elif len(p) == 6:
         # Function call
-        current_scope = scope_stack[-1] if scope_stack else 'global'
+        func_name = p[1]
+        function_body = functions_dict.get(func_name, {}).get('body', None)
 
         p[0] = { 
-            'name': p[1],
+            'name': func_name,
             'type': 'function_call',
             'line' : p.lineno(1),
             'args': p[3],
+            'declared_body' : function_body,
             'scope': current_scope
         }
 
     elif len(p) == 5:
         # Assignment statement (IDENTIFIER EQUALS value SEMICOLON)
-        current_scope = scope_stack[-1] if scope_stack else 'global'
         
         p[0] = {
             'name': p[1],
@@ -165,9 +173,6 @@ def p_declarator(p):
     elif len(p) == 4:  # IDENTIFIER EQUALS value
         decl['value'] = p[3]
 
-    # Scope assignment for declaration inside function
-    current_scope = scope_stack[-1] if scope_stack else 'global'
-    decl['scope'] = current_scope
 
     p[0] = decl
 
@@ -221,7 +226,14 @@ def p_error(p):
 
 parser = yacc.yacc()
 
-def generate_json(ast, filename='output.json'):
+def generate_json(ast,functions_dict,declarations_dict, filename='output.json'):
     with open(filename, 'w') as f:
         json.dump(ast, f, indent=2)
+    with open('functions.json', 'w') as f:
+        json.dump(functions_dict, f, indent=2)
+    with open('declarations.json','w') as f:
+        json.dump(declarations_dict,f,indent=2)
     print(f"If there was no syntax error detected, the correct JSON output is written into {filename}")
+    print("Functions saved in 'functions.json'")
+    print("declarations_dict saved in 'declarations.json'")
+
