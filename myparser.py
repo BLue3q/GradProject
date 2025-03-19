@@ -41,14 +41,12 @@ def p_stmt(p):
         # Variable declaration
        
         for decl in p[2]:
-            decl['type'] = p[1]  
+            decl['data type'] = p[1]  
             decl['scope'] = current_scope
-            key = f"{current_scope}:{decl['name']}"
-            declarations_dict[key] = decl
+            decl['line'] = p.lineno(1)
+
             p[0] = {
-            'type': 'declaration',
-            'data_type': p[1],
-            'line': p.lineno(1),
+            'type': 'declaration',            
             'declarations': p[2]
         }
 
@@ -80,7 +78,6 @@ def p_stmt(p):
         }
         functions_dict[func_name] = p[0]
         
-
     elif len(p) == 8:
         # Main function
         set_scope('function:main')
@@ -169,6 +166,7 @@ def p_declarator(p):
     decl['scope'] = current_scope
     key = f"{current_scope}:{decl['name']}"
     declarations_dict[key] = decl
+    
 
     p[0] = decl
 

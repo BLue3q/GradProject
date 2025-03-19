@@ -2,24 +2,28 @@
   "global:x": {
     "name": "x",
     "scope": "main",
-    "type": "int"
+    "data type": "int",
+    "line": 8
   },
   "global:xx": {
     "name": "xx",
     "value": 3,
     "scope": "global",
-    "type": "float"
+    "data type": "float",
+    "line": 3
   },
   "global:y": {
     "name": "y",
     "value": 3,
     "scope": "function:ahmad1",
-    "type": "int"
+    "data type": "int",
+    "line": 5
   },
   "global:xxx": {
     "name": "xxx",
     "value": 1,
     "scope": "function:declaredfun3",
-    "type": "int"
+    "data type": "int",
+    "line": 13
   }
 }

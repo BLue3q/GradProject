@@ -1,20 +1,20 @@
 [
   {
     "type": "declaration",
-    "data_type": "float",
-    "line": 3,
     "declarations": [
       {
         "name": "x",
         "value": 4,
         "scope": "global",
-        "type": "float"
+        "data type": "float",
+        "line": 3
       },
       {
         "name": "xx",
         "value": 3,
         "scope": "global",
-        "type": "float"
+        "data type": "float",
+        "line": 3
       }
     ]
   },
@@ -27,14 +27,13 @@
     "body": [
       {
         "type": "declaration",
-        "data_type": "int",
-        "line": 5,
         "declarations": [
           {
             "name": "y",
             "value": 3,
             "scope": "function:ahmad1",
-            "type": "int"
+            "data type": "int",
+            "line": 5
           }
         ]
       }
@@ -48,13 +47,12 @@
     "body": [
       {
         "type": "declaration",
-        "data_type": "int",
-        "line": 8,
         "declarations": [
           {
             "name": "x",
             "scope": "main",
-            "type": "int"
+            "data type": "int",
+            "line": 8
           }
         ]
       },
@@ -88,14 +86,13 @@
                   },
                   {
                     "type": "declaration",
-                    "data_type": "int",
-                    "line": 13,
                     "declarations": [
                       {
                         "name": "xxx",
                         "value": 1,
                         "scope": "function:declaredfun3",
-                        "type": "int"
+                        "data type": "int",
+                        "line": 13
                       }
                     ]
                   },

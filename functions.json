@@ -8,14 +8,13 @@
     "body": [
       {
         "type": "declaration",
-        "data_type": "int",
-        "line": 5,
         "declarations": [
           {
             "name": "y",
             "value": 3,
             "scope": "function:ahmad1",
-            "type": "int"
+            "data type": "int",
+            "line": 5
           }
         ]
       }
@@ -37,14 +36,13 @@
       },
       {
         "type": "declaration",
-        "data_type": "int",
-        "line": 13,
         "declarations": [
           {
             "name": "xxx",
             "value": 1,
             "scope": "function:declaredfun3",
-            "type": "int"
+            "data type": "int",
+            "line": 13
           }
         ]
       },
@@ -80,14 +78,13 @@
           },
           {
             "type": "declaration",
-            "data_type": "int",
-            "line": 13,
             "declarations": [
               {
                 "name": "xxx",
                 "value": 1,
                 "scope": "function:declaredfun3",
-                "type": "int"
+                "data type": "int",
+                "line": 13
               }
             ]
           },
@@ -132,14 +129,13 @@
               },
               {
                 "type": "declaration",
-                "data_type": "int",
-                "line": 13,
                 "declarations": [
                   {
                     "name": "xxx",
                     "value": 1,
                     "scope": "function:declaredfun3",
-                    "type": "int"
+                    "data type": "int",
+                    "line": 13
                   }
                 ]
               },
