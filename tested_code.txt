@@ -5,7 +5,7 @@ int ahmad1(){
 int y=3;    
 }
 int main() {
-
+int x;
 int ahmad111(){
 int declaredfun2(){
         int declaredfun3(){

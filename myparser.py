@@ -38,22 +38,19 @@ def p_stmt(p):
             | IDENTIFIER EQUALS value SEMICOLON  
             '''
     if len(p) == 4:
-        # Variable declaration        
+        # Variable declaration
+       
         for decl in p[2]:
             decl['type'] = p[1]  
             decl['scope'] = current_scope
             key = f"{current_scope}:{decl['name']}"
-            
+            declarations_dict[key] = decl
             p[0] = {
-            'name': p[2],
             'type': 'declaration',
             'data_type': p[1],
             'line': p.lineno(1),
             'declarations': p[2]
-            
         }
-            declarations_dict[key] = decl.copy()
-            
 
     elif len(p) == 9:
         # Function definition
@@ -72,7 +69,7 @@ def p_stmt(p):
                 elif stmt.get('type') == 'assignment':
                     stmt['scope'] = f'function:{func_name}'
                     
-     
+        pop_scope()
         p[0] = {
             'name': func_name,
             'type': 'function declaration',
@@ -82,8 +79,6 @@ def p_stmt(p):
             'body': p[7],
         }
         functions_dict[func_name] = p[0]
-        pop_scope()
-        
         
 
     elif len(p) == 8:
@@ -110,15 +105,12 @@ def p_stmt(p):
 
     elif len(p) == 6:
         # Function call
-        func_name = p[1]
-        function_body = functions_dict.get(func_name, {}).get('body', None)
 
         p[0] = { 
-            'name': func_name,
+            'name': p[1],
             'type': 'function_call',
             'line' : p.lineno(1),
             'args': p[3],
-            'declared_body' : function_body,
             'scope': current_scope
         }
 
@@ -173,6 +165,10 @@ def p_declarator(p):
     elif len(p) == 4:  # IDENTIFIER EQUALS value
         decl['value'] = p[3]
 
+    # Scope assignment for declaration inside function
+    decl['scope'] = current_scope
+    key = f"{current_scope}:{decl['name']}"
+    declarations_dict[key] = decl
 
     p[0] = decl
 
@@ -236,4 +232,3 @@ def generate_json(ast,functions_dict,declarations_dict, filename='output.json'):
     print(f"If there was no syntax error detected, the correct JSON output is written into {filename}")
     print("Functions saved in 'functions.json'")
     print("declarations_dict saved in 'declarations.json'")
-

@@ -7,14 +7,6 @@
     "params": [],
     "body": [
       {
-        "name": [
-          {
-            "name": "y",
-            "value": 3,
-            "type": "int",
-            "scope": "function:ahmad1"
-          }
-        ],
         "type": "declaration",
         "data_type": "int",
         "line": 5,
@@ -22,8 +14,8 @@
           {
             "name": "y",
             "value": 3,
-            "type": "int",
-            "scope": "function:ahmad1"
+            "scope": "function:ahmad1",
+            "type": "int"
           }
         ]
       }
@@ -41,40 +33,9 @@
         "type": "function_call",
         "line": 12,
         "args": [],
-        "declared_body": [
-          {
-            "name": [
-              {
-                "name": "y",
-                "value": 3,
-                "type": "int",
-                "scope": "function:ahmad1"
-              }
-            ],
-            "type": "declaration",
-            "data_type": "int",
-            "line": 5,
-            "declarations": [
-              {
-                "name": "y",
-                "value": 3,
-                "type": "int",
-                "scope": "function:ahmad1"
-              }
-            ]
-          }
-        ],
         "scope": "function:declaredfun3"
       },
       {
-        "name": [
-          {
-            "name": "xxx",
-            "value": 1,
-            "type": "int",
-            "scope": "function:declaredfun3"
-          }
-        ],
         "type": "declaration",
         "data_type": "int",
         "line": 13,
@@ -82,8 +43,8 @@
           {
             "name": "xxx",
             "value": 1,
-            "type": "int",
-            "scope": "function:declaredfun3"
+            "scope": "function:declaredfun3",
+            "type": "int"
           }
         ]
       },
@@ -115,40 +76,9 @@
             "type": "function_call",
             "line": 12,
             "args": [],
-            "declared_body": [
-              {
-                "name": [
-                  {
-                    "name": "y",
-                    "value": 3,
-                    "type": "int",
-                    "scope": "function:ahmad1"
-                  }
-                ],
-                "type": "declaration",
-                "data_type": "int",
-                "line": 5,
-                "declarations": [
-                  {
-                    "name": "y",
-                    "value": 3,
-                    "type": "int",
-                    "scope": "function:ahmad1"
-                  }
-                ]
-              }
-            ],
             "scope": "function:declaredfun3"
           },
           {
-            "name": [
-              {
-                "name": "xxx",
-                "value": 1,
-                "type": "int",
-                "scope": "function:declaredfun3"
-              }
-            ],
             "type": "declaration",
             "data_type": "int",
             "line": 13,
@@ -156,8 +86,8 @@
               {
                 "name": "xxx",
                 "value": 1,
-                "type": "int",
-                "scope": "function:declaredfun3"
+                "scope": "function:declaredfun3",
+                "type": "int"
               }
             ]
           },
@@ -198,40 +128,9 @@
                 "type": "function_call",
                 "line": 12,
                 "args": [],
-                "declared_body": [
-                  {
-                    "name": [
-                      {
-                        "name": "y",
-                        "value": 3,
-                        "type": "int",
-                        "scope": "function:ahmad1"
-                      }
-                    ],
-                    "type": "declaration",
-                    "data_type": "int",
-                    "line": 5,
-                    "declarations": [
-                      {
-                        "name": "y",
-                        "value": 3,
-                        "type": "int",
-                        "scope": "function:ahmad1"
-                      }
-                    ]
-                  }
-                ],
                 "scope": "function:declaredfun3"
               },
               {
-                "name": [
-                  {
-                    "name": "xxx",
-                    "value": 1,
-                    "type": "int",
-                    "scope": "function:declaredfun3"
-                  }
-                ],
                 "type": "declaration",
                 "data_type": "int",
                 "line": 13,
@@ -239,8 +138,8 @@
                   {
                     "name": "xxx",
                     "value": 1,
-                    "type": "int",
-                    "scope": "function:declaredfun3"
+                    "scope": "function:declaredfun3",
+                    "type": "int"
                   }
                 ]
               },
