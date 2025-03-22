@@ -1,16 +1,16 @@
 #include <iostream> 
 using namespace std;
-float x=4,xx=3;
-int ahmad1(){
-int y=3;    
+float x=4,y=3;
+int ahmad1(int hi,char a){
+int work= "perfect";    
 }
 int main() {
-int x;
+int f;
 int ahmad111(){
 int declaredfun2(){
         int declaredfun3(){
-            ahmad1();
-            int xxx=1;
+            ahmad1(3,"a");
+            int x=1;
             x=3;
         }    
     }

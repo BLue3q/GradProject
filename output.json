@@ -1,20 +1,20 @@
 [
   {
     "type": "declaration",
+    "data_type": "float",
+    "line": 3,
     "declarations": [
       {
         "name": "x",
         "value": 4,
         "scope": "global",
-        "data type": "float",
-        "line": 3
+        "type": "float"
       },
       {
-        "name": "xx",
+        "name": "y",
         "value": 3,
         "scope": "global",
-        "data type": "float",
-        "line": 3
+        "type": "float"
       }
     ]
   },
@@ -23,17 +23,31 @@
     "type": "function declaration",
     "line": 4,
     "return_type": "int",
-    "params": [],
+    "params": [
+      {
+        "type": "parameter",
+        "data_type": "int",
+        "name": "hi",
+        "scope": "function:ahmad1"
+      },
+      {
+        "type": "parameter",
+        "data_type": "char",
+        "name": "a",
+        "scope": "function:ahmad1"
+      }
+    ],
     "body": [
       {
         "type": "declaration",
+        "data_type": "int",
+        "line": 5,
         "declarations": [
           {
-            "name": "y",
-            "value": 3,
+            "name": "work",
+            "value": "perfect",
             "scope": "function:ahmad1",
-            "data type": "int",
-            "line": 5
+            "type": "int"
           }
         ]
       }
@@ -47,12 +61,13 @@
     "body": [
       {
         "type": "declaration",
+        "data_type": "int",
+        "line": 8,
         "declarations": [
           {
-            "name": "x",
+            "name": "f",
             "scope": "main",
-            "data type": "int",
-            "line": 8
+            "type": "int"
           }
         ]
       },
@@ -81,18 +96,47 @@
                     "name": "ahmad1",
                     "type": "function_call",
                     "line": 12,
-                    "args": [],
-                    "scope": "function:declaredfun3"
+                    "args": [
+                      3,
+                      "a"
+                    ],
+                    "scope": "function:declaredfun3",
+                    "body": [
+                      {
+                        "type": "declaration",
+                        "data_type": "int",
+                        "line": 5,
+                        "declarations": [
+                          {
+                            "name": "work",
+                            "value": "perfect",
+                            "scope": "function:ahmad1",
+                            "type": "int"
+                          }
+                        ]
+                      }
+                    ],
+                    "arg_param_map": [
+                      {
+                        "param_name": "hi",
+                        "arg_value": 3
+                      },
+                      {
+                        "param_name": "a",
+                        "arg_value": "a"
+                      }
+                    ]
                   },
                   {
                     "type": "declaration",
+                    "data_type": "int",
+                    "line": 13,
                     "declarations": [
                       {
-                        "name": "xxx",
+                        "name": "x",
                         "value": 1,
                         "scope": "function:declaredfun3",
-                        "data type": "int",
-                        "line": 13
+                        "type": "int"
                       }
                     ]
                   },

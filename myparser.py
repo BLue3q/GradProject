@@ -41,12 +41,14 @@ def p_stmt(p):
         # Variable declaration
        
         for decl in p[2]:
-            decl['data type'] = p[1]  
+            decl['type'] = p[1]  
             decl['scope'] = current_scope
-            decl['line'] = p.lineno(1)
-
+            key = f"{current_scope}:{decl['name']}"
+            declarations_dict[key] = decl
             p[0] = {
-            'type': 'declaration',            
+            'type': 'declaration',
+            'data_type': p[1],
+            'line': p.lineno(1),
             'declarations': p[2]
         }
 
@@ -67,7 +69,7 @@ def p_stmt(p):
                 elif stmt.get('type') == 'assignment':
                     stmt['scope'] = f'function:{func_name}'
                     
-        pop_scope()
+     
         p[0] = {
             'name': func_name,
             'type': 'function declaration',
@@ -77,7 +79,10 @@ def p_stmt(p):
             'body': p[7],
         }
         functions_dict[func_name] = p[0]
+        pop_scope()
         
+        
+
     elif len(p) == 8:
         # Main function
         set_scope('function:main')
@@ -102,13 +107,26 @@ def p_stmt(p):
 
     elif len(p) == 6:
         # Function call
-
+        func_name = p[1]
+        function_data = functions_dict.get(func_name, {})  # Get function details
+        function_body = function_data.get('body', None)
+        function_params = function_data.get('params', [])
+        arg_param_map = []
+        if len(function_params) == len(p[3]):  # Ensure correct argument count
+                arg_param_map = [
+                    {'param_name': function_params[i]['name'], 'arg_value': p[3][i]}
+                    for i in range(len(function_params))
+        ]
         p[0] = { 
-            'name': p[1],
+            'name': func_name,
             'type': 'function_call',
             'line' : p.lineno(1),
             'args': p[3],
-            'scope': current_scope
+            'scope': current_scope,
+            'body': function_body,  # Attach function body if found
+            'arg_param_map': arg_param_map  # Store argument-parameter mapping
+
+
         }
 
     elif len(p) == 5:
@@ -166,7 +184,6 @@ def p_declarator(p):
     decl['scope'] = current_scope
     key = f"{current_scope}:{decl['name']}"
     declarations_dict[key] = decl
-    
 
     p[0] = decl
 

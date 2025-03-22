@@ -1,29 +1,25 @@
 {
   "global:x": {
     "name": "x",
-    "scope": "main",
-    "data type": "int",
-    "line": 8
-  },
-  "global:xx": {
-    "name": "xx",
-    "value": 3,
-    "scope": "global",
-    "data type": "float",
-    "line": 3
+    "value": 1,
+    "scope": "function:declaredfun3",
+    "type": "int"
   },
   "global:y": {
     "name": "y",
     "value": 3,
-    "scope": "function:ahmad1",
-    "data type": "int",
-    "line": 5
+    "scope": "global",
+    "type": "float"
   },
-  "global:xxx": {
-    "name": "xxx",
-    "value": 1,
-    "scope": "function:declaredfun3",
-    "data type": "int",
-    "line": 13
+  "global:work": {
+    "name": "work",
+    "value": "perfect",
+    "scope": "function:ahmad1",
+    "type": "int"
+  },
+  "global:f": {
+    "name": "f",
+    "scope": "main",
+    "type": "int"
   }
 }
