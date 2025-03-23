@@ -78,8 +78,7 @@ def p_stmt(p):
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = f'function:{func_name}'
                 elif stmt.get('type') == 'assignment':
-                    stmt['scope'] = f'function:{func_name}'
-                    
+                    stmt['scope'] = f'function:{func_name}'    
      
         p[0] = {
             'name': func_name,
