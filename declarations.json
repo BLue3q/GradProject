@@ -1,25 +1,37 @@
 {
-  "global:x": {
-    "name": "x",
-    "value": 1,
-    "scope": "function:declaredfun3",
-    "type": "int"
-  },
   "global:y": {
     "name": "y",
     "value": 3,
-    "scope": "global",
-    "type": "float"
+    "type": "float",
+    "scope": "global"
   },
-  "global:work": {
+  "ahmad1:work": {
     "name": "work",
     "value": "perfect",
-    "scope": "function:ahmad1",
-    "type": "int"
+    "type": "int",
+    "scope": "ahmad1"
   },
-  "global:f": {
+  "ali:a": {
+    "name": "a",
+    "value": 1,
+    "type": "int",
+    "scope": "ali"
+  },
+  "om:o": {
+    "name": "o",
+    "value": 0,
+    "type": "int",
+    "scope": "om"
+  },
+  "declaredfun3:x": {
+    "name": "x",
+    "value": 1,
+    "type": "int",
+    "scope": "declaredfun3"
+  },
+  "main:f": {
     "name": "f",
-    "scope": "main",
-    "type": "int"
+    "type": "int",
+    "scope": "main"
   }
 }

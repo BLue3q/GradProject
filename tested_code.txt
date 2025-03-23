@@ -2,7 +2,15 @@
 using namespace std;
 float x=4,y=3;
 int ahmad1(int hi,char a){
+ali();
 int work= "perfect";    
+}
+int ali(){
+    int a=1;
+    om();
+}
+int om(){
+    int o=0;
 }
 int main() {
 int f;

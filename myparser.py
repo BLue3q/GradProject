@@ -4,7 +4,10 @@ import json
 scope_stack = []
 declarations_dict = {}  # Stores variables and arrays
 functions_dict = {}  # Stores functions
-current_scope = scope_stack[-1] if scope_stack else 'global'
+
+def get_current_scope():
+    """Helper function to get the current scope from the stack."""
+    return scope_stack[-1] if scope_stack else 'global'
 
 def set_scope(scope_name):
     """Helper function to manage scope changes in the scope stack."""
@@ -42,6 +45,7 @@ def p_stmt(p):
        
         for decl in p[2]:
             decl['type'] = p[1]  
+            current_scope = get_current_scope()
             decl['scope'] = current_scope
             key = f"{current_scope}:{decl['name']}"
             declarations_dict[key] = decl
@@ -63,7 +67,14 @@ def p_stmt(p):
             if stmt:
                 if stmt.get('type') == 'declaration':
                     for decl in stmt['declarations']:
-                        decl['scope'] = f'function:{func_name}'
+                        for decl in stmt['declarations']:
+                            old_scope = decl.get('scope', 'global')
+                            old_key = f"{old_scope}:{decl['name']}"
+                            decl['scope'] = func_name
+                            new_key = f"{func_name}:{decl['name']}"
+                            if old_key in declarations_dict:
+                                declarations_dict[new_key] = declarations_dict.pop(old_key)
+                                declarations_dict[new_key]['scope'] = func_name
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = f'function:{func_name}'
                 elif stmt.get('type') == 'assignment':
@@ -90,7 +101,13 @@ def p_stmt(p):
             if stmt:
                 if stmt.get('type') == 'declaration':
                     for decl in stmt['declarations']:
+                        old_scope = decl.get('scope', 'global')
+                        old_key = f"{old_scope}:{decl['name']}"
                         decl['scope'] = 'main'
+                        new_key = f"main:{decl['name']}"
+                        if old_key in declarations_dict:
+                            declarations_dict[new_key] = declarations_dict.pop(old_key)
+                            declarations_dict[new_key]['scope'] = 'main'
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = 'main'
                 elif stmt.get('type') == 'assignment':
@@ -117,21 +134,19 @@ def p_stmt(p):
                     {'param_name': function_params[i]['name'], 'arg_value': p[3][i]}
                     for i in range(len(function_params))
         ]
+        current_scope = get_current_scope()
         p[0] = { 
             'name': func_name,
             'type': 'function_call',
             'line' : p.lineno(1),
-            'args': p[3],
             'scope': current_scope,
             'body': function_body,  # Attach function body if found
             'arg_param_map': arg_param_map  # Store argument-parameter mapping
-
-
         }
 
     elif len(p) == 5:
         # Assignment statement (IDENTIFIER EQUALS value SEMICOLON)
-        
+        current_scope = get_current_scope()
         p[0] = {
             'name': p[1],
             'type': 'assignment',
@@ -179,11 +194,6 @@ def p_declarator(p):
 
     elif len(p) == 4:  # IDENTIFIER EQUALS value
         decl['value'] = p[3]
-
-    # Scope assignment for declaration inside function
-    decl['scope'] = current_scope
-    key = f"{current_scope}:{decl['name']}"
-    declarations_dict[key] = decl
 
     p[0] = decl
 
