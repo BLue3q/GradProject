@@ -1,9 +1,20 @@
 import ply.yacc as yacc
 from mylexer import tokens
 import json
+import uuid
+
 scope_stack = []
 declarations_dict = {}  # Stores variables and arrays
 functions_dict = {}  # Stores functions
+used_ids = set()  # Keep track of used IDs to ensure uniqueness
+
+def get_next_id():
+    while True:
+        # Generate a random UUID and take first 8 characters
+        new_id = str(uuid.uuid4())[:8]
+        if new_id not in used_ids:
+            used_ids.add(new_id)
+            return new_id
 
 def get_current_scope():
     """Helper function to get the current scope from the stack."""
@@ -42,19 +53,19 @@ def p_stmt(p):
             '''
     if len(p) == 4:
         # Variable declaration
-       
         for decl in p[2]:
             decl['type'] = p[1]  
             current_scope = get_current_scope()
             decl['scope'] = current_scope
+            decl['line'] = p.lineno(1)
+            decl['id'] = get_next_id()  # Add unique ID
             key = f"{current_scope}:{decl['name']}"
             declarations_dict[key] = decl
             p[0] = {
-            'type': 'declaration',
-            'data_type': p[1],
-            'line': p.lineno(1),
-            'declarations': p[2]
-        }
+                'type': 'declaration',
+                'data_type': p[1],
+                'declarations': p[2]
+            }
 
     elif len(p) == 9:
         # Function definition
@@ -62,37 +73,38 @@ def p_stmt(p):
         set_scope(f'function:{func_name}')
         for param in p[4]:
             param['scope'] = f'function:{func_name}'
+            param['id'] = get_next_id()  # Add unique ID for parameters
 
         for stmt in p[7]:
             if stmt:
                 if stmt.get('type') == 'declaration':
                     for decl in stmt['declarations']:
-                        for decl in stmt['declarations']:
-                            old_scope = decl.get('scope', 'global')
-                            old_key = f"{old_scope}:{decl['name']}"
-                            decl['scope'] = func_name
-                            new_key = f"{func_name}:{decl['name']}"
-                            if old_key in declarations_dict:
-                                declarations_dict[new_key] = declarations_dict.pop(old_key)
-                                declarations_dict[new_key]['scope'] = func_name
+                        decl['id'] = get_next_id()  # Add unique ID
+                        old_scope = decl.get('scope', 'global')
+                        old_key = f"{old_scope}:{decl['name']}"
+                        decl['scope'] = func_name
+                        new_key = f"{func_name}:{decl['name']}"
+                        if old_key in declarations_dict:
+                            declarations_dict[new_key] = declarations_dict.pop(old_key)
+                            declarations_dict[new_key]['scope'] = func_name
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = f'function:{func_name}'
+                    stmt['id'] = get_next_id()  # Add unique ID for function calls
                 elif stmt.get('type') == 'assignment':
                     stmt['scope'] = f'function:{func_name}'
+                    stmt['id'] = get_next_id()  # Add unique ID for assignments
                     
-     
         p[0] = {
             'name': func_name,
             'type': 'function declaration',
-            'line' : p.lineno(2),
+            'line': p.lineno(2),
             'return_type': p[1],
             'params': p[4],
             'body': p[7],
+            'id': get_next_id()  # Add unique ID for function
         }
         functions_dict[func_name] = p[0]
         pop_scope()
-        
-        
 
     elif len(p) == 8:
         # Main function
@@ -101,6 +113,7 @@ def p_stmt(p):
             if stmt:
                 if stmt.get('type') == 'declaration':
                     for decl in stmt['declarations']:
+                        decl['id'] = get_next_id()  # Add unique ID
                         old_scope = decl.get('scope', 'global')
                         old_key = f"{old_scope}:{decl['name']}"
                         decl['scope'] = 'main'
@@ -110,38 +123,42 @@ def p_stmt(p):
                             declarations_dict[new_key]['scope'] = 'main'
                 elif stmt.get('type') == 'function_call':
                     stmt['scope'] = 'main'
+                    stmt['id'] = get_next_id()  # Add unique ID for function calls
                 elif stmt.get('type') == 'assignment':
-                    stmt['scope'] = f'main'
+                    stmt['scope'] = 'main'
+                    stmt['id'] = get_next_id()  # Add unique ID for assignments
 
         p[0] = {
             'name': 'main',
             'type': 'the standard Main_Function ',
             'line': p.lineno(2),
             'return_type': p[1],
-            'body': p[6]
+            'body': p[6],
+            'id': get_next_id()  # Add unique ID for main function
         }
         pop_scope()
 
     elif len(p) == 6:
         # Function call
         func_name = p[1]
-        function_data = functions_dict.get(func_name, {})  # Get function details
+        function_data = functions_dict.get(func_name, {})
         function_body = function_data.get('body', None)
         function_params = function_data.get('params', [])
         arg_param_map = []
-        if len(function_params) == len(p[3]):  # Ensure correct argument count
-                arg_param_map = [
-                    {'param_name': function_params[i]['name'], 'arg_value': p[3][i]}
-                    for i in range(len(function_params))
-        ]
+        if len(function_params) == len(p[3]):
+            arg_param_map = [
+                {'param_name': function_params[i]['name'], 'arg_value': p[3][i]}
+                for i in range(len(function_params))
+            ]
         current_scope = get_current_scope()
         p[0] = { 
             'name': func_name,
             'type': 'function_call',
-            'line' : p.lineno(1),
+            'line': p.lineno(1),
             'scope': current_scope,
-            'body': function_body,  # Attach function body if found
-            'arg_param_map': arg_param_map  # Store argument-parameter mapping
+            'body': function_body,
+            'arg_param_map': arg_param_map,
+            'id': get_next_id()  # Add unique ID for function call
         }
 
     elif len(p) == 5:
@@ -152,7 +169,8 @@ def p_stmt(p):
             'type': 'assignment',
             'line': p.lineno(1),
             'value': p[3],
-            'scope': current_scope
+            'scope': current_scope,
+            'id': get_next_id()  # Add unique ID for assignment
         }
 
 
@@ -248,6 +266,15 @@ def p_error(p):
 parser = yacc.yacc()
 
 def generate_json(ast,functions_dict,declarations_dict, filename='output.json'):
+    # Change line numbers for global variables directly in declarations_dict
+    for key, value in declarations_dict.items():
+        if value.get('scope') == 'global':
+            value['line'] = 'globaly declared'
+    
+    # Change line numbers for functions directly in functions_dict
+    for key, value in functions_dict.items():
+        value['line'] = 'globaly declared'
+    
     with open(filename, 'w') as f:
         json.dump(ast, f, indent=2)
     with open('functions.json', 'w') as f:
@@ -256,4 +283,4 @@ def generate_json(ast,functions_dict,declarations_dict, filename='output.json'):
         json.dump(declarations_dict,f,indent=2)
     print(f"If there was no syntax error detected, the correct JSON output is written into {filename}")
     print("Functions saved in 'functions.json'")
-    print("declarations_dict saved in 'declarations.json'")
+    print("declarations_dict saved in 'declarations.json'") 

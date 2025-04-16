@@ -1,37 +1,42 @@
 {
-  "global:y": {
-    "name": "y",
-    "value": 3,
-    "type": "float",
-    "scope": "global"
-  },
-  "ahmad1:work": {
-    "name": "work",
-    "value": "perfect",
-    "type": "int",
-    "scope": "ahmad1"
-  },
-  "ali:a": {
-    "name": "a",
-    "value": 1,
-    "type": "int",
-    "scope": "ali"
-  },
-  "om:o": {
-    "name": "o",
-    "value": 0,
-    "type": "int",
-    "scope": "om"
-  },
-  "declaredfun3:x": {
+  "func:x": {
     "name": "x",
-    "value": 1,
+    "value": 3,
     "type": "int",
-    "scope": "declaredfun3"
+    "scope": "func",
+    "line": 4,
+    "id": "4bb86b00"
   },
-  "main:f": {
-    "name": "f",
+  "global:b": {
+    "name": "b",
+    "value": 2.3,
+    "type": "float",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "04e0a7e1"
+  },
+  "main:x": {
+    "name": "x",
+    "value": 5,
     "type": "int",
-    "scope": "main"
+    "scope": "main",
+    "line": 8,
+    "id": "7a1612dd"
+  },
+  "main:y": {
+    "name": "y",
+    "value": 5,
+    "type": "int",
+    "scope": "main",
+    "line": 8,
+    "id": "701cfecb"
+  },
+  "global:x": {
+    "name": "x",
+    "value": 5.1,
+    "type": "float",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "ef70992b"
   }
 }
