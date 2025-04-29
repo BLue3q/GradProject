@@ -104,15 +104,114 @@
     "id": "1000092",
     "range": "1000092-1000095"
   },
+  "global:ptr": {
+    "name": "ptr",
+    "pointer": true,
+    "type": "int",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000097",
+    "range": "1000097-1000100"
+  },
+  "global:str": {
+    "name": "str",
+    "pointer": true,
+    "type": "char",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000101",
+    "range": "1000101-1000101"
+  },
+  "global:arr_ptr": {
+    "name": "arr_ptr",
+    "pointer": true,
+    "allocation": "new",
+    "array_size": 3,
+    "type": "int",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000102",
+    "range": "1000102-1000113"
+  },
+  "class:PointerTest:member_ptr": {
+    "name": "member_ptr",
+    "pointer": true,
+    "type": "int",
+    "line": 30,
+    "scope": "class:PointerTest",
+    "id": "1000114",
+    "range": "1000114-1000117"
+  },
+  "class:PointerTest:name_ptr": {
+    "name": "name_ptr",
+    "pointer": true,
+    "type": "char",
+    "line": 31,
+    "scope": "class:PointerTest",
+    "id": "1000118",
+    "range": "1000118-1000118"
+  },
+  "class:PointerTest:array_ptr": {
+    "name": "array_ptr",
+    "pointer": true,
+    "allocation": "new",
+    "array_size": 5,
+    "type": "int",
+    "line": 32,
+    "scope": "class:PointerTest",
+    "id": "1000119",
+    "range": "1000119-1000138"
+  },
   "main:f": {
     "name": "f",
     "type": "int",
     "scope": "main",
-    "line": 27,
+    "line": 36,
     "id": {
-      "id": "1000102",
-      "range": "1000102-1000105"
+      "id": "1000169",
+      "range": "1000169-1000172"
     },
-    "range": "1000097-1000100"
+    "range": "1000140-1000143"
+  },
+  "main:x": {
+    "name": "x",
+    "value": 10,
+    "type": "int",
+    "scope": "main",
+    "line": 38,
+    "id": {
+      "id": "1000177",
+      "range": "1000177-1000180"
+    },
+    "range": "1000145-1000148"
+  },
+  "main:ptr_to_x": {
+    "name": "ptr_to_x",
+    "pointer": true,
+    "points_to": {
+      "name": "x"
+    },
+    "type": "int",
+    "scope": "main",
+    "line": 39,
+    "id": {
+      "id": "1000181",
+      "range": "1000181-1000184"
+    },
+    "range": "1000149-1000152"
+  },
+  "main:dynamic_array": {
+    "name": "dynamic_array",
+    "pointer": true,
+    "allocation": "new",
+    "array_size": 4,
+    "type": "int",
+    "scope": "main",
+    "line": 40,
+    "id": {
+      "id": "1000185",
+      "range": "1000185-1000200"
+    },
+    "range": "1000153-1000168"
   }
 }

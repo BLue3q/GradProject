@@ -178,9 +178,94 @@
     "range": "1000096-1000096"
   },
   {
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "ptr",
+        "pointer": true,
+        "type": "int",
+        "scope": "global",
+        "line": "globaly declared",
+        "id": "1000097",
+        "range": "1000097-1000100"
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "char",
+    "declarations": [
+      {
+        "name": "str",
+        "pointer": true,
+        "type": "char",
+        "scope": "global",
+        "line": "globaly declared",
+        "id": "1000101",
+        "range": "1000101-1000101"
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "arr_ptr",
+        "pointer": true,
+        "allocation": "new",
+        "array_size": 3,
+        "type": "int",
+        "scope": "global",
+        "line": "globaly declared",
+        "id": "1000102",
+        "range": "1000102-1000113"
+      }
+    ]
+  },
+  {
+    "name": "PointerTest",
+    "type": "class declaration",
+    "line": 29,
+    "members": [
+      {
+        "name": "member_ptr",
+        "pointer": true,
+        "type": "int",
+        "line": 30,
+        "scope": "class:PointerTest",
+        "id": "1000114",
+        "range": "1000114-1000117"
+      },
+      {
+        "name": "name_ptr",
+        "pointer": true,
+        "type": "char",
+        "line": 31,
+        "scope": "class:PointerTest",
+        "id": "1000118",
+        "range": "1000118-1000118"
+      },
+      {
+        "name": "array_ptr",
+        "pointer": true,
+        "allocation": "new",
+        "array_size": 5,
+        "type": "int",
+        "line": 32,
+        "scope": "class:PointerTest",
+        "id": "1000119",
+        "range": "1000119-1000138"
+      }
+    ],
+    "id": "1000139",
+    "range": "1000139-1000139"
+  },
+  {
     "name": "main",
     "type": "the standard Main_Function ",
-    "line": 26,
+    "line": 35,
     "return_type": "int",
     "body": [
       {
@@ -191,19 +276,19 @@
             "name": "f",
             "type": "int",
             "scope": "main",
-            "line": 27,
+            "line": 36,
             "id": {
-              "id": "1000102",
-              "range": "1000102-1000105"
+              "id": "1000169",
+              "range": "1000169-1000172"
             },
-            "range": "1000097-1000100"
+            "range": "1000140-1000143"
           }
         ]
       },
       {
         "name": "ahmad1",
         "type": "function_call",
-        "line": 28,
+        "line": 37,
         "scope": "main",
         "body": [
           {
@@ -236,14 +321,73 @@
           }
         ],
         "id": {
-          "id": "1000106",
-          "range": "1000106-1000109"
+          "id": "1000173",
+          "range": "1000173-1000176"
         }
+      },
+      {
+        "type": "declaration",
+        "data_type": "int",
+        "declarations": [
+          {
+            "name": "x",
+            "value": 10,
+            "type": "int",
+            "scope": "main",
+            "line": 38,
+            "id": {
+              "id": "1000177",
+              "range": "1000177-1000180"
+            },
+            "range": "1000145-1000148"
+          }
+        ]
+      },
+      {
+        "type": "declaration",
+        "data_type": "int",
+        "declarations": [
+          {
+            "name": "ptr_to_x",
+            "pointer": true,
+            "points_to": {
+              "name": "x"
+            },
+            "type": "int",
+            "scope": "main",
+            "line": 39,
+            "id": {
+              "id": "1000181",
+              "range": "1000181-1000184"
+            },
+            "range": "1000149-1000152"
+          }
+        ]
+      },
+      {
+        "type": "declaration",
+        "data_type": "int",
+        "declarations": [
+          {
+            "name": "dynamic_array",
+            "pointer": true,
+            "allocation": "new",
+            "array_size": 4,
+            "type": "int",
+            "scope": "main",
+            "line": 40,
+            "id": {
+              "id": "1000185",
+              "range": "1000185-1000200"
+            },
+            "range": "1000153-1000168"
+          }
+        ]
       }
     ],
     "id": {
-      "id": "1000110",
-      "range": "1000110-1000110"
+      "id": "1000201",
+      "range": "1000201-1000201"
     }
   }
 ]
