@@ -4,11 +4,13 @@ import Editor from '@monaco-editor/react';
 interface CodeEditorProps {
   initialCode?: string;
   onChange?: (value: string | undefined) => void;
+  isFullScreen?: boolean;
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ 
   initialCode = '// Online C++ compiler to run C++ program online\n#include <iostream>\n\nint main() {\n    // Write C++ code here\n    std::cout << "Hello World!";\n    \n    return 0;\n}', 
-  onChange 
+  onChange,
+  isFullScreen = false
 }) => {
   const [code, setCode] = useState(initialCode);
 
@@ -20,9 +22,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   return (
-    <div className="code-editor">
+    <div className={`code-editor ${isFullScreen ? 'full-screen' : ''}`}>
       <Editor
-        height="90vh"
+        height={isFullScreen ? "100vh" : "90vh"}
         defaultLanguage="cpp"
         defaultValue={initialCode}
         onChange={handleEditorChange}

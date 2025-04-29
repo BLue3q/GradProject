@@ -1,6 +1,7 @@
 import React from 'react';
 import CodeEditor from './CodeEditor';
 import OutputPanel from './OutputPanel';
+import VisualizationPanel from './VisualizationPanel';
 
 interface DualModePanelProps {
   initialCode?: string;
@@ -8,7 +9,8 @@ interface DualModePanelProps {
   isLoading: boolean;
   onCodeChange: (code: string | undefined) => void;
   onClearOutput: () => void;
-  showOutput: boolean;
+  hasRun: boolean;
+  viewMode: 'code' | 'output';
 }
 
 const DualModePanel: React.FC<DualModePanelProps> = ({
@@ -17,19 +19,41 @@ const DualModePanel: React.FC<DualModePanelProps> = ({
   isLoading,
   onCodeChange,
   onClearOutput,
-  showOutput
+  hasRun,
+  viewMode
 }) => {
-  return (
-    <div className="dual-mode-panel">
-      {!showOutput ? (
-        <CodeEditor initialCode={initialCode} onChange={onCodeChange} />
-      ) : (
-        <OutputPanel 
-          output={output} 
-          isLoading={isLoading} 
-          onClear={onClearOutput} 
+  if (!hasRun) {
+    return (
+      <div className="full-screen-editor">
+        <CodeEditor 
+          initialCode={initialCode} 
+          onChange={onCodeChange}
+          isFullScreen={true}
         />
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="dual-mode-container">
+      <div className="left-panel">
+        {viewMode === 'code' ? (
+          <CodeEditor 
+            initialCode={initialCode} 
+            onChange={onCodeChange}
+            isFullScreen={false}
+          />
+        ) : (
+          <OutputPanel 
+            output={output} 
+            isLoading={isLoading} 
+            onClear={onClearOutput} 
+          />
+        )}
+      </div>
+      <div className="right-panel">
+        <VisualizationPanel />
+      </div>
     </div>
   );
 };

@@ -116,7 +116,8 @@ const CodeCompiler: React.FC = () => {
           isLoading={isLoading}
           onCodeChange={handleCodeChange}
           onClearOutput={handleClearOutput}
-          showOutput={showOutput && !hasError}
+          hasRun={showOutput && !hasError}
+          viewMode={showOutput && !hasError ? 'output' : 'code'}
         />
         
         <OutputPanel

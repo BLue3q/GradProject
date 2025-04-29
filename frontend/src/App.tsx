@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CodeEditor from './components/CodeEditor';
 import OutputPanel from './components/OutputPanel';
 import VisualizationPanel from './components/VisualizationPanel';
+import { cppCompiler } from './services/cppCompiler';
 import './App.css';
 
 function App() {
@@ -13,6 +14,21 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [visualizationData, setVisualizationData] = useState(null);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    // Initialize the compiler when the app loads
+    cppCompiler.initialize().catch(error => {
+      console.error('Failed to initialize compiler:', error);
+      setOutput('Error: Failed to initialize C++ compiler');
+      setHasError(true);
+    });
+
+    // Cleanup when component unmounts
+    return () => {
+      cppCompiler.cleanup();
+    };
+  }, []);
 
   const handleCodeChange = (value: string | undefined) => {
     setCode(value || '');
@@ -20,15 +36,27 @@ function App() {
 
   const handleRunCode = async () => {
     setIsLoading(true);
+    setHasError(false);
     
-    // Simulate code execution
-    setTimeout(() => {
-      setOutput('Hello World!');
+    try {
+      const result = await cppCompiler.compileAndRun(code);
       
-      setVisualizationData((null));
+      if (result.error) {
+        setOutput(result.error);
+        setHasError(true);
+      } else {
+        setOutput(result.output);
+        setVisualizationData(result.visualizationData);
+      }
+      
       setShowOutput(true);
+    } catch (error) {
+      console.error('Error running code:', error);
+      setOutput(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+      setHasError(true);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const togglePanel = () => {
