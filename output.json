@@ -1,50 +1,186 @@
 [
   {
+    "name": "ahmad1",
+    "type": "function declaration",
+    "line": "globaly declared",
+    "return_type": "int",
+    "params": [
+      {
+        "type": "parameter",
+        "data_type": "int",
+        "name": "hi",
+        "scope": "function:ahmad1",
+        "id": {
+          "id": "1000008",
+          "range": "1000008-1000011"
+        }
+      },
+      {
+        "type": "parameter",
+        "data_type": "char",
+        "name": "a",
+        "scope": "function:ahmad1",
+        "id": {
+          "id": "1000012",
+          "range": "1000012-1000015"
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "declaration",
+        "data_type": "string",
+        "declarations": [
+          {
+            "name": "work",
+            "value": "perfect",
+            "type": "string",
+            "scope": "ahmad1",
+            "line": 4,
+            "id": {
+              "id": "1000016",
+              "range": "1000016-1000023"
+            },
+            "range": "1000000-1000007"
+          }
+        ]
+      }
+    ],
+    "id": {
+      "id": "1000024",
+      "range": "1000024-1000024"
+    }
+  },
+  {
     "type": "declaration",
     "data_type": "int",
     "declarations": [
       {
-        "name": "x",
-        "value": 3,
+        "name": "arr",
+        "dimensions": [
+          3
+        ],
+        "array_size": 3,
+        "values": [
+          1,
+          2,
+          3
+        ],
         "type": "int",
         "scope": "global",
         "line": "globaly declared",
-        "id": "b1d92474"
+        "id": "1000025",
+        "range": "1000025-1000036"
       }
     ]
   },
   {
-    "name": "a333",
-    "type": "function declaration",
-    "line": "globaly declared",
-    "return_type": "int",
-    "params": [],
-    "body": [
+    "name": "Student",
+    "type": "class declaration",
+    "line": 7,
+    "members": [
       {
-        "type": "declaration",
-        "data_type": "int",
-        "declarations": [
-          {
-            "name": "p",
-            "pointer": true,
-            "points_to": {
-              "name": "x",
-              "id": "b1d92474"
-            },
-            "type": "int",
-            "scope": "a333",
-            "line": 5,
-            "id": "1a7d1de5"
-          }
-        ]
+        "name": "id",
+        "type": "int",
+        "line": 8,
+        "scope": "class:Student",
+        "id": "1000037",
+        "range": "1000037-1000040"
+      },
+      {
+        "name": "grade",
+        "type": "char",
+        "line": 9,
+        "scope": "class:Student",
+        "id": "1000041",
+        "range": "1000041-1000041"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "line": 10,
+        "scope": "class:Student",
+        "id": "1000042",
+        "range": "1000042-1000049"
+      },
+      {
+        "name": "scores",
+        "dimensions": [
+          4
+        ],
+        "array_size": 4,
+        "type": "int",
+        "line": 11,
+        "scope": "class:Student",
+        "id": "1000050",
+        "range": "1000050-1000065"
       }
     ],
-    "id": "cc6c6e0c"
+    "id": "1000066",
+    "range": "1000066-1000066"
+  },
+  {
+    "name": "Person",
+    "type": "class declaration",
+    "line": 14,
+    "members": [
+      {
+        "name": "age",
+        "type": "int",
+        "line": 15,
+        "scope": "class:Person",
+        "id": "1000067",
+        "range": "1000067-1000070"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "line": 16,
+        "scope": "class:Person",
+        "id": "1000071",
+        "range": "1000071-1000078"
+      }
+    ],
+    "id": "1000079",
+    "range": "1000079-1000079"
+  },
+  {
+    "name": "Car",
+    "type": "class declaration",
+    "line": 19,
+    "members": [
+      {
+        "name": "model",
+        "type": "string",
+        "line": 20,
+        "scope": "class:Car",
+        "id": "1000080",
+        "range": "1000080-1000087"
+      },
+      {
+        "name": "year",
+        "type": "int",
+        "line": 21,
+        "scope": "class:Car",
+        "id": "1000088",
+        "range": "1000088-1000091"
+      },
+      {
+        "name": "price",
+        "type": "float",
+        "line": 22,
+        "scope": "class:Car",
+        "id": "1000092",
+        "range": "1000092-1000095"
+      }
+    ],
+    "id": "1000096",
+    "range": "1000096-1000096"
   },
   {
     "name": "main",
     "type": "the standard Main_Function ",
-    "line": 7,
+    "line": 26,
     "return_type": "int",
     "body": [
       {
@@ -52,38 +188,62 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "anew",
-            "pointer": true,
-            "allocation": "new",
+            "name": "f",
             "type": "int",
             "scope": "main",
-            "line": 8,
-            "id": "44afdb98"
+            "line": 27,
+            "id": {
+              "id": "1000102",
+              "range": "1000102-1000105"
+            },
+            "range": "1000097-1000100"
           }
         ]
       },
       {
-        "type": "declaration",
-        "data_type": "int",
-        "declarations": [
+        "name": "ahmad1",
+        "type": "function_call",
+        "line": 28,
+        "scope": "main",
+        "body": [
           {
-            "name": "arr",
-            "dimensions": [
-              3
-            ],
-            "values": [
-              1,
-              2,
-              3
-            ],
-            "type": "int",
-            "scope": "main",
-            "line": 9,
-            "id": "86a61c4c"
+            "type": "declaration",
+            "data_type": "string",
+            "declarations": [
+              {
+                "name": "work",
+                "value": "perfect",
+                "type": "string",
+                "scope": "ahmad1",
+                "line": 4,
+                "id": {
+                  "id": "1000016",
+                  "range": "1000016-1000023"
+                },
+                "range": "1000000-1000007"
+              }
+            ]
           }
-        ]
+        ],
+        "arg_param_map": [
+          {
+            "param_name": "hi",
+            "arg_value": "a"
+          },
+          {
+            "param_name": "a",
+            "arg_value": 3
+          }
+        ],
+        "id": {
+          "id": "1000106",
+          "range": "1000106-1000109"
+        }
       }
     ],
-    "id": "b441fc61"
+    "id": {
+      "id": "1000110",
+      "range": "1000110-1000110"
+    }
   }
 ]

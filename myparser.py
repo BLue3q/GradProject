@@ -1,19 +1,43 @@
 import ply.yacc as yacc
 from mylexer import tokens
 import json
-import uuid
-
 scope_stack = []
 declarations_dict = {}
 functions_dict = {}
-used_ids = set()
+next_id = 1000000
 
-def get_next_id():
-    while True:
-        new_id = str(uuid.uuid4())[:8]
-        if new_id not in used_ids:
-            used_ids.add(new_id)
-            return new_id
+def get_type_size(type_name):
+    type_sizes = {
+        'int': 4,
+        'float': 4,
+        'double': 8,
+        'char': 1,
+        'string': 8,  # treating string as pointer
+        'void': 0
+    }
+    return type_sizes.get(type_name, 4)  # default to 4 if type not found
+
+def get_next_id(type_name=None, array_size=None):
+    global next_id
+    start_id = next_id
+    
+    if type_name:
+        type_size = get_type_size(type_name)
+        if array_size:
+            # For arrays, increment by (size * type_size)
+            next_id += (array_size * type_size)
+        else:
+            # For regular variables, increment by type_size
+            next_id += type_size
+    else:
+        # For non-type entities (like class declarations), increment by 1
+        next_id += 1
+    
+    end_id = next_id - 1
+    return {
+        'id': str(start_id),
+        'range': f"{start_id}-{end_id}"
+    }
 
 def get_current_scope():
     return scope_stack[-1] if scope_stack else 'global'
@@ -50,17 +74,48 @@ def p_stmt(p):
             | TYPE IDENTIFIER LPAREN param_list RPAREN LBRACE stmt_list RBRACE
             | TYPE MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
             | IDENTIFIER LPAREN arg_list RPAREN SEMICOLON
-            | IDENTIFIER EQUALS value SEMICOLON'''
+            | IDENTIFIER EQUALS value SEMICOLON
+            | CLASS IDENTIFIER LBRACE class_member_list RBRACE SEMICOLON'''
     if len(p) == 4:
         for decl in p[2]:
             decl['type'] = p[1]
             current_scope = get_current_scope()
             decl['scope'] = current_scope
             decl['line'] = p.lineno(1)
-            decl['id'] = get_next_id()
+            id_info = get_next_id(p[1], decl.get('array_size'))
+            decl['id'] = id_info['id']
+            decl['range'] = id_info['range']
             key = f"{current_scope}:{decl['name']}"
             declarations_dict[key] = decl
         p[0] = {'type': 'declaration', 'data_type': p[1], 'declarations': p[2]}
+    
+    elif len(p) == 7 and p[1] == 'class':
+        class_name = p[2]
+        class_scope = f'class:{class_name}'
+        set_scope(class_scope)
+        
+        members = []
+        for member_list in p[4]:
+            if isinstance(member_list, list):
+                for member in member_list:
+                    member['scope'] = class_scope
+                    id_info = get_next_id(member['type'], member.get('array_size'))
+                    member['id'] = id_info['id']
+                    member['range'] = id_info['range']
+                    key = f"{class_scope}:{member['name']}"
+                    declarations_dict[key] = member
+                    members.extend(member_list)
+        
+        id_info = get_next_id()
+        p[0] = {
+            'name': class_name,
+            'type': 'class declaration',
+            'line': p.lineno(2),
+            'members': members,
+            'id': id_info['id'],
+            'range': id_info['range']
+        }
+        pop_scope()
     
     elif len(p) == 9:
         func_name = p[2]
@@ -68,12 +123,12 @@ def p_stmt(p):
         set_scope(func_scope)
         for param in p[4]:
             param['scope'] = func_scope
-            param['id'] = get_next_id()
+            param['id'] = get_next_id(param['type'], param.get('array_size'))
         for stmt in p[7]:
             if stmt:
                 if stmt.get('type') == 'declaration':
                     for decl in stmt['declarations']:
-                        decl['id'] = get_next_id()
+                        decl['id'] = get_next_id(decl['type'], decl.get('array_size'))
                         old_scope = decl.get('scope', 'global')
                         old_key = f"{old_scope}:{decl['name']}"
                         new_key = f"{func_name}:{decl['name']}"
@@ -83,7 +138,7 @@ def p_stmt(p):
                             declarations_dict[new_key]['scope'] = func_name
                 else:
                     stmt['scope'] = func_scope
-                    stmt['id'] = get_next_id()
+                    stmt['id'] = get_next_id(stmt['type'], stmt.get('array_size'))
         p[0] = {
             'name': func_name,
             'type': 'function declaration',
@@ -102,7 +157,7 @@ def p_stmt(p):
             if stmt:
                 if stmt.get('type') == 'declaration':
                     for decl in stmt['declarations']:
-                        decl['id'] = get_next_id()
+                        decl['id'] = get_next_id(decl['type'], decl.get('array_size'))
                         old_scope = decl.get('scope', 'global')
                         old_key = f"{old_scope}:{decl['name']}"
                         new_key = f"main:{decl['name']}"
@@ -112,7 +167,7 @@ def p_stmt(p):
                             declarations_dict[new_key]['scope'] = 'main'
                 else:
                     stmt['scope'] = 'main'
-                    stmt['id'] = get_next_id()
+                    stmt['id'] = get_next_id(stmt['type'], stmt.get('array_size'))
         p[0] = {
             'name': 'main',
             'type': 'the standard Main_Function ',
@@ -179,9 +234,14 @@ def p_declarator(p):
         decl['name'] = p[1]
         decl['value'] = p[3]
     elif len(p) == 5:
-        decl['name'] = p[2]
-        decl['pointer'] = True
-        decl['points_to'] = {'name': p[4]['name']}
+        if p[1] == '*':  # Pointer with address
+            decl['name'] = p[2]
+            decl['pointer'] = True
+            decl['points_to'] = {'name': p[4]['name']}
+        else:  # Array declaration
+            decl['name'] = p[1]
+            decl['dimensions'] = [p[3]]
+            decl['array_size'] = p[3]
     elif len(p) == 6 and p[4] == 'new':
         decl['name'] = p[2]
         decl['pointer'] = True
@@ -191,19 +251,19 @@ def p_declarator(p):
         decl['pointer'] = True
         decl['allocation'] = 'new'
         decl['array_size'] = p[7]
-    elif len(p) == 5:
+    elif len(p) == 9:  # Array with values
         decl['name'] = p[1]
         decl['dimensions'] = [p[3]]
-    elif len(p) == 9:
-        decl['name'] = p[1]
-        decl['dimensions'] = [p[3]]
+        decl['array_size'] = p[3]
         decl['values'] = p[7]
-    elif len(p) == 8:
+    elif len(p) == 8:  # 2D array declaration
         decl['name'] = p[1]
         decl['dimensions'] = [p[3], p[6]]
-    elif len(p) == 12:
+        decl['array_size'] = p[3] * p[6]
+    elif len(p) == 12:  # 2D array with values
         decl['name'] = p[1]
         decl['dimensions'] = [p[3], p[6]]
+        decl['array_size'] = p[3] * p[6]
         decl['values'] = p[10]
     p[0] = decl
 
@@ -242,12 +302,31 @@ def p_arg_list(p):
 def p_value(p):
     '''value : NUMBER
              | STRING_LITERAL
-             | CHAR_LITERAL'''
+             | CHAR_LITERAL
+             | IDENTIFIER'''
     p[0] = p[1]
 
 def p_address_of_value(p):
     '''address_of_value : ADDRESS IDENTIFIER'''
     p[0] = {'type': 'address', 'name': p[2]}
+
+def p_class_member_list(p):
+    '''class_member_list : class_member_list class_member
+                        | class_member
+                        | empty'''
+    if len(p) == 2:
+        p[0] = [p[1]] if p[1] is not None else []
+    else:
+        p[0] = p[1] + [p[2]]
+
+def p_class_member(p):
+    '''class_member : TYPE var_list SEMICOLON'''
+    members = []
+    for decl in p[2]:
+        decl['type'] = p[1]
+        decl['line'] = p.lineno(1)
+        members.append(decl)
+    p[0] = members
 
 def p_error(p):
     print(f"Syntax error at line:{p.lineno} before '{p.value}'" if p else "Syntax error at EOF")

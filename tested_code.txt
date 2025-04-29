@@ -1,17 +1,29 @@
-#include <iostream>
-int x=3; 
-int a333()
-{
-    int *p= &x;
+#include <iostream> 
+using namespace std;
+int ahmad1(int hi,char a){
+string work= "perfect";    
 }
+int arr[3]={1,2,3};
+class Student {
+    int id;
+    char grade;
+    string name;
+    int scores[4];
+};
+
+class Person {
+    int age;
+    string name;
+};
+
+class Car {
+    string model;
+    int year;
+    float price;
+};
+
+
 int main() {
-    int *anew = new int;
-    int arr[3]={1,2,3};
-    
+int f;
+ahmad1(a,3);
 }
-
-
-
-
-
-

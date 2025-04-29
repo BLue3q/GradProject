@@ -1,46 +1,118 @@
 {
-  "global:x": {
-    "name": "x",
-    "value": 3,
-    "type": "int",
-    "scope": "global",
-    "line": "globaly declared",
-    "id": "b1d92474"
-  },
-  "a333:p": {
-    "name": "p",
-    "pointer": true,
-    "points_to": {
-      "name": "x",
-      "id": "b1d92474"
+  "ahmad1:work": {
+    "name": "work",
+    "value": "perfect",
+    "type": "string",
+    "scope": "ahmad1",
+    "line": 4,
+    "id": {
+      "id": "1000016",
+      "range": "1000016-1000023"
     },
-    "type": "int",
-    "scope": "a333",
-    "line": 5,
-    "id": "1a7d1de5"
+    "range": "1000000-1000007"
   },
-  "main:anew": {
-    "name": "anew",
-    "pointer": true,
-    "allocation": "new",
-    "type": "int",
-    "scope": "main",
-    "line": 8,
-    "id": "44afdb98"
-  },
-  "main:arr": {
+  "global:arr": {
     "name": "arr",
     "dimensions": [
       3
     ],
+    "array_size": 3,
     "values": [
       1,
       2,
       3
     ],
     "type": "int",
-    "scope": "main",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000025",
+    "range": "1000025-1000036"
+  },
+  "class:Student:id": {
+    "name": "id",
+    "type": "int",
+    "line": 8,
+    "scope": "class:Student",
+    "id": "1000037",
+    "range": "1000037-1000040"
+  },
+  "class:Student:grade": {
+    "name": "grade",
+    "type": "char",
     "line": 9,
-    "id": "86a61c4c"
+    "scope": "class:Student",
+    "id": "1000041",
+    "range": "1000041-1000041"
+  },
+  "class:Student:name": {
+    "name": "name",
+    "type": "string",
+    "line": 10,
+    "scope": "class:Student",
+    "id": "1000042",
+    "range": "1000042-1000049"
+  },
+  "class:Student:scores": {
+    "name": "scores",
+    "dimensions": [
+      4
+    ],
+    "array_size": 4,
+    "type": "int",
+    "line": 11,
+    "scope": "class:Student",
+    "id": "1000050",
+    "range": "1000050-1000065"
+  },
+  "class:Person:age": {
+    "name": "age",
+    "type": "int",
+    "line": 15,
+    "scope": "class:Person",
+    "id": "1000067",
+    "range": "1000067-1000070"
+  },
+  "class:Person:name": {
+    "name": "name",
+    "type": "string",
+    "line": 16,
+    "scope": "class:Person",
+    "id": "1000071",
+    "range": "1000071-1000078"
+  },
+  "class:Car:model": {
+    "name": "model",
+    "type": "string",
+    "line": 20,
+    "scope": "class:Car",
+    "id": "1000080",
+    "range": "1000080-1000087"
+  },
+  "class:Car:year": {
+    "name": "year",
+    "type": "int",
+    "line": 21,
+    "scope": "class:Car",
+    "id": "1000088",
+    "range": "1000088-1000091"
+  },
+  "class:Car:price": {
+    "name": "price",
+    "type": "float",
+    "line": 22,
+    "scope": "class:Car",
+    "id": "1000092",
+    "range": "1000092-1000095"
+  },
+  "main:f": {
+    "name": "f",
+    "type": "int",
+    "scope": "main",
+    "line": 27,
+    "id": {
+      "id": "1000102",
+      "range": "1000102-1000105"
+    },
+    "range": "1000097-1000100"
   }
 }

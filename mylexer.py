@@ -3,7 +3,7 @@ import ply.lex as lex
 tokens = (
     'MAIN', 'TYPE', 'IDENTIFIER', 'NUMBER', 'CHAR_LITERAL', 'STRING_LITERAL',
     'EQUALS', 'SEMICOLON', 'COMMA', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
-    'LPAREN', 'RPAREN', 'NEW', 'POINTER', 'ADDRESS', 'NULLPTR'
+    'LPAREN', 'RPAREN', 'NEW', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS'
 )
 def t_newline(t):
     r'\n+'
@@ -19,6 +19,11 @@ def t_NAMESPACE(t):
 
 def t_MAIN(t):
     r'\bmain\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_CLASS(t):
+    r'\bclass\b'
     t.lineno = t.lexer.lineno
     return t
 
