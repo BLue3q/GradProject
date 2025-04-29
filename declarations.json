@@ -1,42 +1,46 @@
 {
-  "func:x": {
+  "global:x": {
     "name": "x",
     "value": 3,
     "type": "int",
-    "scope": "func",
-    "line": 4,
-    "id": "4bb86b00"
-  },
-  "global:b": {
-    "name": "b",
-    "value": 2.3,
-    "type": "float",
     "scope": "global",
     "line": "globaly declared",
-    "id": "04e0a7e1"
+    "id": "b1d92474"
   },
-  "main:x": {
-    "name": "x",
-    "value": 5,
+  "a333:p": {
+    "name": "p",
+    "pointer": true,
+    "points_to": {
+      "name": "x",
+      "id": "b1d92474"
+    },
+    "type": "int",
+    "scope": "a333",
+    "line": 5,
+    "id": "1a7d1de5"
+  },
+  "main:anew": {
+    "name": "anew",
+    "pointer": true,
+    "allocation": "new",
     "type": "int",
     "scope": "main",
     "line": 8,
-    "id": "7a1612dd"
+    "id": "44afdb98"
   },
-  "main:y": {
-    "name": "y",
-    "value": 5,
+  "main:arr": {
+    "name": "arr",
+    "dimensions": [
+      3
+    ],
+    "values": [
+      1,
+      2,
+      3
+    ],
     "type": "int",
     "scope": "main",
-    "line": 8,
-    "id": "701cfecb"
-  },
-  "global:x": {
-    "name": "x",
-    "value": 5.1,
-    "type": "float",
-    "scope": "global",
-    "line": "globaly declared",
-    "id": "ef70992b"
+    "line": 9,
+    "id": "86a61c4c"
   }
 }

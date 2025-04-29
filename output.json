@@ -1,6 +1,20 @@
 [
   {
-    "name": "func",
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "x",
+        "value": 3,
+        "type": "int",
+        "scope": "global",
+        "line": "globaly declared",
+        "id": "b1d92474"
+      }
+    ]
+  },
+  {
+    "name": "a333",
     "type": "function declaration",
     "line": "globaly declared",
     "return_type": "int",
@@ -11,31 +25,21 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "x",
-            "value": 3,
+            "name": "p",
+            "pointer": true,
+            "points_to": {
+              "name": "x",
+              "id": "b1d92474"
+            },
             "type": "int",
-            "scope": "func",
-            "line": 4,
-            "id": "4bb86b00"
+            "scope": "a333",
+            "line": 5,
+            "id": "1a7d1de5"
           }
         ]
       }
     ],
-    "id": "d2dddb8f"
-  },
-  {
-    "type": "declaration",
-    "data_type": "float",
-    "declarations": [
-      {
-        "name": "b",
-        "value": 2.3,
-        "type": "float",
-        "scope": "global",
-        "line": "globaly declared",
-        "id": "04e0a7e1"
-      }
-    ]
+    "id": "cc6c6e0c"
   },
   {
     "name": "main",
@@ -48,70 +52,38 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "x",
-            "value": 5,
+            "name": "anew",
+            "pointer": true,
+            "allocation": "new",
             "type": "int",
             "scope": "main",
             "line": 8,
-            "id": "7a1612dd"
-          },
-          {
-            "name": "y",
-            "value": 5,
-            "type": "int",
-            "scope": "main",
-            "line": 8,
-            "id": "701cfecb"
+            "id": "44afdb98"
           }
         ]
       },
       {
-        "name": "x",
-        "type": "assignment",
-        "line": 9,
-        "value": 3,
-        "scope": "main",
-        "id": "088ec3dc"
-      },
-      {
-        "name": "func",
-        "type": "function_call",
-        "line": 10,
-        "scope": "main",
-        "body": [
+        "type": "declaration",
+        "data_type": "int",
+        "declarations": [
           {
-            "type": "declaration",
-            "data_type": "int",
-            "declarations": [
-              {
-                "name": "x",
-                "value": 3,
-                "type": "int",
-                "scope": "func",
-                "line": 4,
-                "id": "4bb86b00"
-              }
-            ]
+            "name": "arr",
+            "dimensions": [
+              3
+            ],
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "type": "int",
+            "scope": "main",
+            "line": 9,
+            "id": "86a61c4c"
           }
-        ],
-        "arg_param_map": [],
-        "id": "969226fc"
+        ]
       }
     ],
-    "id": "924d115e"
-  },
-  {
-    "type": "declaration",
-    "data_type": "float",
-    "declarations": [
-      {
-        "name": "x",
-        "value": 5.1,
-        "type": "float",
-        "scope": "global",
-        "line": "globaly declared",
-        "id": "ef70992b"
-      }
-    ]
+    "id": "b441fc61"
   }
 ]

@@ -1,6 +1,6 @@
 {
-  "func": {
-    "name": "func",
+  "a333": {
+    "name": "a333",
     "type": "function declaration",
     "line": "globaly declared",
     "return_type": "int",
@@ -11,16 +11,20 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "x",
-            "value": 3,
+            "name": "p",
+            "pointer": true,
+            "points_to": {
+              "name": "x",
+              "id": "b1d92474"
+            },
             "type": "int",
-            "scope": "func",
-            "line": 4,
-            "id": "4bb86b00"
+            "scope": "a333",
+            "line": 5,
+            "id": "1a7d1de5"
           }
         ]
       }
     ],
-    "id": "d2dddb8f"
+    "id": "cc6c6e0c"
   }
 }

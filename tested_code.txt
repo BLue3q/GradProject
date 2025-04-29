@@ -1,12 +1,17 @@
-#include <iostream> 
-using namespace std;
-int func(){
-    int x=3;
+#include <iostream>
+int x=3; 
+int a333()
+{
+    int *p= &x;
 }
-float b = 2.3;
 int main() {
-    int x =5,y=5;
-    x=3;
-    func();
+    int *anew = new int;
+    int arr[3]={1,2,3};
+    
 }
-float x=5.1;
+
+
+
+
+
+
