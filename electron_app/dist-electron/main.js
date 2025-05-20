@@ -53,6 +53,9 @@ const createWindow = () => {
             nodeIntegration: false,
         },
     });
+    // Add a debug log to confirm the environment and URL being loaded
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('Loading URL:', process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : path.join(__dirname, '../dist/index.html'));
     if (process.env.NODE_ENV === 'development') {
         win.loadURL('http://localhost:5173');
         // win.webContents.openDevTools();
