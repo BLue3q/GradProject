@@ -21,6 +21,10 @@ const createWindow = () => {
     },
   });
 
+  // Add a debug log to confirm the environment and URL being loaded
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('Loading URL:', process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : path.join(__dirname, '../dist/index.html'));
+
   if (process.env.NODE_ENV === 'development') {
     win.loadURL('http://localhost:5173');
     // win.webContents.openDevTools();
@@ -42,50 +46,59 @@ app.on('activate', () => {
 // Handle C++ compilation and execution
 ipcMain.handle('compile-cpp', async (_, code: string) => {
   try {
-    // Create file paths
     const tempFile = path.join(tmpDir, 'temp.cpp');
     const outputFile = path.join(tmpDir, `output${process.platform === 'win32' ? '.exe' : ''}`);
     
-    // Write code to temporary file
     fs.writeFileSync(tempFile, code);
     
-    // Compile and run the code
     return await new Promise<string>((resolve) => {
-      // First compile the code
       const compiler = process.platform === 'win32' ? 'g++' : 'g++';
       const compileCommand = `${compiler} -o "${outputFile}" "${tempFile}"`;
       
       exec(compileCommand, (compileError, compileStdout, compileStderr) => {
-        // If compilation failed
         if (compileError) {
-          // Clean up temp file
           try {
             fs.unlinkSync(tempFile);
           } catch (e) {
             console.error('Failed to delete temp file', e);
           }
-          
           return resolve(`Compilation Error:\n${compileStderr || compileError.message}`);
         }
         
-        // Run the compiled executable
-        const runCommand = process.platform === 'win32' ? `"${outputFile}"` : `"${outputFile}"`;
-        
-        exec(runCommand, (runError, runStdout, runStderr) => {
-          // Clean up temp files
-          try {
-            fs.unlinkSync(tempFile);
-            fs.unlinkSync(outputFile);
-          } catch (e) {
-            console.error('Failed to delete temp files', e);
-          }
-          
-          if (runError) {
-            return resolve(`Runtime Error:\n${runStderr || runError.message}`);
-          }
-          
-          resolve(`Program Output:\n${runStdout}`);
+        // Use spawn instead of exec to handle interactive input/output
+        const { spawn } = require('child_process');
+        const child = spawn(outputFile, [], {
+          stdio: ['pipe', 'pipe', 'pipe']
         });
+
+        let output = '';
+        let isWaitingForInput = false;
+
+        child.stdout.on('data', (data) => {
+          output += data.toString();
+          if (output.includes('enter your name:')) {
+            isWaitingForInput = true;
+            resolve(`${output}\nWaiting for input...`);
+          }
+        });
+
+        child.stderr.on('data', (data) => {
+          output += `Error: ${data}`;
+        });
+
+        child.on('close', (code) => {
+          if (!isWaitingForInput) {
+            resolve(output);
+          }
+        });
+
+        // Kill the process after a timeout (optional)
+        setTimeout(() => {
+          if (!child.killed) {
+            child.kill();
+            resolve('Process timed out');
+          }
+        }, 10000); // 10 second timeout
       });
     });
   } catch (error) {
