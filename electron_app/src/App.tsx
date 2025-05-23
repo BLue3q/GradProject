@@ -20,8 +20,14 @@ int main() {
   };
 
   const handleCompileAndRun = async () => {
+    // If there's a running program, kill it first
+    if (window.electronAPI && window.electronAPI.killRunningProcess) {
+      window.electronAPI.killRunningProcess();
+    }
+
     setIsCompiling(true);
     setHasError(false);
+    setOutput(''); // Clear output before starting new compilation
     
     try {
       if (window.electronAPI) {

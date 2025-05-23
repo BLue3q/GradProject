@@ -1,0 +1,152 @@
+/* VS Code terminal styling */
+.vscode-terminal-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: "Cascadia Code", Menlo, Monaco, "Courier New", monospace;
+  border-top: 1px solid #333;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: #252526;
+  border-bottom: 1px solid #333;
+  font-size: 12px;
+  user-select: none;
+}
+
+.terminal-title {
+  color: #cccccc;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.input-mode-indicator {
+  color: #3794ff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.input-mode-indicator::before {
+  content: '▶';
+  font-size: 10px;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+.terminal-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.terminal-action-button {
+  background: transparent;
+  border: none;
+  color: #cccccc;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+}
+
+.terminal-action-button:hover {
+  background-color: #3a3a3a;
+}
+
+.terminal-action-button .icon {
+  font-size: 14px;
+}
+
+.kill-button:hover {
+  background-color: #5a1d1d;
+}
+
+.terminal-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Styles for xterm.js */
+.xterm {
+  padding: 4px;
+}
+
+.xterm-viewport {
+  /* Smooth scrolling */
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #1e1e1e;
+}
+
+.xterm-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+
+.xterm-viewport::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Error state styling */
+.error-state .xterm-viewport {
+  border-left: 3px solid #f14c4c;
+}
+
+/* Input mode styling */
+.input-mode .xterm-viewport {
+  border-left: 3px solid #3794ff;
+}
+
+.input-mode .xterm-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { background-color: transparent; }
+  50% { background-color: #3794ff; }
+}
+
+/* Loading indicator */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #cccccc;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #0066b8;
+  animation: spin 1s ease infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
