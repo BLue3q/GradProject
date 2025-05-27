@@ -73,7 +73,7 @@ const createWindow = () => {
     // Save reference to the main window
     mainWindow = win;
     if (process.env.NODE_ENV === 'development') {
-        win.loadURL('http://localhost:5176'); // Updated port to match the running server
+        win.loadURL('http://localhost:5173'); // Updated port to match the running server
         // win.webContents.openDevTools();
     }
     else {
