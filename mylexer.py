@@ -3,7 +3,7 @@ import ply.lex as lex
 tokens = (
     'MAIN', 'TYPE', 'IDENTIFIER', 'NUMBER', 'CHAR_LITERAL', 'STRING_LITERAL',
     'EQUALS', 'SEMICOLON', 'COMMA', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
-    'LPAREN', 'RPAREN'
+    'LPAREN', 'RPAREN', 'NEW', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS'
 )
 def t_newline(t):
     r'\n+'
@@ -22,8 +22,18 @@ def t_MAIN(t):
     t.lineno = t.lexer.lineno
     return t
 
+def t_CLASS(t):
+    r'\bclass\b'
+    t.lineno = t.lexer.lineno
+    return t
+
 def t_TYPE(t):
-    r'\b(int|float|double|char|string)\b'
+    r'\b(int|float|double|char|string|void)\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_NEW(t):
+    r'\bnew\b'
     t.lineno = t.lexer.lineno
     return t
 
@@ -61,6 +71,25 @@ t_SEMICOLON = r';'
 t_COMMA = r','
 
 t_ignore = ' \t\r'  # Ignore whitespace
+
+def t_POINTER(t):
+    r'\*'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_ADDRESS(t):
+    r'&'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_NULLPTR(t):
+    r'\b(nullptr|NULL)\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_comment_single(t):
+    r'//.*'
+    pass  # Ignore single-line comments
 
 def t_error(t):
     print(f"Illegal character '{t.value[0]}'")

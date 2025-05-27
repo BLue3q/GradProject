@@ -1,37 +1,72 @@
 {
-  "global:y": {
-    "name": "y",
-    "value": 3,
-    "type": "float",
-    "scope": "global"
-  },
-  "ahmad1:work": {
-    "name": "work",
-    "value": "perfect",
-    "type": "int",
-    "scope": "ahmad1"
-  },
-  "ali:a": {
-    "name": "a",
-    "value": 1,
-    "type": "int",
-    "scope": "ali"
-  },
-  "om:o": {
-    "name": "o",
-    "value": 0,
-    "type": "int",
-    "scope": "om"
-  },
-  "declaredfun3:x": {
+  "global:x": {
     "name": "x",
-    "value": 1,
+    "value": 5,
     "type": "int",
-    "scope": "declaredfun3"
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000000",
+    "range": "1000000-1000003"
   },
-  "main:f": {
-    "name": "f",
+  "global:p": {
+    "name": "p",
+    "pointer": true,
+    "points_to": {
+      "name": "x",
+      "id": "1000000"
+    },
     "type": "int",
-    "scope": "main"
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000004",
+    "range": "1000004-1000007"
+  },
+  "global:hello": {
+    "name": "hello",
+    "value": 10,
+    "type": "int",
+    "scope": "global",
+    "line": "globaly declared",
+    "id": "1000008",
+    "range": "1000008-1000011"
+  },
+  "main:y": {
+    "name": "y",
+    "value": 10,
+    "type": "int",
+    "scope": "main",
+    "line": 10,
+    "id": {
+      "id": "1000025",
+      "range": "1000025-1000028"
+    },
+    "range": "1000012-1000015"
+  },
+  "main:ptr": {
+    "name": "ptr",
+    "pointer": true,
+    "points_to": {
+      "name": "y"
+    },
+    "type": "int",
+    "scope": "main",
+    "line": 11,
+    "id": {
+      "id": "1000029",
+      "range": "1000029-1000032"
+    },
+    "range": "1000016-1000019"
+  },
+  "main:g": {
+    "name": "g",
+    "value": 9,
+    "type": "int",
+    "scope": "main",
+    "line": 14,
+    "id": {
+      "id": "1000037",
+      "range": "1000037-1000040"
+    },
+    "range": "1000021-1000024"
   }
 }
