@@ -300,20 +300,23 @@ function loadData() {
           const allocNew = d.allocation === "new";
           const size = d.array_size || 1;
 
-          if (allocNew) {
-            // First add the pointer variable to the stack
-            timeline.push({
-              event: "var",
-              data: {
-                name: d.name,
-                value: d.value ?? null,
-                scope: d.scope ?? parentScope,
-                type: "pointer",
-                pointsTo: d.name + "_heap"
-              }
-            });
+          // Add the variable to the stack
+          timeline.push({
+            event: "var",
+            data: {
+              name: d.name,
+              value: d.value ?? null,
+              scope: d.scope ?? parentScope,
+              type: isPointer ? "pointer" : (d.array_size ? "array" : "variable"),
+              array_size: d.array_size,
+              values: d.values,
+              allocation: d.allocation,
+              pointsTo: allocNew ? d.name + "_heap" : (d.points_to?.name ?? null)
+            }
+          });
 
-            // Then add the heap allocation
+          // If it's a heap allocation, add the heap memory
+          if (allocNew) {
             timeline.push({
               event: "var",
               data: {
@@ -325,20 +328,6 @@ function loadData() {
                 allocation: "new"
               }
             });
-          } else {
-            // Regular variable (not a heap allocation)
-            timeline.push({
-              event: "var",
-              data: {
-                name: d.name,
-                value: d.value ?? null,
-                scope: d.scope ?? parentScope,
-                type: isPointer ? "pointer" : (d.array_size ? "array" : "variable"),
-                array_size: d.array_size,
-                values: d.values,
-                pointsTo: d.points_to?.name ?? null
-              }
-            });
           }
         });
       } else if (node.type === "assignment") {
@@ -348,7 +337,8 @@ function loadData() {
             name: node.name,
             value: node.value,
             scope: node.scope ?? parentScope,
-            type: "assignment"
+            type: "assignment",
+            allocation: node.allocation
           }
         });
       } else if (node.type === "function declaration" || node.type === "the standard Main_Function ") {

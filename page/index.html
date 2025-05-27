@@ -32,6 +32,7 @@
             font-family: 'Courier New', monospace;
             background-color: #fefefe;
             white-space: pre;
+            text-align: left;
         }
 
         #drawing-section {
@@ -50,10 +51,18 @@
             background-color: #ffffff;
         }
 
-        svg {
+        #memory-container {
+  width: 100%;
+  height: 600px;
+  overflow: auto;
+  border: 1px solid #ccc;
+}
+
+
+        /* svg {
             width: 100%;
             height: 100%;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -112,14 +121,14 @@ int *dynamic_array = new int[4];
 }
         </div>
 
-        <div id="drawing-section">
-            <svg id="main-svg"></svg>
+        <div id="memory-container">
+            <svg id="main-svg" width="2000" height="2000"></svg>
         </div>
 
         <div id="stack-section"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script1.js"></script>
 
 </body>
 </html>
