@@ -1,0 +1,41 @@
+#include <iostream> 
+using namespace std;
+int ahmad1(int hi,char a){
+string work= "perfect";    
+}
+int arr[3]={1,2,3};
+class Student {
+    int id;
+    char grade;
+    string name;
+    int scores[4];
+};
+
+class Person {
+    int age;
+    string name;
+};
+
+class Car {
+    string model;
+    int year;
+    float price;
+};
+
+int *ptr;
+char *str;
+int *arr_ptr = new int[3];
+
+class PointerTest {
+    int *member_ptr;
+    char *name_ptr;
+    int *array_ptr = new int[5];
+};
+
+int main() {
+int f;
+ahmad1(a,3);
+int x = 10;
+int *ptr_to_x = &x;
+int *dynamic_array = new int[4];
+}
