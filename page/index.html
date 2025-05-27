@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #controls {
+            padding: 10px;
+            background: #f0f0f0;
+        }
+
+        #container {
+            display: flex;
+            height: calc(100vh - 50px);
+            border-top: 2px solid green;
+            border-bottom: 2px solid green;
+        }
+
+        #code-section {
+            width: 25%;
+            border-right: 2px solid steelblue;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            background-color: #fefefe;
+            white-space: pre;
+            text-align: left;
+        }
+
+        #drawing-section {
+            width: 50%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 2px solid orange;
+        }
+
+        #stack-section {
+            width: 25%;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+
+        #memory-container {
+  width: 100%;
+  height: 600px;
+  overflow: auto;
+  border: 1px solid #ccc;
+}
+
+
+        /* svg {
+            width: 100%;
+            height: 100%;
+        } */
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <button onclick="setView('all')">All</button>
+        <button onclick="setView('data')">Data</button>
+        <button onclick="setView('stack')">Stack</button>
+        <button id="backBtn">Back</button>
+        <button id="nextBtn">Next</button>
+    </div>
+
+    <div id="container">
+        <div id="code-section">
+            place holder
+#include <iostream> 
+using namespace std;
+int ahmad1(int hi,char a){
+string work= "perfect";    
+}
+int arr[3]={1,2,3};
+class Student {
+    int id;
+    char grade;
+    string name;
+    int scores[4];
+};
+
+class Person {
+    int age;
+    string name;
+};
+
+class Car {
+    string model;
+    int year;
+    float price;
+};
+
+int *ptr;
+char *str;
+int *arr_ptr = new int[3];
+
+class PointerTest {
+    int *member_ptr;
+    char *name_ptr;
+    int *array_ptr = new int[5];
+};
+
+int main() {
+int f;
+ahmad1(a,3);
+int x = 10;
+int *ptr_to_x = &x;
+int *dynamic_array = new int[4];
+}
+        </div>
+
+        <div id="memory-container">
+            <svg id="main-svg" width="2000" height="2000"></svg>
+        </div>
+
+        <div id="stack-section"></div>
+    </div>
+
+    <script src="script1.js"></script>
+
+</body>
+</html>
