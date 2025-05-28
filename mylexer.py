@@ -3,7 +3,8 @@ import ply.lex as lex
 tokens = (
     'MAIN', 'TYPE', 'IDENTIFIER', 'NUMBER', 'CHAR_LITERAL', 'STRING_LITERAL',
     'EQUALS', 'SEMICOLON', 'COMMA', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
-    'LPAREN', 'RPAREN', 'NEW', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS'
+    'LPAREN', 'RPAREN', 'NEW', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS',
+    'ARROW', 'DOT'
 )
 def t_newline(t):
     r'\n+'
@@ -28,7 +29,7 @@ def t_CLASS(t):
     return t
 
 def t_TYPE(t):
-    r'\b(int|float|double|char|string|void)\b'
+    r'\b(int|float|double|char|string|void|class)\b'
     t.lineno = t.lexer.lineno
     return t
 
@@ -94,5 +95,15 @@ def t_comment_single(t):
 def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
+
+def t_ARROW(t):
+    r'->'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_DOT(t):
+    r'\.'
+    t.lineno = t.lexer.lineno
+    return t
 
 lexer = lex.lex()
