@@ -1,41 +1,53 @@
-#include <iostream> 
-using namespace std;
-int ahmad1(int hi,char a){
-string work= "perfect";    
-}
-int arr[3]={1,2,3};
-class Student {
-    int id;
-    char grade;
-    string name;
-    int scores[4];
-};
-
-class Person {
-    int age;
-    string name;
-};
-
-class Car {
-    string model;
-    int year;
-    float price;
-};
-
+#include <iostream>
+int x=3,y,z;int f;
 int *ptr;
-char *str;
-int *arr_ptr = new int[3];
+string value = "its a value";
+int a333(int a)
+{
+    int x;
+    x=a;
+}
+class MyClass {                   
+    int myNum=3;        
+    string myString="ahmad"; 
+    void displayInfo(int b) {string x="hi";}
+    int *ptr;                    
+    int *ptr2 = nullptr;         
+    string *strPtr = &someStr;
+    MyClass() {
+        myNum = 0;
+        myString = "default";
+    }
+    MyClass(int num, string str) {
+        myNum = 0;
+        myString = "default";
+    }
+};
 
-class PointerTest {
-    int *member_ptr;
-    char *name_ptr;
-    int *array_ptr = new int[5];
+class Node {
+    MyClass *a;
+    int data="ahmad";
+    Node* next=nullptr;  // Self-referential pointer
+    Node* prev=&data;  // Another self-referential pointer for doubly linked list
+    
 };
 
 int main() {
-int f;
-ahmad1(a,3);
-int x = 10;
-int *ptr_to_x = &x;
-int *dynamic_array = new int[4];
+    double x =1;
+    int x = 5;
+    int *nptr = new int[3];
+    int *ptr = &x;
+    int arr[3]={1,2,3};
+    MyClass obj1;
+    a333(x);
+    
+   
+    obj1.myNum = 100;
+    obj1.myString = "test";
+    Node node1;
+    node1.data = "hello";
+    node1.next = nullptr;
+    Node *nodeptr;
+    nodePtr->data = "world";
+    nodePtr->next = nullptr;
 }

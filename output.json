@@ -1,266 +1,304 @@
 [
   {
-    "name": "ahmad1",
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "x",
+        "value": 3,
+        "scope": "global",
+        "line": 2,
+        "id": 100000
+      },
+      {
+        "name": "y",
+        "scope": "global",
+        "line": 2,
+        "id": 100001
+      },
+      {
+        "name": "z",
+        "scope": "global",
+        "line": 2,
+        "id": 100002
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "f",
+        "scope": "global",
+        "line": 2,
+        "id": 100003
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "int",
+    "declarations": [
+      {
+        "name": "ptr",
+        "pointer": "pointer declaration",
+        "scope": "global",
+        "line": 3,
+        "id": 100004
+      }
+    ]
+  },
+  {
+    "type": "declaration",
+    "data_type": "string",
+    "declarations": [
+      {
+        "name": "value",
+        "value": "its a value",
+        "scope": "global",
+        "line": 4,
+        "id": 100005
+      }
+    ]
+  },
+  {
+    "name": "a333",
     "type": "function declaration",
-    "line": "globaly declared",
+    "line": 5,
     "return_type": "int",
+    "id": 100008,
+    "scope": "global",
     "params": [
       {
         "type": "parameter",
         "data_type": "int",
-        "name": "hi",
-        "scope": "function:ahmad1",
-        "id": {
-          "id": "1000008",
-          "range": "1000008-1000011"
-        }
-      },
-      {
-        "type": "parameter",
-        "data_type": "char",
         "name": "a",
-        "scope": "function:ahmad1",
-        "id": {
-          "id": "1000012",
-          "range": "1000012-1000015"
-        }
+        "scope": "function:a333",
+        "id": 100009
       }
     ],
     "body": [
       {
         "type": "declaration",
-        "data_type": "string",
+        "data_type": "int",
         "declarations": [
           {
-            "name": "work",
-            "value": "perfect",
-            "type": "string",
-            "scope": "ahmad1",
-            "line": 4,
-            "id": {
-              "id": "1000016",
-              "range": "1000016-1000023"
-            },
-            "range": "1000000-1000007"
+            "name": "x",
+            "scope": "function:a333",
+            "line": 7,
+            "id": 100010
+          }
+        ]
+      },
+      {
+        "name": "x",
+        "type": "assignment",
+        "line": 8,
+        "value": {
+          "type": "variable",
+          "name": "a",
+          "scope": "function:a333"
+        },
+        "scope": "function:a333",
+        "id": 100007
+      }
+    ]
+  },
+  {
+    "type": "class_declaration",
+    "name": "MyClass",
+    "members": [
+      {
+        "type": "member_variable",
+        "data_type": "int",
+        "name": "myNum",
+        "default_value": 3,
+        "scope": "class:MyClass",
+        "id": 100018
+      },
+      {
+        "type": "member_variable",
+        "data_type": "string",
+        "name": "myString",
+        "default_value": "ahmad",
+        "scope": "class:MyClass",
+        "id": 100019
+      },
+      {
+        "type": "member_function",
+        "return_type": "void",
+        "name": "displayInfo",
+        "belongs_to_class": "MyClass",
+        "params": [
+          {
+            "type": "parameter",
+            "data_type": "int",
+            "name": "b",
+            "scope": "function:MyClass.displayInfo",
+            "id": 100020
+          }
+        ],
+        "body": [
+          {
+            "type": "declaration",
+            "data_type": "string",
+            "declarations": [
+              {
+                "name": "x",
+                "value": "hi",
+                "scope": "function:MyClass.displayInfo",
+                "line": 13,
+                "id": 100021
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "member_variable",
+        "data_type": "int",
+        "name": "ptr",
+        "pointer": "pointer declaration",
+        "scope": "class:MyClass",
+        "id": 100022
+      },
+      {
+        "type": "member_variable",
+        "data_type": "int",
+        "name": "ptr2",
+        "pointer": "pointer declaration",
+        "default_value": {
+          "type": "nullptr",
+          "value": "nullptr"
+        },
+        "scope": "class:MyClass",
+        "id": 100023
+      },
+      {
+        "type": "member_variable",
+        "data_type": "string",
+        "name": "strPtr",
+        "pointer": "pointer declaration",
+        "points_to": {
+          "name": "someStr"
+        },
+        "scope": "class:MyClass",
+        "id": 100024
+      },
+      {
+        "type": "constructor",
+        "name": "MyClass",
+        "line": 17,
+        "params": [],
+        "body": [
+          {
+            "name": "myNum",
+            "type": "assignment",
+            "line": 18,
+            "value": 0,
+            "scope": "constructor:MyClass",
+            "id": 100012
+          },
+          {
+            "name": "myString",
+            "type": "assignment",
+            "line": 19,
+            "value": "default",
+            "scope": "constructor:MyClass",
+            "id": 100013
+          }
+        ]
+      },
+      {
+        "type": "parameterized constructor",
+        "name": "MyClass",
+        "line": 21,
+        "params": [
+          {
+            "type": "parameter",
+            "data_type": "int",
+            "name": "num",
+            "scope": "parameterized constructor:MyClass",
+            "id": 100016
+          },
+          {
+            "type": "parameter",
+            "data_type": "string",
+            "name": "str",
+            "scope": "parameterized constructor:MyClass",
+            "id": 100017
+          }
+        ],
+        "body": [
+          {
+            "name": "myNum",
+            "type": "assignment",
+            "line": 22,
+            "value": 0,
+            "scope": "parameterized constructor:MyClass",
+            "id": 100014
+          },
+          {
+            "name": "myString",
+            "type": "assignment",
+            "line": 23,
+            "value": "default",
+            "scope": "parameterized constructor:MyClass",
+            "id": 100015
           }
         ]
       }
     ],
-    "id": {
-      "id": "1000024",
-      "range": "1000024-1000024"
-    }
+    "line": 10,
+    "scope": "class:MyClass"
   },
   {
-    "type": "declaration",
-    "data_type": "int",
-    "declarations": [
-      {
-        "name": "arr",
-        "dimensions": [
-          3
-        ],
-        "array_size": 3,
-        "values": [
-          1,
-          2,
-          3
-        ],
-        "type": "int",
-        "scope": "global",
-        "line": "globaly declared",
-        "id": "1000025",
-        "range": "1000025-1000036"
-      }
-    ]
-  },
-  {
-    "name": "Student",
-    "type": "class declaration",
-    "line": 7,
+    "type": "class_declaration",
+    "name": "Node",
     "members": [
       {
-        "name": "id",
-        "type": "int",
-        "line": 8,
-        "scope": "class:Student",
-        "id": "1000037",
-        "range": "1000037-1000040"
+        "type": "member_variable",
+        "data_type": "class:MyClass",
+        "name": "a",
+        "pointer": "pointer declaration",
+        "scope": "class:Node",
+        "id": 100025
       },
       {
-        "name": "grade",
-        "type": "char",
-        "line": 9,
-        "scope": "class:Student",
-        "id": "1000041",
-        "range": "1000041-1000041"
+        "type": "member_variable",
+        "data_type": "int",
+        "name": "data",
+        "default_value": "ahmad",
+        "scope": "class:Node",
+        "id": 100026
       },
       {
-        "name": "name",
-        "type": "string",
-        "line": 10,
-        "scope": "class:Student",
-        "id": "1000042",
-        "range": "1000042-1000049"
+        "type": "member_variable",
+        "data_type": "class:Node",
+        "name": "next",
+        "pointer": "pointer declaration",
+        "default_value": {
+          "type": "nullptr",
+          "value": "nullptr"
+        },
+        "scope": "class:Node",
+        "id": 100027
       },
       {
-        "name": "scores",
-        "dimensions": [
-          4
-        ],
-        "array_size": 4,
-        "type": "int",
-        "line": 11,
-        "scope": "class:Student",
-        "id": "1000050",
-        "range": "1000050-1000065"
+        "type": "member_variable",
+        "data_type": "class:Node",
+        "name": "prev",
+        "pointer": "pointer declaration",
+        "points_to": {
+          "name": "data"
+        },
+        "scope": "class:Node",
+        "id": 100028
       }
     ],
-    "id": "1000066",
-    "range": "1000066-1000066"
-  },
-  {
-    "name": "Person",
-    "type": "class declaration",
-    "line": 14,
-    "members": [
-      {
-        "name": "age",
-        "type": "int",
-        "line": 15,
-        "scope": "class:Person",
-        "id": "1000067",
-        "range": "1000067-1000070"
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "line": 16,
-        "scope": "class:Person",
-        "id": "1000071",
-        "range": "1000071-1000078"
-      }
-    ],
-    "id": "1000079",
-    "range": "1000079-1000079"
-  },
-  {
-    "name": "Car",
-    "type": "class declaration",
-    "line": 19,
-    "members": [
-      {
-        "name": "model",
-        "type": "string",
-        "line": 20,
-        "scope": "class:Car",
-        "id": "1000080",
-        "range": "1000080-1000087"
-      },
-      {
-        "name": "year",
-        "type": "int",
-        "line": 21,
-        "scope": "class:Car",
-        "id": "1000088",
-        "range": "1000088-1000091"
-      },
-      {
-        "name": "price",
-        "type": "float",
-        "line": 22,
-        "scope": "class:Car",
-        "id": "1000092",
-        "range": "1000092-1000095"
-      }
-    ],
-    "id": "1000096",
-    "range": "1000096-1000096"
-  },
-  {
-    "type": "declaration",
-    "data_type": "int",
-    "declarations": [
-      {
-        "name": "ptr",
-        "pointer": true,
-        "type": "int",
-        "scope": "global",
-        "line": "globaly declared",
-        "id": "1000097",
-        "range": "1000097-1000100"
-      }
-    ]
-  },
-  {
-    "type": "declaration",
-    "data_type": "char",
-    "declarations": [
-      {
-        "name": "str",
-        "pointer": true,
-        "type": "char",
-        "scope": "global",
-        "line": "globaly declared",
-        "id": "1000101",
-        "range": "1000101-1000101"
-      }
-    ]
-  },
-  {
-    "type": "declaration",
-    "data_type": "int",
-    "declarations": [
-      {
-        "name": "arr_ptr",
-        "pointer": true,
-        "allocation": "new",
-        "array_size": 3,
-        "type": "int",
-        "scope": "global",
-        "line": "globaly declared",
-        "id": "1000102",
-        "range": "1000102-1000113"
-      }
-    ]
-  },
-  {
-    "name": "PointerTest",
-    "type": "class declaration",
-    "line": 29,
-    "members": [
-      {
-        "name": "member_ptr",
-        "pointer": true,
-        "type": "int",
-        "line": 30,
-        "scope": "class:PointerTest",
-        "id": "1000114",
-        "range": "1000114-1000117"
-      },
-      {
-        "name": "name_ptr",
-        "pointer": true,
-        "type": "char",
-        "line": 31,
-        "scope": "class:PointerTest",
-        "id": "1000118",
-        "range": "1000118-1000118"
-      },
-      {
-        "name": "array_ptr",
-        "pointer": true,
-        "allocation": "new",
-        "array_size": 5,
-        "type": "int",
-        "line": 32,
-        "scope": "class:PointerTest",
-        "id": "1000119",
-        "range": "1000119-1000138"
-      }
-    ],
-    "id": "1000139",
-    "range": "1000139-1000139"
+    "line": 27,
+    "scope": "class:Node"
   },
   {
     "name": "main",
@@ -270,60 +308,16 @@
     "body": [
       {
         "type": "declaration",
-        "data_type": "int",
+        "data_type": "double",
         "declarations": [
           {
-            "name": "f",
-            "type": "int",
+            "name": "x",
+            "value": 1,
             "scope": "main",
             "line": 36,
-            "id": {
-              "id": "1000169",
-              "range": "1000169-1000172"
-            },
-            "range": "1000140-1000143"
+            "id": 100046
           }
         ]
-      },
-      {
-        "name": "ahmad1",
-        "type": "function_call",
-        "line": 37,
-        "scope": "main",
-        "body": [
-          {
-            "type": "declaration",
-            "data_type": "string",
-            "declarations": [
-              {
-                "name": "work",
-                "value": "perfect",
-                "type": "string",
-                "scope": "ahmad1",
-                "line": 4,
-                "id": {
-                  "id": "1000016",
-                  "range": "1000016-1000023"
-                },
-                "range": "1000000-1000007"
-              }
-            ]
-          }
-        ],
-        "arg_param_map": [
-          {
-            "param_name": "hi",
-            "arg_value": "a"
-          },
-          {
-            "param_name": "a",
-            "arg_value": 3
-          }
-        ],
-        "id": {
-          "id": "1000173",
-          "range": "1000173-1000176"
-        }
       },
       {
         "type": "declaration",
@@ -331,15 +325,10 @@
         "declarations": [
           {
             "name": "x",
-            "value": 10,
-            "type": "int",
+            "value": 5,
             "scope": "main",
-            "line": 38,
-            "id": {
-              "id": "1000177",
-              "range": "1000177-1000180"
-            },
-            "range": "1000145-1000148"
+            "line": 37,
+            "id": 100047
           }
         ]
       },
@@ -348,19 +337,29 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "ptr_to_x",
-            "pointer": true,
+            "name": "nptr",
+            "pointer": "array pointer declaration",
+            "allocation": "new",
+            "array_size": 3,
+            "scope": "main",
+            "line": 38,
+            "id": 100048
+          }
+        ]
+      },
+      {
+        "type": "declaration",
+        "data_type": "int",
+        "declarations": [
+          {
+            "name": "ptr",
+            "pointer": "pointer declaration",
             "points_to": {
               "name": "x"
             },
-            "type": "int",
             "scope": "main",
             "line": 39,
-            "id": {
-              "id": "1000181",
-              "range": "1000181-1000184"
-            },
-            "range": "1000149-1000152"
+            "id": 100049
           }
         ]
       },
@@ -369,25 +368,163 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "dynamic_array",
-            "pointer": true,
-            "allocation": "new",
-            "array_size": 4,
-            "type": "int",
+            "name": "arr",
+            "dimensions": [
+              3
+            ],
+            "values": [
+              1,
+              2,
+              3
+            ],
             "scope": "main",
             "line": 40,
-            "id": {
-              "id": "1000185",
-              "range": "1000185-1000200"
-            },
-            "range": "1000153-1000168"
+            "id": [
+              100050,
+              100051,
+              100052
+            ]
           }
         ]
+      },
+      {
+        "type": "object_declaration",
+        "class_type": "MyClass",
+        "name": "obj1",
+        "line": 41,
+        "scope": "function:main",
+        "id": 100036
+      },
+      {
+        "name": "a333",
+        "type": "function_call",
+        "line": 42,
+        "id": 100008,
+        "scope": "function:main",
+        "arg_param_map": [
+          {
+            "param_name": "a",
+            "arg_value": {
+              "type": "variable",
+              "name": "x",
+              "scope": "main"
+            }
+          }
+        ],
+        "body": [
+          {
+            "type": "declaration",
+            "data_type": "int",
+            "declarations": [
+              {
+                "name": "x",
+                "scope": "function:a333",
+                "line": 7,
+                "id": 100010
+              }
+            ]
+          },
+          {
+            "name": "x",
+            "type": "assignment",
+            "line": 8,
+            "value": {
+              "type": "variable",
+              "name": "a",
+              "scope": "function:a333"
+            },
+            "scope": "function:a333",
+            "id": 100007
+          }
+        ]
+      },
+      {
+        "type": "member_assignment",
+        "object": "obj1",
+        "member": "myNum",
+        "operator": "dot",
+        "value": 100,
+        "line": 45,
+        "scope": "function:main",
+        "id": 100038
+      },
+      {
+        "type": "member_assignment",
+        "object": "obj1",
+        "member": "myString",
+        "operator": "dot",
+        "value": "test",
+        "line": 46,
+        "scope": "function:main",
+        "id": 100039
+      },
+      {
+        "type": "object_declaration",
+        "class_type": "Node",
+        "name": "node1",
+        "line": 47,
+        "scope": "function:main",
+        "id": 100040
+      },
+      {
+        "type": "member_assignment",
+        "object": "node1",
+        "member": "data",
+        "operator": "dot",
+        "value": "hello",
+        "line": 48,
+        "scope": "function:main",
+        "id": 100041
+      },
+      {
+        "type": "member_assignment",
+        "object": "node1",
+        "member": "next",
+        "operator": "dot",
+        "value": {
+          "type": "variable",
+          "name": "nullptr",
+          "scope": "function:main"
+        },
+        "line": 49,
+        "scope": "function:main",
+        "id": 100042
+      },
+      {
+        "type": "class_pointer_declaration",
+        "class_type": "Node",
+        "name": "nodeptr",
+        "pointer_category": "class_object",
+        "line": 50,
+        "scope": "function:main",
+        "id": 100043
+      },
+      {
+        "type": "member_assignment",
+        "object": "nodePtr",
+        "member": "data",
+        "operator": "arrow",
+        "pointer_access": true,
+        "value": "world",
+        "line": 51,
+        "scope": "function:main",
+        "id": 100044
+      },
+      {
+        "type": "member_assignment",
+        "object": "nodePtr",
+        "member": "next",
+        "operator": "arrow",
+        "pointer_access": true,
+        "value": {
+          "type": "variable",
+          "name": "nullptr",
+          "scope": "function:main"
+        },
+        "line": 52,
+        "scope": "function:main",
+        "id": 100045
       }
-    ],
-    "id": {
-      "id": "1000201",
-      "range": "1000201-1000201"
-    }
+    ]
   }
 ]

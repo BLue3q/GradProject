@@ -1,54 +1,45 @@
 {
-  "ahmad1": {
-    "name": "ahmad1",
+  "a333": {
+    "name": "a333",
     "type": "function declaration",
-    "line": "globaly declared",
+    "line": 5,
     "return_type": "int",
+    "id": 100008,
+    "scope": "global",
     "params": [
       {
         "type": "parameter",
         "data_type": "int",
-        "name": "hi",
-        "scope": "function:ahmad1",
-        "id": {
-          "id": "1000008",
-          "range": "1000008-1000011"
-        }
-      },
-      {
-        "type": "parameter",
-        "data_type": "char",
         "name": "a",
-        "scope": "function:ahmad1",
-        "id": {
-          "id": "1000012",
-          "range": "1000012-1000015"
-        }
+        "scope": "function:a333",
+        "id": 100009
       }
     ],
     "body": [
       {
         "type": "declaration",
-        "data_type": "string",
+        "data_type": "int",
         "declarations": [
           {
-            "name": "work",
-            "value": "perfect",
-            "type": "string",
-            "scope": "ahmad1",
-            "line": 4,
-            "id": {
-              "id": "1000016",
-              "range": "1000016-1000023"
-            },
-            "range": "1000000-1000007"
+            "name": "x",
+            "scope": "function:a333",
+            "line": 7,
+            "id": 100010
           }
         ]
+      },
+      {
+        "name": "x",
+        "type": "assignment",
+        "line": 8,
+        "value": {
+          "type": "variable",
+          "name": "a",
+          "scope": "function:a333"
+        },
+        "scope": "function:a333",
+        "id": 100007
       }
-    ],
-    "id": {
-      "id": "1000024",
-      "range": "1000024-1000024"
-    }
+    ]
   }
 }
