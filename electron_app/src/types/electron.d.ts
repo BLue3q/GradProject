@@ -41,6 +41,36 @@ export interface ElectronAPI {
   offProgramFinished: (callback: (code: number | null) => void) => void;
   
   /**
+   * Register a callback for when input is required
+   * @param callback - Function to call when input is required
+   */
+  onInputRequired: (callback: () => void) => void;
+  
+  /**
+   * Remove a callback for input required
+   * @param callback - The callback function to remove
+   */
+  offInputRequired: (callback: () => void) => void;
+  
+  /**
+   * Register a callback for when analysis is complete
+   * @param callback - Function to call with analysis data
+   */
+  onAnalysisComplete: (callback: (data: string) => void) => void;
+  
+  /**
+   * Remove a callback for analysis complete
+   * @param callback - The callback function to remove
+   */
+  offAnalysisComplete: (callback: (data: string) => void) => void;
+  
+  /**
+   * Check if the process is waiting for input
+   * @returns Promise that resolves to true if waiting for input
+   */
+  checkInputMode: () => Promise<boolean>;
+  
+  /**
    * Send user input to the running program
    * @param input - The input string to send
    */

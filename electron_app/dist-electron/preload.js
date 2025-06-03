@@ -4,6 +4,7 @@ const electron_1 = require("electron");
 let outputCallbacks = [];
 let finishedCallbacks = [];
 let inputRequiredCallbacks = [];
+let analysisCallbacks = [];
 // Listen for program output events from the main process
 electron_1.ipcRenderer.on('program-output', (_event, data) => {
     // Call all registered callbacks with the output data
@@ -18,6 +19,11 @@ electron_1.ipcRenderer.on('program-finished', (_event, code) => {
 electron_1.ipcRenderer.on('input-required', () => {
     // Call all registered callbacks to notify that input is required
     inputRequiredCallbacks.forEach(callback => callback());
+});
+// Listen for analysis complete events
+electron_1.ipcRenderer.on('analysis-complete', (_event, data) => {
+    // Call all registered callbacks with the analysis data
+    analysisCallbacks.forEach(callback => callback(data));
 });
 electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     // Expose the compileCpp function to the renderer process
@@ -47,6 +53,14 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     // Remove callback for input required events
     offInputRequired: (callback) => {
         inputRequiredCallbacks = inputRequiredCallbacks.filter(cb => cb !== callback);
+    },
+    // Register callback for analysis complete events
+    onAnalysisComplete: (callback) => {
+        analysisCallbacks.push(callback);
+    },
+    // Remove callback for analysis complete events
+    offAnalysisComplete: (callback) => {
+        analysisCallbacks = analysisCallbacks.filter(cb => cb !== callback);
     },
     // Check if the process is waiting for input
     checkInputMode: () => electron_1.ipcRenderer.invoke('check-input-mode'),

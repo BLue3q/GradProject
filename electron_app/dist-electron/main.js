@@ -122,6 +122,21 @@ electron_1.ipcMain.handle('compile-cpp', async (event, code) => {
                     currentProcess.stdout.on('data', (data) => {
                         const output = data.toString();
                         outputData += output;
+                        // Check if the program is waiting for input
+                        // Common patterns: ends with ':', '?', or no newline after prompt
+                        const endsWithoutNewline = output.length > 0 &&
+                            !output.endsWith('\n') &&
+                            !output.endsWith('\r\n') &&
+                            output.trim().length > 0;
+                        // Check if this looks like an input prompt
+                        if (endsWithoutNewline) {
+                            // Set input mode to true to indicate we're waiting for input
+                            inputMode = true;
+                            // Notify the renderer process that we're waiting for input
+                            if (mainWindow && !mainWindow.isDestroyed()) {
+                                mainWindow.webContents.send('input-required');
+                            }
+                        }
                         // Send real-time output to the renderer
                         if (mainWindow && !mainWindow.isDestroyed()) {
                             mainWindow.webContents.send('program-output', output);
@@ -140,13 +155,15 @@ electron_1.ipcMain.handle('compile-cpp', async (event, code) => {
                     });
                 }
                 // Handle process completion
-                currentProcess.on('close', (code) => {
+                currentProcess.on('close', (exitCode) => {
                     currentProcess = null;
                     cleanupResources(tempFile, outputFile);
                     // Send process completion event to the renderer
                     if (mainWindow && !mainWindow.isDestroyed()) {
-                        mainWindow.webContents.send('program-finished', code);
+                        mainWindow.webContents.send('program-finished', exitCode);
                     }
+                    // After C++ execution completes, run Python analysis
+                    runPythonAnalysis(tempFile, code);
                     // Resolve the promise with the complete output
                     resolve(outputData);
                 });
@@ -275,4 +292,58 @@ electron_1.ipcMain.handle('run-python', async (event, scriptPath) => {
         return `System Error: ${error instanceof Error ? error.message : String(error)}`;
     }
 });
+// Function to run Python analysis after C++ execution
+async function runPythonAnalysis(cppFilePath, cppCode) {
+    try {
+        // Look for Python analysis scripts in the root directory
+        const rootDir = path.join(__dirname, '..', '..');
+        const lexerPath = path.join(rootDir, 'mylexer.py');
+        const parserPath = path.join(rootDir, 'myparser.py');
+        // Check which script exists
+        let scriptPath = '';
+        if (fs.existsSync(lexerPath)) {
+            scriptPath = lexerPath;
+        }
+        else if (fs.existsSync(parserPath)) {
+            scriptPath = parserPath;
+        }
+        else {
+            console.log('No Python analysis script found');
+            return;
+        }
+        console.log(`Running Python analysis: ${scriptPath}`);
+        // Run the Python script with the C++ file as input
+        const pythonProcess = (0, child_process_1.spawn)('python3', [scriptPath, cppFilePath], {
+            stdio: ['pipe', 'pipe', 'pipe'],
+            cwd: rootDir
+        });
+        let analysisOutput = '';
+        pythonProcess.stdout.on('data', (data) => {
+            analysisOutput += data.toString();
+        });
+        pythonProcess.stderr.on('data', (data) => {
+            console.error('Python analysis error:', data.toString());
+        });
+        pythonProcess.on('close', (code) => {
+            if (code === 0) {
+                // Check if output.json was created
+                const outputJsonPath = path.join(rootDir, 'output.json');
+                if (fs.existsSync(outputJsonPath)) {
+                    // Read the output.json file
+                    const jsonData = fs.readFileSync(outputJsonPath, 'utf8');
+                    // Send the analysis data to the renderer for visualization
+                    if (mainWindow && !mainWindow.isDestroyed()) {
+                        mainWindow.webContents.send('analysis-complete', jsonData);
+                    }
+                }
+            }
+            else {
+                console.error(`Python analysis failed with exit code: ${code}`);
+            }
+        });
+    }
+    catch (error) {
+        console.error('Error running Python analysis:', error);
+    }
+}
 //# sourceMappingURL=main.js.map

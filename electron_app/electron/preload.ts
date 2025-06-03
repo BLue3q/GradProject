@@ -2,9 +2,11 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 // Store callback references
 type OutputCallback = (data: string) => void;
+type AnalysisCallback = (data: string) => void;
 let outputCallbacks: OutputCallback[] = [];
 let finishedCallbacks: ((code: number | null) => void)[] = [];
 let inputRequiredCallbacks: (() => void)[] = [];
+let analysisCallbacks: AnalysisCallback[] = [];
 
 // Listen for program output events from the main process
 ipcRenderer.on('program-output', (_event, data: string) => {
@@ -22,6 +24,12 @@ ipcRenderer.on('program-finished', (_event, code: number | null) => {
 ipcRenderer.on('input-required', () => {
   // Call all registered callbacks to notify that input is required
   inputRequiredCallbacks.forEach(callback => callback());
+});
+
+// Listen for analysis complete events
+ipcRenderer.on('analysis-complete', (_event, data: string) => {
+  // Call all registered callbacks with the analysis data
+  analysisCallbacks.forEach(callback => callback(data));
 });
 
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -59,6 +67,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Remove callback for input required events
   offInputRequired: (callback: () => void): void => {
     inputRequiredCallbacks = inputRequiredCallbacks.filter(cb => cb !== callback);
+  },
+  
+  // Register callback for analysis complete events
+  onAnalysisComplete: (callback: AnalysisCallback): void => {
+    analysisCallbacks.push(callback);
+  },
+  
+  // Remove callback for analysis complete events
+  offAnalysisComplete: (callback: AnalysisCallback): void => {
+    analysisCallbacks = analysisCallbacks.filter(cb => cb !== callback);
   },
   
   // Check if the process is waiting for input

@@ -20,6 +20,8 @@ declare global {
       offProgramFinished: (callback: (code: number | null) => void) => void;
       onInputRequired: (callback: () => void) => void;
       offInputRequired: (callback: () => void) => void;
+      onAnalysisComplete: (callback: (data: string) => void) => void;
+      offAnalysisComplete: (callback: (data: string) => void) => void;
       checkInputMode: () => Promise<boolean>;
       sendProgramInput: (input: string) => void;
       killRunningProcess: () => void;
