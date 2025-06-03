@@ -1,4 +1,4 @@
-package lexer; // File Lexer.java
+package lexer; // File ​Lexer.java
 
 import java.io.*;
 import java.util.*;
@@ -19,7 +19,6 @@ public class Lexer {
         reserve(new Word("while", Tag.WHILE));
         reserve(new Word("do", Tag.DO));
         reserve(new Word("break", Tag.BREAK));
-        reserve(new Word("return", Tag.RETURN));   // CHANGED: reserve "return"
         reserve(Word.True);
         reserve(Word.False);
         reserve(Type.Int);

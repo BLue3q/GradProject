@@ -1,0 +1,5 @@
+L1:	x = 3
+L4:	y = x + 4
+L3:	iffalse y < 10 goto L2
+L5:	y = y * 2
+L2:
