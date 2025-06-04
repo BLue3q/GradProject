@@ -1,175 +1,322 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-interface VisualizationData {
-  // Define the structure based on your output.json format
-  [key: string]: any;
+interface Block {
+  id: string;
+  description: string;
+  line_range: [number, number];
+  code: string;
 }
 
-const VisualizationPanel: React.FC = () => {
-  const [visualizationData, setVisualizationData] = useState<VisualizationData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const visualizationRef = useRef<HTMLDivElement>(null);
-  const scriptLoadedRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    // Handle analysis complete event
-    const handleAnalysisComplete = (jsonData: string) => {
-      try {
-        const data = JSON.parse(jsonData);
-        setVisualizationData(data);
-        setError(null);
-        
-        // If the visualization script is loaded, render the visualization
-        if (scriptLoadedRef.current && window.renderVisualization) {
-          window.renderVisualization(data, 'visualization-root');
-        }
-      } catch (err) {
-        console.error('Failed to parse analysis data:', err);
-        setError('Failed to parse analysis data');
-      }
-    };
-
-    // Set up IPC listener
-    if (window.electronAPI) {
-      window.electronAPI.onAnalysisComplete(handleAnalysisComplete);
-    }
-
-    return () => {
-      // Clean up listener
-      if (window.electronAPI) {
-        window.electronAPI.offAnalysisComplete(handleAnalysisComplete);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    // Try to load external visualization script
-    const loadVisualizationScript = async () => {
-      setIsLoading(true);
-      try {
-        // Load the page wrapper script that integrates with the page visualization
-        const script = document.createElement('script');
-        script.src = '/page-wrapper.js';
-        script.async = true;
-        
-        await new Promise((resolve, reject) => {
-          script.onload = () => {
-            console.log('Page wrapper script loaded successfully');
-            scriptLoadedRef.current = true;
-            setIsLoading(false);
-            
-            // If we already have data, render it
-            if (visualizationData && window.renderVisualization) {
-              window.renderVisualization(visualizationData, 'visualization-root');
-            }
-            resolve(true);
-          };
-          
-          script.onerror = () => {
-            console.warn('Failed to load page wrapper script, using fallback');
-            scriptLoadedRef.current = true;
-            setIsLoading(false);
-            
-            // Use fallback visualization if wrapper script fails
-            if (visualizationData && window.renderFallbackVisualization) {
-              window.renderFallbackVisualization(visualizationData, 'visualization-root');
-            } else if (visualizationData) {
-              renderFallbackVisualization(visualizationData);
-            }
-            resolve(false);
-          };
-          
-          document.body.appendChild(script);
-        });
-        
-      } catch (err) {
-        console.error('Error loading visualization:', err);
-        setError('Error loading visualization module');
-        setIsLoading(false);
-      }
-    };
-
-    loadVisualizationScript();
-  }, []);
-
-  // Render visualization when data changes
-  useEffect(() => {
-    if (visualizationData && scriptLoadedRef.current) {
-      if (window.renderVisualization) {
-        window.renderVisualization(visualizationData, 'visualization-root');
-      } else {
-        renderFallbackVisualization(visualizationData);
-      }
-    }
-  }, [visualizationData]);
-
-  // Fallback visualization renderer
-  const renderFallbackVisualization = (data: VisualizationData) => {
-    const container = document.getElementById('visualization-root');
-    if (!container) return;
-
-    container.innerHTML = `
-      <div style="padding: 20px; color: #d4d4d4; font-family: 'Cascadia Code', monospace;">
-        <h3 style="color: #4ec9b0; margin-top: 0;">Analysis Results</h3>
-        <pre style="background: #252526; padding: 15px; border-radius: 4px; overflow: auto;">
-${JSON.stringify(data, null, 2)}
-        </pre>
-      </div>
-    `;
+interface AnalysisData {
+  analysis?: {
+    blocks?: Block[];
+    functions?: any;
+    tokens?: any[];
   };
+  summary?: {
+    total_blocks?: number;
+    blocks?: any[];
+  };
+  blocksDir?: string;
+}
 
-  return (
-    <div className="visualization-panel">
-      {/* This div will be used by external JS for runtime visualization */}
-      <div 
-        id="visualization-root" 
-        ref={visualizationRef}
-        style={{ width: '100%', height: '100%' }}
-      />
-      
-      {/* Show loading state */}
-      {isLoading && (
-        <div className="visualization-placeholder">
-          <div className="loading-indicator">
-            <div className="spinner"></div>
-            <p>Loading visualization...</p>
+interface CompilationData {
+  results?: any;
+  summary?: {
+    total_blocks?: number;
+    successful_compilations?: number;
+    failed_compilations?: number;
+    intermediate_files?: any[];
+    errors?: any[];
+  };
+  blocksDir?: string;
+}
+
+interface VisualizationPanelProps {
+  analysisData?: AnalysisData | null;
+  compilationData?: CompilationData | null;
+  isDebugging?: boolean;
+}
+
+const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ 
+  analysisData, 
+  compilationData, 
+  isDebugging = false 
+}) => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'blocks' | 'compilation' | 'debug'>('overview');
+  const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
+
+  // Switch to appropriate tab when new data arrives
+  useEffect(() => {
+    if (isDebugging) {
+      setActiveTab('debug');
+    } else if (compilationData) {
+      setActiveTab('compilation');
+    } else if (analysisData) {
+      setActiveTab('blocks');
+    }
+  }, [analysisData, compilationData, isDebugging]);
+
+  // Safe getter functions
+  const getTotalBlocks = () => analysisData?.summary?.total_blocks ?? 0;
+  const getFunctionsCount = () => Object.keys(analysisData?.analysis?.functions ?? {}).length;
+  const getTokensCount = () => analysisData?.analysis?.tokens?.length ?? 0;
+  const getBlocks = () => analysisData?.analysis?.blocks ?? [];
+  
+  const getCompilationSuccess = () => compilationData?.summary?.successful_compilations ?? 0;
+  const getCompilationFailed = () => compilationData?.summary?.failed_compilations ?? 0;
+  const getIntermediateFiles = () => compilationData?.summary?.intermediate_files ?? [];
+  const getCompilationErrors = () => compilationData?.summary?.errors ?? [];
+
+  const renderOverview = () => (
+    <div className="overview-content">
+      <h3>Code Analysis Overview</h3>
+      {analysisData ? (
+        <div className="overview-stats">
+          <div className="stat-item">
+            <span className="stat-label">Total Blocks:</span>
+            <span className="stat-value">{getTotalBlocks()}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Functions:</span>
+            <span className="stat-value">{getFunctionsCount()}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Tokens:</span>
+            <span className="stat-value">{getTokensCount()}</span>
           </div>
         </div>
-      )}
-      
-      {/* Show error state */}
-      {error && (
-        <div className="visualization-placeholder">
-          <h3>Visualization Error</h3>
-          <p>{error}</p>
+      ) : (
+        <div className="loading-state">
+          <p>Click "Analyze" to start code analysis</p>
         </div>
       )}
       
-      {/* Show placeholder when no data */}
-      {!visualizationData && !isLoading && !error && (
-        <div className="visualization-placeholder">
-          <h3>Visualization Panel</h3>
-          <p>Run your C++ code to see the analysis visualization.</p>
-          <p>This panel will display:</p>
-          <ul>
-            <li>Code structure analysis</li>
-            <li>Variable tracking</li>
-            <li>Execution flow</li>
-            <li>Memory usage patterns</li>
-          </ul>
+      {compilationData && (
+        <div className="compilation-overview">
+          <h4>Compilation Results</h4>
+          <div className="overview-stats">
+            <div className="stat-item">
+              <span className="stat-label">Successful:</span>
+              <span className="stat-value success">{getCompilationSuccess()}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Failed:</span>
+              <span className="stat-value error">{getCompilationFailed()}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Intermediate Files:</span>
+              <span className="stat-value">{getIntermediateFiles().length}</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
-};
 
-// Extend window interface for the visualization function
-declare global {
-  interface Window {
-    renderVisualization?: (data: any, containerId: string) => void;
-    renderFallbackVisualization?: (data: any, containerId: string) => void;
-  }
-}
+  const renderBlocks = () => {
+    const blocks = getBlocks();
+    
+    return (
+      <div className="blocks-content">
+        <h3>Code Blocks</h3>
+        {analysisData ? (
+          blocks.length > 0 ? (
+            <div className="blocks-list">
+              {blocks.map((block, index) => (
+                <div 
+                  key={block.id} 
+                  className={`block-item ${selectedBlock?.id === block.id ? 'selected' : ''}`}
+                  onClick={() => setSelectedBlock(block)}
+                >
+                  <div className="block-header">
+                    <span className="block-id">{block.id}</span>
+                    <span className="block-lines">
+                      Lines {block.line_range?.[0] ?? 0}-{block.line_range?.[1] ?? 0}
+                    </span>
+                  </div>
+                  <div className="block-description">{block.description || 'No description'}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <p>No code blocks found in analysis</p>
+            </div>
+          )
+        ) : (
+          <div className="loading-state">
+            <p>Waiting for analysis data...</p>
+            <div className="spinner"></div>
+          </div>
+        )}
+        
+        {selectedBlock && (
+          <div className="block-details">
+            <h4>Block Details: {selectedBlock.id}</h4>
+            <p>{selectedBlock.description || 'No description available'}</p>
+            <pre className="block-code">{selectedBlock.code || '// No code available'}</pre>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderCompilation = () => {
+    const intermediateFiles = getIntermediateFiles();
+    const errors = getCompilationErrors();
+    
+    return (
+      <div className="compilation-content">
+        <h3>Compilation Results</h3>
+        {compilationData ? (
+          <div>
+            <div className="compilation-summary">
+              <div className="summary-stats">
+                <div className="stat success">
+                  <span className="stat-number">{getCompilationSuccess()}</span>
+                  <span className="stat-label">Successful</span>
+                </div>
+                <div className="stat error">
+                  <span className="stat-number">{getCompilationFailed()}</span>
+                  <span className="stat-label">Failed</span>
+                </div>
+                <div className="stat info">
+                  <span className="stat-number">{intermediateFiles.length}</span>
+                  <span className="stat-label">Intermediate Files</span>
+                </div>
+              </div>
+            </div>
+            
+            {intermediateFiles.length > 0 && (
+              <div className="intermediate-files">
+                <h4>Generated Intermediate Code</h4>
+                {intermediateFiles.map((file, index) => (
+                  <div key={index} className="intermediate-file">
+                    <div className="file-header">
+                      <span className="file-block">{file?.block || `Block ${index + 1}`}</span>
+                      <span className="file-lines">{file?.lines || 0} lines</span>
+                    </div>
+                    <div className="file-path">{file?.file || 'Unknown file'}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {errors.length > 0 && (
+              <div className="compilation-errors">
+                <h4>Compilation Errors</h4>
+                {errors.map((error, index) => (
+                  <div key={index} className="error-item">
+                    <div className="error-block">{error?.block || `Block ${index + 1}`}</div>
+                    <div className="error-message">{error?.error || 'Unknown error'}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="loading-state">
+            <p>Waiting for compilation results...</p>
+            <div className="spinner"></div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderDebug = () => (
+    <div className="debug-content">
+      <h3>Debug Information</h3>
+      {isDebugging ? (
+        <div className="debug-info">
+          <div className="debug-status">
+            <div className="status-indicator active">
+              <span className="indicator-dot"></span>
+              <span>Debug Session Active</span>
+            </div>
+          </div>
+          
+          <div className="debug-sections">
+            <div className="debug-section">
+              <h4>Current State</h4>
+              <p>Program is running in debug mode</p>
+            </div>
+            
+            <div className="debug-section">
+              <h4>Variables</h4>
+              <p>Variable tracking will appear here</p>
+            </div>
+            
+            <div className="debug-section">
+              <h4>Call Stack</h4>
+              <p>Call stack information will appear here</p>
+            </div>
+            
+            <div className="debug-section">
+              <h4>Execution Timeline</h4>
+              <p>Step-by-step execution flow will appear here</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="loading-state">
+          <p>Start debugging to see debug information</p>
+        </div>
+      )}
+    </div>
+  );
+
+  const getTabCount = (tabType: string) => {
+    switch (tabType) {
+      case 'blocks':
+        return getTotalBlocks();
+      case 'compilation':
+        return getCompilationSuccess() + getCompilationFailed();
+      default:
+        return 0;
+    }
+  };
+
+  return (
+    <div className="visualization-panel">
+      <div className="panel-tabs">
+        <button 
+          className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
+          onClick={() => setActiveTab('overview')}
+        >
+          Overview
+        </button>
+        <button 
+          className={`tab ${activeTab === 'blocks' ? 'active' : ''}`}
+          onClick={() => setActiveTab('blocks')}
+          disabled={!analysisData}
+        >
+          Blocks ({getTabCount('blocks')})
+        </button>
+        <button 
+          className={`tab ${activeTab === 'compilation' ? 'active' : ''}`}
+          onClick={() => setActiveTab('compilation')}
+          disabled={!compilationData}
+        >
+          Compilation
+        </button>
+        <button 
+          className={`tab ${activeTab === 'debug' ? 'active' : ''}`}
+          onClick={() => setActiveTab('debug')}
+        >
+          Debug {isDebugging && <span className="debug-indicator">●</span>}
+        </button>
+      </div>
+      
+      <div className="panel-content">
+        {activeTab === 'overview' && renderOverview()}
+        {activeTab === 'blocks' && renderBlocks()}
+        {activeTab === 'compilation' && renderCompilation()}
+        {activeTab === 'debug' && renderDebug()}
+      </div>
+    </div>
+  );
+};
 
 export default VisualizationPanel; 
