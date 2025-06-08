@@ -3,8 +3,9 @@ import ply.lex as lex
 tokens = (
     'MAIN', 'TYPE', 'IDENTIFIER', 'NUMBER', 'CHAR_LITERAL', 'STRING_LITERAL',
     'EQUALS', 'SEMICOLON', 'COMMA', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
-    'LPAREN', 'RPAREN', 'NEW', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS',
-    'ARROW', 'DOT'
+    'LPAREN', 'RPAREN', 'NEW', 'DELETE', 'TILDE', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS',
+    'ARROW', 'DOT', 'IF', 'ELSE', 'WHILE', 'LT', 'GT', 'LE', 'GE', 
+    'EQ', 'NE'
 )
 def t_newline(t):
     r'\n+'
@@ -35,6 +36,31 @@ def t_TYPE(t):
 
 def t_NEW(t):
     r'\bnew\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_DELETE(t):
+    r'\bdelete\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_IF(t):
+    r'\bif\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_ELSE(t):
+    r'\belse\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_FOR(t):
+    r'\bfor\b'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_WHILE(t):
+    r'\bwhile\b'
     t.lineno = t.lexer.lineno
     return t
 
@@ -71,6 +97,14 @@ t_EQUALS = r'='
 t_SEMICOLON = r';'
 t_COMMA = r','
 
+# Comparison operators (order matters for multi-character operators)
+t_LE = r'<='
+t_GE = r'>='
+t_EQ = r'=='
+t_NE = r'!='
+t_LT = r'<'
+t_GT = r'>'
+
 t_ignore = ' \t\r'  # Ignore whitespace
 
 def t_POINTER(t):
@@ -99,6 +133,11 @@ def t_ARROW(t):
 
 def t_DOT(t):
     r'\.'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_TILDE(t):
+    r'~'
     t.lineno = t.lexer.lineno
     return t
 

@@ -1,19 +1,50 @@
 #include <iostream>
-int x=3,y,z;int f;
-int *ptr;
-string value = "its a value";
-int a333(int a)
-{
-    int x;
-    x=a;
-}
-class MyClass {                   
-    int myNum=3;        
+using namespace std;
+
+class Node {
+    int data;
+    Node* next;
+};
+
+class LinkedList {
+    Node* head;
+    LinkedList() {
+        head = nullptr;
+    }
+
+    void append(int value) {
+        Node* newNode = new Node{value, nullptr};
+        if (nullptr==head) {
+            head = newNode;
+        }
+        else {
+            Node* temp;
+            temp= head;
+            while (nullptr != temp->next)
+            {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+    ~LinkedList() {
+        Node* temp;
+        while (nullptr==head) {
+            temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
+class MyClass {
+    int myNum=3;
     string myString="ahmad"; 
     void displayInfo(int b) {string x="hi";}
-    int *ptr;                    
-    int *ptr2 = nullptr;         
-    string *strPtr = &someStr;
+    int ptr;
+    int ptr2 = nullptr;
+    string someStr = "example";
+    string* strPtr = &someStr;
     MyClass() {
         myNum = 0;
         myString = "default";
@@ -24,30 +55,32 @@ class MyClass {
     }
 };
 
-class Node {
-    MyClass *a;
-    int data="ahmad";
-    Node* next=nullptr;  // Self-referential pointer
-    Node* prev=&data;  // Another self-referential pointer for doubly linked list
-    
-};
+
+int fun(int h){
+    int g = 99;
+    g = h; 
+}
 
 int main() {
-    double x =1;
-    int x = 5;
-    int *nptr = new int[3];
-    int *ptr = &x;
-    int arr[3]={1,2,3};
+    int y;
+    int z = 10;
+    y = 5; 
+    int ptr = new int [10];
+
+    fun(3);
+
     MyClass obj1;
     a333(x);
-    
-   
     obj1.myNum = 100;
     obj1.myString = "test";
-    Node node1;
-    node1.data = "hello";
-    node1.next = nullptr;
-    Node *nodeptr;
-    nodePtr->data = "world";
-    nodePtr->next = nullptr;
+
+
+
+    LinkedList list1;
+    list1.append(1);
+    list1.append(2);
+    list1.append(3);
+    LinkedList* list2 = new LinkedList{};
+    list2->append(10);
+    list2->append(20);
 }

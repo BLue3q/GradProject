@@ -1,8 +1,5 @@
-[
-  {
-    "type": "class_declaration",
-    "line": 4,
-    "scope": "global",
+{
+  "Node": {
     "name": "Node",
     "members": [
       {
@@ -20,12 +17,12 @@
         "scope": "class:Node",
         "id": 100001
       }
-    ]
+    ],
+    "constructors": [],
+    "destructors": [],
+    "line": 4
   },
-  {
-    "type": "class_declaration",
-    "line": 9,
-    "scope": "global",
+  "LinkedList": {
     "name": "LinkedList",
     "members": [
       {
@@ -310,12 +307,112 @@
           }
         ]
       }
-    ]
+    ],
+    "constructors": [
+      {
+        "type": "constructor",
+        "name": "LinkedList",
+        "line": 11,
+        "params": [],
+        "body": [
+          {
+            "type": "assignment",
+            "line": 12,
+            "scope": "constructor:LinkedList",
+            "name": "head",
+            "value": {
+              "type": "variable",
+              "name": "nullptr",
+              "scope": "constructor:LinkedList"
+            }
+          }
+        ]
+      }
+    ],
+    "destructors": [
+      {
+        "type": "destructor",
+        "name": "LinkedList",
+        "line": 30,
+        "body": [
+          {
+            "type": "class_pointer_declaration",
+            "line": 31,
+            "scope": "destructor:LinkedList",
+            "id": 100004,
+            "class_type": "Node",
+            "name": "temp",
+            "pointer_category": "class_object"
+          },
+          {
+            "type": "while_statement",
+            "line": 32,
+            "scope": "destructor:LinkedList",
+            "condition": {
+              "type": "comparison",
+              "left": {
+                "type": "variable",
+                "name": "nullptr",
+                "scope": "destructor:LinkedList"
+              },
+              "operator": "==",
+              "right": {
+                "type": "variable",
+                "name": "head",
+                "scope": "destructor:LinkedList",
+                "class_type": "Node"
+              }
+            },
+            "body": [
+              {
+                "type": "assignment",
+                "line": 33,
+                "scope": "while_body",
+                "name": "temp",
+                "value": {
+                  "type": "variable",
+                  "name": "head",
+                  "scope": "while_body",
+                  "class_type": "Node"
+                }
+              },
+              {
+                "type": "assignment",
+                "line": 34,
+                "scope": "while_body",
+                "name": "head",
+                "value": {
+                  "type": "member_access",
+                  "object": {
+                    "type": "variable",
+                    "name": "head",
+                    "scope": "while_body",
+                    "class_type": "Node"
+                  },
+                  "member": "next",
+                  "operator": "arrow",
+                  "pointer_access": true
+                }
+              },
+              {
+                "type": "delete_statement",
+                "line": 35,
+                "scope": "while_body",
+                "target": {
+                  "type": "variable",
+                  "name": "temp",
+                  "scope": "while_body",
+                  "class_type": "Node"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "line": 9
   },
-  {
-    "type": "class_declaration",
-    "line": 40,
-    "scope": "global",
+  "MyClass": {
     "name": "MyClass",
     "members": [
       {
@@ -461,314 +558,69 @@
           }
         ]
       }
-    ]
-  },
-  {
-    "type": "function declaration",
-    "line": 59,
-    "scope": "global",
-    "id": 100019,
-    "name": "fun",
-    "return_type": "int",
-    "params": [
-      {
-        "type": "parameter",
-        "data_type": "int",
-        "name": "h",
-        "scope": "function:fun",
-        "id": 100020
-      }
     ],
-    "body": [
+    "constructors": [
       {
-        "type": "declaration",
-        "data_type": "int",
-        "declarations": [
+        "type": "constructor",
+        "name": "MyClass",
+        "line": 48,
+        "params": [],
+        "body": [
           {
-            "name": "g",
-            "value": 99,
-            "scope": "function:fun",
-            "line": 60,
-            "id": 100021
+            "type": "assignment",
+            "line": 49,
+            "scope": "constructor:MyClass",
+            "name": "myNum",
+            "value": 0
+          },
+          {
+            "type": "assignment",
+            "line": 50,
+            "scope": "constructor:MyClass",
+            "name": "myString",
+            "value": "default"
           }
         ]
       },
       {
-        "type": "assignment",
-        "line": 61,
-        "scope": "function:fun",
-        "name": "g",
-        "value": {
-          "type": "variable",
-          "name": "h",
-          "scope": "function:fun"
-        }
-      }
-    ]
-  },
-  {
-    "type": "the standard Main_Function ",
-    "line": 64,
-    "scope": "global",
-    "name": "main",
-    "return_type": "int",
-    "body": [
-      {
-        "type": "declaration",
-        "data_type": "int",
-        "declarations": [
+        "type": "parameterized constructor",
+        "name": "MyClass",
+        "line": 52,
+        "params": [
           {
-            "name": "y",
-            "scope": "function:main",
-            "line": 65,
-            "id": 100028
-          }
-        ]
-      },
-      {
-        "type": "declaration",
-        "data_type": "int",
-        "declarations": [
+            "type": "parameter",
+            "data_type": "int",
+            "name": "num",
+            "scope": "parameterized constructor:MyClass",
+            "id": 100008
+          },
           {
-            "name": "z",
-            "value": 10,
-            "scope": "function:main",
-            "line": 66,
-            "id": 100029
-          }
-        ]
-      },
-      {
-        "type": "assignment",
-        "line": 67,
-        "scope": "function:main",
-        "name": "y",
-        "value": 5
-      },
-      {
-        "type": "declaration",
-        "data_type": "int",
-        "declarations": [
-          {
-            "name": "ptr",
-            "value": {
-              "type": "new_array",
-              "data_type": "int",
-              "size": 10
-            },
-            "scope": "function:main",
-            "line": 68,
-            "id": 100030
-          }
-        ]
-      },
-      {
-        "type": "function_call",
-        "line": 70,
-        "scope": "function:main",
-        "name": "fun",
-        "arg_param_map": [
-          {
-            "param_name": "h",
-            "arg_value": 3
+            "type": "parameter",
+            "data_type": "string",
+            "name": "str",
+            "scope": "parameterized constructor:MyClass",
+            "id": 100009
           }
         ],
         "body": [
           {
-            "type": "declaration",
-            "data_type": "int",
-            "declarations": [
-              {
-                "name": "g",
-                "value": 99,
-                "scope": "function:fun",
-                "line": 60,
-                "id": 100021
-              }
-            ]
+            "type": "assignment",
+            "line": 53,
+            "scope": "parameterized constructor:MyClass",
+            "name": "myNum",
+            "value": 0
           },
           {
             "type": "assignment",
-            "line": 61,
-            "scope": "function:fun",
-            "name": "g",
-            "value": {
-              "type": "variable",
-              "name": "h",
-              "scope": "function:fun"
-            }
-          }
-        ]
-      },
-      {
-        "type": "object_declaration",
-        "line": 72,
-        "scope": "function:main",
-        "id": 100025,
-        "constructor_type": "default_constructor_call",
-        "class_type": "MyClass",
-        "name": "obj1"
-      },
-      {
-        "type": "function_call",
-        "line": 73,
-        "scope": "function:main",
-        "name": "a333",
-        "arg_param_map": [],
-        "body": null
-      },
-      {
-        "type": "member_assignment",
-        "line": 74,
-        "scope": "function:main",
-        "object": "obj1",
-        "member": "myNum",
-        "operator": "dot",
-        "value": 100
-      },
-      {
-        "type": "member_assignment",
-        "line": 75,
-        "scope": "function:main",
-        "object": "obj1",
-        "member": "myString",
-        "operator": "dot",
-        "value": "test"
-      },
-      {
-        "type": "object_declaration",
-        "line": 79,
-        "scope": "function:main",
-        "id": 100026,
-        "constructor_type": "default_constructor_call",
-        "class_type": "LinkedList",
-        "name": "list1"
-      },
-      {
-        "type": "method_call",
-        "line": 80,
-        "scope": "function:main",
-        "object": {
-          "type": "variable",
-          "name": "list1",
-          "scope": "function:main",
-          "class_type": "LinkedList"
-        },
-        "method": "append",
-        "operator": "dot",
-        "args": [
-          1
-        ],
-        "arg_param_map": [
-          {
-            "param_name": "value",
-            "arg_value": 1
-          }
-        ]
-      },
-      {
-        "type": "method_call",
-        "line": 81,
-        "scope": "function:main",
-        "object": {
-          "type": "variable",
-          "name": "list1",
-          "scope": "function:main",
-          "class_type": "LinkedList"
-        },
-        "method": "append",
-        "operator": "dot",
-        "args": [
-          2
-        ],
-        "arg_param_map": [
-          {
-            "param_name": "value",
-            "arg_value": 2
-          }
-        ]
-      },
-      {
-        "type": "method_call",
-        "line": 82,
-        "scope": "function:main",
-        "object": {
-          "type": "variable",
-          "name": "list1",
-          "scope": "function:main",
-          "class_type": "LinkedList"
-        },
-        "method": "append",
-        "operator": "dot",
-        "args": [
-          3
-        ],
-        "arg_param_map": [
-          {
-            "param_name": "value",
-            "arg_value": 3
-          }
-        ]
-      },
-      {
-        "type": "class_pointer_declaration",
-        "line": 83,
-        "scope": "function:main",
-        "id": 100027,
-        "class_type": "LinkedList",
-        "name": "list2",
-        "allocation": "new",
-        "allocated_type": "LinkedList",
-        "constructor_type": "parameterized_constructor_call",
-        "constructor_args": [],
-        "arg_param_map": []
-      },
-      {
-        "type": "method_call",
-        "line": 84,
-        "scope": "function:main",
-        "object": {
-          "type": "variable",
-          "name": "list2",
-          "scope": "function:main",
-          "class_type": "LinkedList"
-        },
-        "method": "append",
-        "operator": "arrow",
-        "pointer_access": true,
-        "args": [
-          10
-        ],
-        "arg_param_map": [
-          {
-            "param_name": "value",
-            "arg_value": 10
-          }
-        ]
-      },
-      {
-        "type": "method_call",
-        "line": 85,
-        "scope": "function:main",
-        "object": {
-          "type": "variable",
-          "name": "list2",
-          "scope": "function:main",
-          "class_type": "LinkedList"
-        },
-        "method": "append",
-        "operator": "arrow",
-        "pointer_access": true,
-        "args": [
-          20
-        ],
-        "arg_param_map": [
-          {
-            "param_name": "value",
-            "arg_value": 20
+            "line": 54,
+            "scope": "parameterized constructor:MyClass",
+            "name": "myString",
+            "value": "default"
           }
         ]
       }
-    ]
+    ],
+    "destructors": [],
+    "line": 40
   }
-]
+}

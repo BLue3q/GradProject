@@ -1,18 +1,18 @@
 {
-  "a333": {
-    "name": "a333",
+  "fun": {
     "type": "function declaration",
-    "line": 5,
-    "return_type": "int",
-    "id": 100008,
+    "line": 59,
     "scope": "global",
+    "id": 100019,
+    "name": "fun",
+    "return_type": "int",
     "params": [
       {
         "type": "parameter",
         "data_type": "int",
-        "name": "a",
-        "scope": "function:a333",
-        "id": 100009
+        "name": "h",
+        "scope": "function:fun",
+        "id": 100020
       }
     ],
     "body": [
@@ -21,24 +21,24 @@
         "data_type": "int",
         "declarations": [
           {
-            "name": "x",
-            "scope": "function:a333",
-            "line": 7,
-            "id": 100010
+            "name": "g",
+            "value": 99,
+            "scope": "function:fun",
+            "line": 60,
+            "id": 100021
           }
         ]
       },
       {
-        "name": "x",
         "type": "assignment",
-        "line": 8,
+        "line": 61,
+        "scope": "function:fun",
+        "name": "g",
         "value": {
           "type": "variable",
-          "name": "a",
-          "scope": "function:a333"
-        },
-        "scope": "function:a333",
-        "id": 100007
+          "name": "h",
+          "scope": "function:fun"
+        }
       }
     ]
   }
