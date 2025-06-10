@@ -1,0 +1,421 @@
+{
+  "Node": {
+    "name": "Node",
+    "members": [
+      {
+        "type": "access_specifier",
+        "access": "public",
+        "line": 0
+      },
+      {
+        "type": "member_variable",
+        "data_type": "int",
+        "name": "data",
+        "line": 6,
+        "scope": "class:Node",
+        "id": 100000
+      },
+      {
+        "type": "member_variable",
+        "data_type": "class:Node",
+        "name": "next",
+        "pointer": "pointer declaration",
+        "line": 7,
+        "scope": "class:Node",
+        "id": 100001
+      }
+    ],
+    "constructors": [],
+    "destructors": [],
+    "line": 4
+  },
+  "LinkedList": {
+    "name": "LinkedList",
+    "members": [
+      {
+        "type": "member_variable",
+        "data_type": "class:Node",
+        "name": "head",
+        "pointer": "pointer declaration",
+        "line": 11,
+        "scope": "class:LinkedList",
+        "id": 100006
+      },
+      {
+        "type": "access_specifier",
+        "access": "public",
+        "line": 0
+      },
+      {
+        "type": "constructor",
+        "name": "LinkedList",
+        "line": 14,
+        "params": [],
+        "body": [
+          {
+            "type": "assignment",
+            "line": 15,
+            "scope": "constructor:LinkedList",
+            "name": "head",
+            "value": {
+              "type": "variable",
+              "name": "nullptr",
+              "scope": "constructor:LinkedList"
+            }
+          }
+        ]
+      },
+      {
+        "type": "member_function",
+        "return_type": "void",
+        "name": "append",
+        "belongs_to_class": "LinkedList",
+        "params": [
+          {
+            "type": "parameter",
+            "data_type": "int",
+            "name": "value",
+            "scope": "function:LinkedList.append",
+            "id": 100007
+          }
+        ],
+        "body": [
+          {
+            "type": "class_pointer_declaration",
+            "line": 19,
+            "scope": "function:LinkedList.append",
+            "id": 100002,
+            "class_type": "Node",
+            "name": "newNode",
+            "allocation": "new",
+            "allocated_type": "Node",
+            "constructor_type": "default_constructor_call"
+          },
+          {
+            "type": "member_assignment",
+            "line": 20,
+            "scope": "function:LinkedList.append",
+            "object": "newNode",
+            "member": "data",
+            "operator": "arrow",
+            "pointer_access": true,
+            "value": {
+              "type": "variable",
+              "name": "value",
+              "scope": "function:LinkedList.append"
+            }
+          },
+          {
+            "type": "member_assignment",
+            "line": 21,
+            "scope": "function:LinkedList.append",
+            "object": "newNode",
+            "member": "next",
+            "operator": "arrow",
+            "pointer_access": true,
+            "value": {
+              "type": "variable",
+              "name": "nullptr",
+              "scope": "function:LinkedList.append"
+            }
+          },
+          {
+            "type": "if_statement",
+            "line": 23,
+            "scope": "function:LinkedList.append",
+            "condition": {
+              "type": "comparison",
+              "left": {
+                "type": "variable",
+                "name": "head",
+                "scope": "function:LinkedList.append",
+                "class_type": "Node"
+              },
+              "operator": "==",
+              "right": {
+                "type": "variable",
+                "name": "nullptr",
+                "scope": "function:LinkedList.append"
+              }
+            },
+            "if_body": [
+              {
+                "type": "assignment",
+                "line": 24,
+                "scope": "if_body",
+                "name": "head",
+                "value": {
+                  "type": "variable",
+                  "name": "newNode",
+                  "scope": "if_body",
+                  "class_type": "Node"
+                }
+              }
+            ],
+            "else_body": [
+              {
+                "type": "class_pointer_declaration",
+                "line": 27,
+                "scope": "else_body",
+                "id": 100003,
+                "class_type": "Node",
+                "name": "temp",
+                "pointer_category": "class_object"
+              },
+              {
+                "type": "assignment",
+                "line": 28,
+                "scope": "else_body",
+                "name": "temp",
+                "value": {
+                  "type": "variable",
+                  "name": "head",
+                  "scope": "else_body",
+                  "class_type": "Node"
+                }
+              },
+              {
+                "type": "while_statement",
+                "line": 29,
+                "scope": "else_body",
+                "condition": {
+                  "type": "comparison",
+                  "left": {
+                    "type": "member_access",
+                    "object": {
+                      "type": "variable",
+                      "name": "temp",
+                      "scope": "else_body",
+                      "class_type": "Node"
+                    },
+                    "member": "next",
+                    "operator": "arrow",
+                    "pointer_access": true
+                  },
+                  "operator": "!=",
+                  "right": {
+                    "type": "variable",
+                    "name": "nullptr",
+                    "scope": "else_body"
+                  }
+                },
+                "body": [
+                  {
+                    "type": "assignment",
+                    "line": 30,
+                    "scope": "while_body",
+                    "name": "temp",
+                    "value": {
+                      "type": "member_access",
+                      "object": {
+                        "type": "variable",
+                        "name": "temp",
+                        "scope": "while_body",
+                        "class_type": "Node"
+                      },
+                      "member": "next",
+                      "operator": "arrow",
+                      "pointer_access": true
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "member_assignment",
+                "line": 32,
+                "scope": "else_body",
+                "object": "temp",
+                "member": "next",
+                "operator": "arrow",
+                "pointer_access": true,
+                "value": {
+                  "type": "variable",
+                  "name": "newNode",
+                  "scope": "else_body",
+                  "class_type": "Node"
+                }
+              }
+            ]
+          }
+        ],
+        "line": 18
+      },
+      {
+        "type": "member_function",
+        "return_type": "void",
+        "name": "print",
+        "belongs_to_class": "LinkedList",
+        "params": [],
+        "body": [
+          {
+            "type": "class_pointer_declaration",
+            "line": 37,
+            "scope": "function:LinkedList.print",
+            "id": 100004,
+            "class_type": "Node",
+            "name": "temp",
+            "pointer_category": "class_object"
+          },
+          {
+            "type": "assignment",
+            "line": 38,
+            "scope": "function:LinkedList.print",
+            "name": "temp",
+            "value": {
+              "type": "variable",
+              "name": "head",
+              "scope": "function:LinkedList.print",
+              "class_type": "Node"
+            }
+          },
+          {
+            "type": "while_statement",
+            "line": 39,
+            "scope": "function:LinkedList.print",
+            "condition": {
+              "type": "comparison",
+              "left": {
+                "type": "variable",
+                "name": "temp",
+                "scope": "function:LinkedList.print",
+                "class_type": "Node"
+              },
+              "operator": "!=",
+              "right": {
+                "type": "variable",
+                "name": "nullptr",
+                "scope": "function:LinkedList.print"
+              }
+            },
+            "body": [
+              {
+                "type": "assignment",
+                "line": 40,
+                "scope": "while_body",
+                "name": "temp",
+                "value": {
+                  "type": "member_access",
+                  "object": {
+                    "type": "variable",
+                    "name": "temp",
+                    "scope": "while_body",
+                    "class_type": "Node"
+                  },
+                  "member": "next",
+                  "operator": "arrow",
+                  "pointer_access": true
+                }
+              }
+            ]
+          }
+        ],
+        "line": 36
+      },
+      {
+        "type": "member_function",
+        "return_type": "~",
+        "name": "LinkedList",
+        "belongs_to_class": "LinkedList",
+        "params": [],
+        "body": [
+          {
+            "type": "class_pointer_declaration",
+            "line": 45,
+            "scope": "function:LinkedList.LinkedList",
+            "id": 100005,
+            "class_type": "Node",
+            "name": "temp",
+            "pointer_category": "class_object"
+          },
+          {
+            "type": "while_statement",
+            "line": 46,
+            "scope": "function:LinkedList.LinkedList",
+            "condition": {
+              "type": "comparison",
+              "left": {
+                "type": "variable",
+                "name": "head",
+                "scope": "function:LinkedList.LinkedList",
+                "class_type": "Node"
+              },
+              "operator": "!=",
+              "right": {
+                "type": "variable",
+                "name": "nullptr",
+                "scope": "function:LinkedList.LinkedList"
+              }
+            },
+            "body": [
+              {
+                "type": "assignment",
+                "line": 47,
+                "scope": "while_body",
+                "name": "temp",
+                "value": {
+                  "type": "variable",
+                  "name": "head",
+                  "scope": "while_body",
+                  "class_type": "Node"
+                }
+              },
+              {
+                "type": "assignment",
+                "line": 48,
+                "scope": "while_body",
+                "name": "head",
+                "value": {
+                  "type": "member_access",
+                  "object": {
+                    "type": "variable",
+                    "name": "head",
+                    "scope": "while_body",
+                    "class_type": "Node"
+                  },
+                  "member": "next",
+                  "operator": "arrow",
+                  "pointer_access": true
+                }
+              },
+              {
+                "type": "delete_statement",
+                "line": 49,
+                "scope": "while_body",
+                "target": {
+                  "type": "variable",
+                  "name": "temp",
+                  "scope": "while_body",
+                  "class_type": "Node"
+                }
+              }
+            ]
+          }
+        ],
+        "line": 44
+      }
+    ],
+    "constructors": [
+      {
+        "type": "constructor",
+        "name": "LinkedList",
+        "line": 14,
+        "params": [],
+        "body": [
+          {
+            "type": "assignment",
+            "line": 15,
+            "scope": "constructor:LinkedList",
+            "name": "head",
+            "value": {
+              "type": "variable",
+              "name": "nullptr",
+              "scope": "constructor:LinkedList"
+            }
+          }
+        ]
+      }
+    ],
+    "destructors": [],
+    "line": 10
+  }
+}
