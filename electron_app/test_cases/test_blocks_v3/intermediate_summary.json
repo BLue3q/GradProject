@@ -1,0 +1,26 @@
+{
+  "total_blocks": 4,
+  "successful_compilations": 1,
+  "failed_compilations": 3,
+  "intermediate_files": [
+    {
+      "block": "simple_variables",
+      "file": "test_blocks_v3/simple_variables_intermediate.txt",
+      "lines": 4
+    }
+  ],
+  "errors": [
+    {
+      "block": "struct_Node",
+      "error": "Block skipped - not suitable for Java compiler"
+    },
+    {
+      "block": "main_execution",
+      "error": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.assign(Parser.java:171)\n\tat parser.Parser.stmt(Parser.java:163)\n\tat parser.Parser.stmts(Parser.java:98)\n\tat parser.Parser.block(Parser.java:48)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n"
+    },
+    {
+      "block": "function_printList",
+      "error": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.assign(Parser.java:171)\n\tat parser.Parser.stmt(Parser.java:163)\n\tat parser.Parser.stmts(Parser.java:98)\n\tat parser.Parser.block(Parser.java:48)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n"
+    }
+  ]
+}

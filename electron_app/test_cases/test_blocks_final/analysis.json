@@ -1,0 +1,361 @@
+{
+  "source_file": "electron_app/compiler/input.cpp",
+  "ast": [
+    {
+      "type": "parse_error",
+      "errors": [
+        "Syntax error at line 10 before 'head' (token type: IDENTIFIER)",
+        "Syntax error at line 10 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 11 before 'while' (token type: WHILE)",
+        "Syntax error at line 11 before '(' (token type: LPAREN)",
+        "Syntax error at line 11 before 'current' (token type: IDENTIFIER)",
+        "Syntax error at line 11 before '!=' (token type: NE)",
+        "Syntax error at line 11 before 'nullptr' (token type: NULLPTR)",
+        "Syntax error at line 11 before ')' (token type: RPAREN)",
+        "Syntax error at line 11 before '{' (token type: LBRACE)",
+        "Syntax error at line 12 before 'cout' (token type: COUT)",
+        "Syntax error at line 12 before '<<' (token type: LSHIFT)",
+        "Syntax error at line 12 before 'current' (token type: IDENTIFIER)",
+        "Syntax error at line 12 before '->' (token type: ARROW)",
+        "Syntax error at line 12 before 'data' (token type: IDENTIFIER)",
+        "Syntax error at line 12 before '<<' (token type: LSHIFT)",
+        "Syntax error at line 12 before ' -> ' (token type: STRING_LITERAL)",
+        "Syntax error at line 12 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 13 before 'current' (token type: IDENTIFIER)",
+        "Syntax error at line 13 before '=' (token type: EQUALS)",
+        "Syntax error at line 13 before 'current' (token type: IDENTIFIER)",
+        "Syntax error at line 13 before '->' (token type: ARROW)",
+        "Syntax error at line 13 before 'next' (token type: IDENTIFIER)",
+        "Syntax error at line 13 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 14 before '}' (token type: RBRACE)",
+        "Syntax error at line 15 before 'cout' (token type: COUT)",
+        "Syntax error at line 15 before '<<' (token type: LSHIFT)",
+        "Syntax error at line 15 before 'NULL' (token type: STRING_LITERAL)",
+        "Syntax error at line 15 before '<<' (token type: LSHIFT)",
+        "Syntax error at line 15 before 'endl' (token type: ENDL)",
+        "Syntax error at line 15 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 16 before '}' (token type: RBRACE)",
+        "Syntax error at line 18 before 'int' (token type: TYPE)",
+        "Syntax error at line 18 before 'main' (token type: MAIN)",
+        "Syntax error at line 18 before '(' (token type: LPAREN)",
+        "Syntax error at line 18 before ')' (token type: RPAREN)",
+        "Syntax error at line 18 before '{' (token type: LBRACE)",
+        "Syntax error at line 19 before 'Node' (token type: IDENTIFIER)",
+        "Syntax error at line 19 before '*' (token type: POINTER)",
+        "Syntax error at line 19 before 'head' (token type: IDENTIFIER)",
+        "Syntax error at line 19 before '=' (token type: EQUALS)",
+        "Syntax error at line 20 before '{' (token type: LBRACE)",
+        "Syntax error at line 20 before '2' (token type: NUMBER)",
+        "Syntax error at line 20 before ',' (token type: COMMA)",
+        "Syntax error at line 20 before 'nullptr' (token type: NULLPTR)",
+        "Syntax error at line 20 before '}' (token type: RBRACE)",
+        "Syntax error at line 20 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 21 before 'head' (token type: IDENTIFIER)",
+        "Syntax error at line 21 before '->' (token type: ARROW)",
+        "Syntax error at line 21 before 'next' (token type: IDENTIFIER)",
+        "Syntax error at line 21 before '->' (token type: ARROW)",
+        "Syntax error at line 21 before 'next' (token type: IDENTIFIER)",
+        "Syntax error at line 21 before '=' (token type: EQUALS)",
+        "Syntax error at line 21 before 'new' (token type: NEW)",
+        "Syntax error at line 21 before 'Node' (token type: IDENTIFIER)",
+        "Syntax error at line 21 before '{' (token type: LBRACE)",
+        "Syntax error at line 21 before '3' (token type: NUMBER)",
+        "Syntax error at line 21 before ',' (token type: COMMA)",
+        "Syntax error at line 21 before 'nullptr' (token type: NULLPTR)",
+        "Syntax error at line 21 before '}' (token type: RBRACE)",
+        "Syntax error at line 21 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 23 before 'printList' (token type: IDENTIFIER)",
+        "Syntax error at line 23 before '(' (token type: LPAREN)",
+        "Syntax error at line 23 before 'head' (token type: IDENTIFIER)",
+        "Syntax error at line 23 before ')' (token type: RPAREN)",
+        "Syntax error at line 23 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 24 before 'return' (token type: RETURN)",
+        "Syntax error at line 24 before '0' (token type: NUMBER)",
+        "Syntax error at line 24 before ';' (token type: SEMICOLON)",
+        "Syntax error at line 25 before '}' (token type: RBRACE)",
+        "Syntax error at EOF - unexpected end of input"
+      ],
+      "message": "Failed to parse C++ code"
+    }
+  ],
+  "functions": {},
+  "classes": {},
+  "blocks": [
+    {
+      "id": "simple_variables",
+      "description": "Simple variable declarations and assignments",
+      "lines": [
+        [
+          1,
+          "int head = 1;"
+        ],
+        [
+          2,
+          "int current = 1;"
+        ]
+      ],
+      "line_range": [
+        1,
+        2
+      ],
+      "code": "int head = 1;\nint current = 1;",
+      "type": "simple_variables",
+      "independent": true,
+      "java_compilable": true,
+      "variables": {
+        "head": {
+          "type": "int",
+          "value": "1"
+        },
+        "current": {
+          "type": "int",
+          "value": "1"
+        }
+      }
+    },
+    {
+      "id": "pointer_variables",
+      "description": "Pointer variables converted to integers",
+      "lines": [
+        [
+          1,
+          "int head = 1;"
+        ],
+        [
+          2,
+          "int current = 1;"
+        ]
+      ],
+      "line_range": [
+        1,
+        2
+      ],
+      "code": "int head = 1;\nint current = 1;",
+      "type": "pointer_variables",
+      "independent": true,
+      "java_compilable": true,
+      "variables": {
+        "head": {
+          "type": "int",
+          "value": "1"
+        },
+        "current": {
+          "type": "int",
+          "value": "1"
+        }
+      }
+    },
+    {
+      "id": "struct_Node",
+      "description": "Node structure definition",
+      "lines": [
+        [
+          1,
+          "#include <iostream>"
+        ],
+        [
+          2,
+          "using namespace std;"
+        ],
+        [
+          3,
+          ""
+        ],
+        [
+          4,
+          "struct Node {"
+        ],
+        [
+          5,
+          " int data;"
+        ],
+        [
+          6,
+          " Node* next;"
+        ],
+        [
+          7,
+          "};"
+        ]
+      ],
+      "line_range": [
+        1,
+        7
+      ],
+      "code": "#include <iostream>\nusing namespace std;\n\nstruct Node {\n int data;\n Node* next;\n};",
+      "struct_name": "Node",
+      "dependencies": [
+        "includes"
+      ],
+      "independent": true,
+      "java_compilable": false
+    },
+    {
+      "id": "main_execution",
+      "description": "Main function (documentation only)",
+      "lines": [
+        [
+          1,
+          "#include <iostream>"
+        ],
+        [
+          2,
+          "using namespace std;"
+        ],
+        [
+          3,
+          ""
+        ],
+        [
+          4,
+          "struct Node {"
+        ],
+        [
+          5,
+          " int data;"
+        ],
+        [
+          6,
+          " Node* next;"
+        ],
+        [
+          7,
+          "};"
+        ],
+        [
+          8,
+          ""
+        ],
+        [
+          9,
+          "int main() {"
+        ],
+        [
+          10,
+          " Node* head = new Node{1, nullptr};"
+        ],
+        [
+          11,
+          " head->next = new Node{2, nullptr};"
+        ],
+        [
+          12,
+          " head->next->next = new Node{3, nullptr};"
+        ],
+        [
+          13,
+          ""
+        ],
+        [
+          14,
+          " printList(head);"
+        ],
+        [
+          15,
+          " return 0;"
+        ],
+        [
+          16,
+          "}"
+        ]
+      ],
+      "line_range": [
+        1,
+        16
+      ],
+      "code": "#include <iostream>\nusing namespace std;\n\nstruct Node {\n int data;\n Node* next;\n};\n\nint main() {\n Node* head = new Node{1, nullptr};\n head->next = new Node{2, nullptr};\n head->next->next = new Node{3, nullptr};\n\n printList(head);\n return 0;\n}",
+      "function_name": "main",
+      "dependencies": [
+        "includes",
+        "struct_Node"
+      ],
+      "independent": true,
+      "complete_program": true,
+      "java_compilable": false
+    },
+    {
+      "id": "function_printList",
+      "description": "Function printList (documentation only)",
+      "lines": [
+        [
+          1,
+          "#include <iostream>"
+        ],
+        [
+          2,
+          "using namespace std;"
+        ],
+        [
+          3,
+          ""
+        ],
+        [
+          4,
+          "struct Node {"
+        ],
+        [
+          5,
+          " int data;"
+        ],
+        [
+          6,
+          " Node* next;"
+        ],
+        [
+          7,
+          "};"
+        ],
+        [
+          8,
+          ""
+        ],
+        [
+          9,
+          "void printList(Node* head) {"
+        ],
+        [
+          10,
+          " Node* current = head;"
+        ],
+        [
+          11,
+          " while (current != nullptr) {"
+        ],
+        [
+          12,
+          "     cout << current->data << \" -> \";"
+        ],
+        [
+          13,
+          "     current = current->next;"
+        ],
+        [
+          14,
+          " }"
+        ],
+        [
+          15,
+          " cout << \"NULL\" << endl;"
+        ],
+        [
+          16,
+          "}"
+        ]
+      ],
+      "line_range": [
+        1,
+        16
+      ],
+      "code": "#include <iostream>\nusing namespace std;\n\nstruct Node {\n int data;\n Node* next;\n};\n\nvoid printList(Node* head) {\n Node* current = head;\n while (current != nullptr) {\n     cout << current->data << \" -> \";\n     current = current->next;\n }\n cout << \"NULL\" << endl;\n}",
+      "function_name": "printList",
+      "dependencies": [
+        "includes",
+        "struct_Node"
+      ],
+      "independent": true,
+      "uses_iostream": true,
+      "uses_custom_types": true,
+      "java_compilable": false
+    }
+  ]
+}

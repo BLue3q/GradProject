@@ -1,0 +1,41 @@
+{
+  "total_blocks": 4,
+  "blocks": [
+    {
+      "id": "struct_Node",
+      "description": "Complete Node structure with dependencies",
+      "line_range": [
+        1,
+        7
+      ],
+      "file": "struct_Node.cpp"
+    },
+    {
+      "id": "function_printList",
+      "description": "Complete printList function with dependencies",
+      "line_range": [
+        1,
+        16
+      ],
+      "file": "function_printList.cpp"
+    },
+    {
+      "id": "main_execution",
+      "description": "Complete main function with all dependencies",
+      "line_range": [
+        1,
+        25
+      ],
+      "file": "main_execution.cpp"
+    },
+    {
+      "id": "complete_program",
+      "description": "Complete compilable program",
+      "line_range": [
+        1,
+        25
+      ],
+      "file": "complete_program.cpp"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "total_blocks": 5,
+  "blocks": [
+    {
+      "id": "simple_variables",
+      "description": "Simple variable declarations and assignments",
+      "line_range": [
+        1,
+        2
+      ],
+      "file": "simple_variables.cpp"
+    },
+    {
+      "id": "pointer_variables",
+      "description": "Pointer variables converted to integers",
+      "line_range": [
+        1,
+        2
+      ],
+      "file": "pointer_variables.cpp"
+    },
+    {
+      "id": "struct_Node",
+      "description": "Node structure definition",
+      "line_range": [
+        1,
+        7
+      ],
+      "file": "struct_Node.cpp"
+    },
+    {
+      "id": "main_execution",
+      "description": "Main function (documentation only)",
+      "line_range": [
+        1,
+        16
+      ],
+      "file": "main_execution.cpp"
+    },
+    {
+      "id": "function_printList",
+      "description": "Function printList (documentation only)",
+      "line_range": [
+        1,
+        16
+      ],
+      "file": "function_printList.cpp"
+    }
+  ]
+}

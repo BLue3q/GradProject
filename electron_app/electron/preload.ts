@@ -11,6 +11,7 @@ if ((globalThis as any).__electronAPIInitialized) {
   type AnalysisCallback = (data: string) => void;
   type DebugCallback = (data: string) => void;
   type CompilationCallback = (data: any) => void;
+  type ParseCompleteCallback = (data: { dataPath: string }) => void;
 
   let outputCallbacks: OutputCallback[] = [];
   let finishedCallbacks: ((code: number | null) => void)[] = [];
@@ -18,6 +19,7 @@ if ((globalThis as any).__electronAPIInitialized) {
   let analysisCallbacks: AnalysisCallback[] = [];
   let debugOutputCallbacks: DebugCallback[] = [];
   let compilationCallbacks: CompilationCallback[] = [];
+  let parseCompleteCallbacks: ParseCompleteCallback[] = [];
 
   // Listen for program output events from the main process
   ipcRenderer.on('program-output', (_event, data: string) => {
@@ -41,6 +43,12 @@ if ((globalThis as any).__electronAPIInitialized) {
   ipcRenderer.on('analysis-complete', (_event, data: string) => {
     // Call all registered callbacks with the analysis data
     analysisCallbacks.forEach(callback => callback(data));
+  });
+
+  // Listen for parse complete events
+  ipcRenderer.on('parse-complete', (_event, data: { dataPath: string }) => {
+    // Call all registered callbacks with the parse completion data
+    parseCompleteCallbacks.forEach(callback => callback(data));
   });
 
   // Listen for new analysis and debugging events
@@ -73,6 +81,14 @@ if ((globalThis as any).__electronAPIInitialized) {
   });
 
   contextBridge.exposeInMainWorld('electronAPI', {
+    // NEW: Save code and process pipeline
+    saveAndProcess: (code: string): Promise<{ success: boolean; message: string; dataPath?: string }> => 
+      ipcRenderer.invoke('save-and-process', code),
+    
+    // NEW: Code parsing for visualization
+    parseCode: (code: string): Promise<{ success: boolean; message: string; dataPath?: string }> => 
+      ipcRenderer.invoke('parse-code', code),
+    
     // Expose the compileCpp function to the renderer process
     compileCpp: (code: string): Promise<string> => ipcRenderer.invoke('compile-cpp', code),
     
@@ -188,6 +204,16 @@ if ((globalThis as any).__electronAPIInitialized) {
     // Remove callback for compilation results
     offCompilationComplete: (callback: CompilationCallback): void => {
       compilationCallbacks = compilationCallbacks.filter(cb => cb !== callback);
+    },
+    
+    // NEW: Register callback for parse complete events
+    onParseComplete: (callback: ParseCompleteCallback): void => {
+      parseCompleteCallbacks.push(callback);
+    },
+    
+    // NEW: Remove callback for parse complete events
+    offParseComplete: (callback: ParseCompleteCallback): void => {
+      parseCompleteCallbacks = parseCompleteCallbacks.filter(cb => cb !== callback);
     },
     
     // Check if the process is waiting for input

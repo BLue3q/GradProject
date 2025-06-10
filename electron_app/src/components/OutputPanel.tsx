@@ -40,9 +40,22 @@ const OutputPanel: React.FC<OutputPanelProps> = ({ output, isLoading, hasError }
   const fitAddon = useRef<FitAddon>(new FitAddon());
   const inputBuffer = useRef<string>('');
   
+  // Debug logging
+  console.log('🖥️ OutputPanel render:', { 
+    output: output?.substring(0, 100) + (output?.length > 100 ? '...' : ''),
+    outputLength: output?.length,
+    isLoading, 
+    hasError, 
+    isTerminalReady 
+  });
+  
   // Initialize terminal
   useEffect(() => {
+    console.log('🚀 OutputPanel useEffect: Initializing terminal');
+    
     if (terminalRef.current && !terminalInstance.current) {
+      console.log('📺 Creating new terminal instance');
+      
       // Create new terminal instance
       const terminal = new Terminal({
         theme: {
@@ -90,6 +103,10 @@ const OutputPanel: React.FC<OutputPanelProps> = ({ output, isLoading, hasError }
       terminalInstance.current = terminal;
       setIsTerminalReady(true);
       
+      // Write initial message
+      terminal.write('Terminal ready. Run code to see output...\r\n');
+      console.log('✅ Terminal initialized successfully');
+      
       // Add event listener for user input
       terminal.onData((data) => {
         if (isRunning && window.electronAPI) {
@@ -121,6 +138,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({ output, isLoading, hasError }
     return () => {
       // Clean up terminal
       if (terminalInstance.current) {
+        console.log('🧹 Cleaning up terminal');
         terminalInstance.current.dispose();
         terminalInstance.current = null;
       }
@@ -142,6 +160,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({ output, isLoading, hasError }
   // Reset terminal state when compilation starts
   useEffect(() => {
     if (isLoading && terminalInstance.current) {
+      console.log('🔄 Clearing terminal for new compilation');
       terminalInstance.current.clear();
       terminalInstance.current.write('Compiling and running...\r\n');
       setIsRunning(false);
@@ -150,7 +169,10 @@ const OutputPanel: React.FC<OutputPanelProps> = ({ output, isLoading, hasError }
   
   // Effect to handle initial output when component receives new output prop
   useEffect(() => {
+    console.log('📝 Output prop changed:', { output, outputLength: output?.length, isLoading, isTerminalReady });
+    
     if (!isLoading && output && isTerminalReady && terminalInstance.current) {
+      console.log('📺 Writing output to terminal');
       terminalInstance.current.clear();
       terminalInstance.current.write(output);
       setIsRunning(true);

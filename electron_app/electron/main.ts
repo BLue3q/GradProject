@@ -4,6 +4,13 @@ import { exec, spawn, ChildProcess } from 'child_process';
 import * as fs from 'fs';
 import * as os from 'os';
 
+// Helper function for resource path handling
+const getResourcePath = (...segments: string[]) => {
+  return process.env.NODE_ENV === 'production'
+    ? path.join(process.resourcesPath, ...segments)
+    : path.join(__dirname, '..', ...segments);
+};
+
 // Create temporary directory for compilation
 const tmpDir = path.join(os.tmpdir(), 'cpp-visualizer');
 if (!fs.existsSync(tmpDir)) {
@@ -19,6 +26,10 @@ let inputMode = false;
 // Add deduplication for events
 let lastEventSent = '';
 let lastEventTime = 0;
+
+// Global debugging state
+let debuggerProcess: ChildProcess | null = null;
+let isDebugging = false;
 
 const sendToRenderer = (channel: string, data: any) => {
   if (!mainWindow || mainWindow.isDestroyed()) return;
@@ -67,7 +78,7 @@ const createWindow = () => {
 
   if (process.env.NODE_ENV === 'development') {
     // Try different ports that Vite might be using
-    const tryPorts = [5173, 5174, 5175, 5176, 5177, 5178, 5179, 5180];
+    const tryPorts = [5173, 5174, 5175, 5176, 5177, 5178, 5179, 5180,5181, 5182, 5183, 5184, 5185, 5186, 5187, 5188, 5189];
     let connected = false;
     
     const tryNextPort = (index: number) => {
@@ -104,15 +115,133 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
+// New IPC handler for parsing code and generating visualization data
+ipcMain.handle('parse-code', async (event, code: string): Promise<{ success: boolean; message: string; dataPath?: string }> => {
+  try {
+    console.log('🔄 Starting code parsing...');
+    
+    // Create temporary file for code
+    const timestamp = Date.now();
+    const tempDir = path.join(tmpDir, `parse_${timestamp}`);
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+    
+    const cppFile = path.join(tempDir, 'input.cpp');
+    fs.writeFileSync(cppFile, code);
+    
+    // Path to Python parser
+    const parserPath = getResourcePath('backend', 'myparser.py');
+    
+    if (!fs.existsSync(parserPath)) {
+      throw new Error(`Parser not found at: ${parserPath}`);
+    }
+    
+    // Path for output JSON
+    const dataJsonPath = getResourcePath('data', 'data.json');
+    
+    console.log(`📦 Running Python parser: ${parserPath}`);
+    console.log(`💾 Output will be saved to: ${dataJsonPath}`);
+    
+    return new Promise((resolve) => {
+      const pythonProcess = spawn('python3', [parserPath, cppFile], {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        cwd: getResourcePath()
+      });
+      
+      let output = '';
+      let errorOutput = '';
+      
+      pythonProcess.stdout.on('data', (data) => {
+        output += data.toString();
+        console.log('Parser output:', data.toString());
+      });
+      
+      pythonProcess.stderr.on('data', (data) => {
+        errorOutput += data.toString();
+        console.error('Parser error:', data.toString());
+      });
+      
+      pythonProcess.on('close', (code) => {
+        if (code === 0) {
+          try {
+            // Check if parser created output.json in current directory
+            const possibleOutputPaths = [
+              path.join(getResourcePath(), 'output.json'),
+              path.join(getResourcePath(), 'data', 'output.json'),
+              path.join(process.cwd(), 'output.json')
+            ];
+            
+            let foundOutputPath = '';
+            for (const outputPath of possibleOutputPaths) {
+              if (fs.existsSync(outputPath)) {
+                foundOutputPath = outputPath;
+                break;
+              }
+            }
+            
+            if (foundOutputPath) {
+              // Read the generated JSON and copy it to data/data.json
+              const jsonData = fs.readFileSync(foundOutputPath, 'utf8');
+              
+              // Ensure data directory exists
+              const dataDir = getResourcePath('data');
+              if (!fs.existsSync(dataDir)) {
+                fs.mkdirSync(dataDir, { recursive: true });
+              }
+              
+              // Write to data.json
+              fs.writeFileSync(dataJsonPath, jsonData);
+              
+              console.log('✅ Parser completed successfully');
+              sendToRenderer('parse-complete', { dataPath: dataJsonPath });
+              
+              resolve({
+                success: true,
+                message: 'Code parsed successfully',
+                dataPath: dataJsonPath
+              });
+            } else {
+              resolve({
+                success: false,
+                message: `Parser completed but no output file found. Checked: ${possibleOutputPaths.join(', ')}`
+              });
+            }
+          } catch (error) {
+            resolve({
+              success: false,
+              message: `Error processing parser output: ${error instanceof Error ? error.message : String(error)}`
+            });
+          }
+        } else {
+          resolve({
+            success: false,
+            message: `Parser failed with exit code ${code}: ${errorOutput || output || 'Unknown error'}`
+          });
+        }
+      });
+      
+      pythonProcess.on('error', (err) => {
+        resolve({
+          success: false,
+          message: `Failed to start parser: ${err.message}`
+        });
+      });
+    });
+  } catch (error) {
+    return {
+      success: false,
+      message: `Parse code error: ${error instanceof Error ? error.message : String(error)}`
+    };
+  }
+});
+
 // Handle C++ compilation and execution
 ipcMain.handle('compile-cpp', async (event, code: string): Promise<string> => {
   // Clear any existing output before starting
   sendToRenderer('program-output', '');
   
   try {
-    console.log('Starting C++ compilation...');
-    sendToRenderer('program-output', 'Compiling...\n');
-
     // Clean up any existing process
     cleanupProcess();
 
@@ -122,11 +251,51 @@ ipcMain.handle('compile-cpp', async (event, code: string): Promise<string> => {
       fs.mkdirSync(tempDir, { recursive: true });
     }
 
+    // Preprocess the code first
+    const preprocessorPath = getResourcePath('backend', 'code_preprocessor_frontend.py');
+    let processedCode = code;
+    
+    if (fs.existsSync(preprocessorPath)) {
+      try {
+        // Run the preprocessor on the code
+        const preprocessorProcess = spawn('python3', [preprocessorPath, '--string', code], {
+          stdio: ['pipe', 'pipe', 'pipe']
+        });
+        
+        let preprocessorOutput = '';
+        let preprocessorError = '';
+        
+        preprocessorProcess.stdout.on('data', (data) => {
+          preprocessorOutput += data.toString();
+        });
+        
+        preprocessorProcess.stderr.on('data', (data) => {
+          preprocessorError += data.toString();
+        });
+        
+        await new Promise<void>((resolve) => {
+          preprocessorProcess.on('close', (code) => {
+            if (code === 0 && preprocessorOutput) {
+              // Extract the processed code from the output
+              const match = preprocessorOutput.match(/=== PREPROCESSED CODE ===([\s\S]*?)=== END PREPROCESSED CODE ===/);
+              if (match) {
+                processedCode = match[1].trim();
+              }
+            }
+            resolve();
+          });
+        });
+      } catch (preprocessError) {
+        // If preprocessing fails, use original code
+        console.warn('Preprocessing failed, using original code:', preprocessError);
+      }
+    }
+
     const cppFile = path.join(tempDir, 'main.cpp');
     const exeFile = path.join(tempDir, process.platform === 'win32' ? 'main.exe' : 'main');
 
-    // Write the code to the temporary file
-    fs.writeFileSync(cppFile, code);
+    // Write the processed code to the temporary file
+    fs.writeFileSync(cppFile, processedCode);
 
     // Compile the C++ code
     const compileArgs = process.platform === 'win32' 
@@ -141,126 +310,43 @@ ipcMain.handle('compile-cpp', async (event, code: string): Promise<string> => {
         stdio: ['pipe', 'pipe', 'pipe']
       });
 
+      let compileOutput = '';
       let compileError = '';
 
-      compileProcess.stderr.on('data', (data) => {
-        compileError += data.toString();
+      // Capture compilation stdout
+      compileProcess.stdout.on('data', (data) => {
+        const output = data.toString();
+        compileOutput += output;
+        sendToRenderer('program-output', output);
       });
 
-      compileProcess.on('error', (err) => {
-        const errorMsg = err.message;
-        sendToRenderer('program-output', `Compilation Error:\n${errorMsg}\n`);
-        resolve('compilation-failed');
+      // Capture compilation stderr
+      compileProcess.stderr.on('data', (data) => {
+        const output = data.toString();
+        compileError += output;
+        sendToRenderer('program-output', output);
       });
 
       compileProcess.on('close', (code) => {
-        if (code !== 0) {
-          // Compilation failed
-          const errorMsg = compileError || 'Unknown compilation error';
-          sendToRenderer('program-output', `Compilation Error:\n${errorMsg}\n`);
-          resolve('compilation-failed');
-          return;
+        if (code === 0) {
+          // Compilation successful, now run the program
+          sendToRenderer('program-output', `\n=== Program Output ===\n`);
+          
+          // Run the Python analysis in the background while executing the program
+          runPythonAnalysis(cppFile, processedCode);
+          
+          runCompiledProgram(exeFile, resolve);
+        } else {
+          resolve(`Compilation failed:\n${compileError || compileOutput}`);
         }
+      });
 
-        // Check if executable was created
-        if (!fs.existsSync(exeFile)) {
-          sendToRenderer('program-output', 'Compilation Error: Executable not created\n');
-          resolve('compilation-failed');
-          return;
-        }
-
-        // Compilation successful, now run the program
-        console.log('C++ compilation successful, running program...');
-        sendToRenderer('program-output', 'Compilation successful. Running program...\n');
-        sendToRenderer('program-output', '\n--- Program Output ---\n');
-
-        // Run the compiled program
-        currentProcess = spawn(exeFile, [], {
-          cwd: tempDir,
-          stdio: ['pipe', 'pipe', 'pipe']
-        });
-
-        // Track program state
-        let hasOutput = false;
-        let outputBuffer = '';
-        let errorBuffer = '';
-
-        // Handle stdout
-        currentProcess.stdout?.on('data', (data) => {
-          hasOutput = true;
-          const output = data.toString();
-          outputBuffer += output;
-          
-          // Real-time output streaming
-          sendToRenderer('program-output', output);
-        });
-
-        // Handle stderr as regular output (some C++ programs output to stderr)
-        currentProcess.stderr?.on('data', (data) => {
-          hasOutput = true;
-          const output = data.toString();
-          errorBuffer += output;
-          
-          // Check if it's actually an error or just regular output to stderr
-          // For now, treat it as regular output unless it contains error keywords
-          if (output.toLowerCase().includes('error') || 
-              output.toLowerCase().includes('exception') ||
-              output.toLowerCase().includes('fault')) {
-            sendToRenderer('program-output', `[Error] ${output}`);
-          } else {
-            sendToRenderer('program-output', output);
-          }
-        });
-
-        // Handle program completion
-        currentProcess.on('close', (exitCode) => {
-          console.log(`Program finished with exit code: ${exitCode}`);
-          
-          // Use a timeout to ensure all output is captured
-          setTimeout(() => {
-            if (!hasOutput && !outputBuffer && !errorBuffer) {
-              sendToRenderer('program-output', '[No output produced]\n');
-            }
-            
-            sendToRenderer('program-output', `\n--- Program finished with exit code: ${exitCode} ---\n`);
-            
-            sendToRenderer('program-finished', exitCode);
-            
-            currentProcess = null;
-            resolve('execution-completed');
-          }, 100); // Small delay to ensure all output is processed
-        });
-
-        // Handle program errors
-        currentProcess.on('error', (err) => {
-          console.error('Program runtime error:', err);
-          sendToRenderer('program-output', `\n[System] Runtime Error: ${err.message}\n`);
-          currentProcess = null;
-          resolve('execution-failed');
-        });
-
-        // Set up a timeout for the program execution (30 seconds)
-        const executionTimeout = setTimeout(() => {
-          if (currentProcess && !currentProcess.killed) {
-            console.log('Terminating program due to timeout');
-            currentProcess.kill('SIGTERM');
-            sendToRenderer('program-output', `\n[System] Program terminated due to timeout (30 seconds)\n`);
-            resolve('spawn-failed');
-          }
-        }, 30000);
-
-        // Clear timeout when process completes
-        currentProcess.on('close', () => {
-          clearTimeout(executionTimeout);
-        });
+      compileProcess.on('error', (err) => {
+        resolve(`Compilation error: ${err.message}`);
       });
     });
-
   } catch (error) {
-    console.error('System error during compilation:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    sendToRenderer('program-output', `\n[System] System Error: ${errorMessage}\n`);
-    return 'system-error';
+    return `System Error: ${error instanceof Error ? error.message : String(error)}`;
   }
 });
 
@@ -379,20 +465,64 @@ ipcMain.handle('run-python', async (event, scriptPath: string): Promise<string> 
   }
 });
 
+// Function to run compiled program
+function runCompiledProgram(exeFile: string, resolve: (value: string) => void) {
+  currentProcess = spawn(exeFile, [], {
+    stdio: ['pipe', 'pipe', 'pipe']
+  });
+
+  let outputData = '';
+  let hasOutput = false;
+
+  // Handle stdout
+  currentProcess.stdout?.on('data', (data) => {
+    hasOutput = true;
+    const output = data.toString();
+    outputData += output;
+    sendToRenderer('program-output', output);
+  });
+
+  // Handle stderr
+  currentProcess.stderr?.on('data', (data) => {
+    hasOutput = true;
+    const output = data.toString();
+    outputData += output;
+    sendToRenderer('program-output', output);
+  });
+
+  // Handle program completion
+  currentProcess.on('close', (exitCode) => {
+    setTimeout(() => {
+      if (!hasOutput && !outputData) {
+        sendToRenderer('program-output', '[No output produced]\n');
+      }
+      
+      sendToRenderer('program-finished', exitCode);
+      currentProcess = null;
+      resolve(outputData);
+    }, 100);
+  });
+
+  // Handle potential errors
+  currentProcess.on('error', (err) => {
+    currentProcess = null;
+    resolve(`Runtime Error: ${err.message}`);
+  });
+}
+
 // Function to run Python analysis after C++ execution
 async function runPythonAnalysis(cppFilePath: string, cppCode: string) {
   try {
-    // Look for Python analysis scripts in the root directory
-    const rootDir = path.join(__dirname, '..', '..');
-    const lexerPath = path.join(rootDir, 'mylexer.py');
-    const parserPath = path.join(rootDir, 'myparser.py');
+    // Look for Python analysis scripts using the getResourcePath helper
+    const parserPath = getResourcePath('backend', 'myparser.py');
+    const lexerPath = getResourcePath('backend', 'mylexer.py');
     
     // Check which script exists
     let scriptPath = '';
-    if (fs.existsSync(lexerPath)) {
-      scriptPath = lexerPath;
-    } else if (fs.existsSync(parserPath)) {
+    if (fs.existsSync(parserPath)) {
       scriptPath = parserPath;
+    } else if (fs.existsSync(lexerPath)) {
+      scriptPath = lexerPath;
     } else {
       console.log('No Python analysis script found - skipping analysis');
       return;
@@ -403,7 +533,7 @@ async function runPythonAnalysis(cppFilePath: string, cppCode: string) {
     // Run the Python script with the C++ file as input
     const pythonProcess = spawn('python3', [scriptPath, cppFilePath], {
       stdio: ['pipe', 'pipe', 'pipe'],
-      cwd: rootDir
+      cwd: getResourcePath()
     });
     
     let analysisOutput = '';
@@ -418,23 +548,31 @@ async function runPythonAnalysis(cppFilePath: string, cppCode: string) {
     
     pythonProcess.on('close', (code) => {
       if (code === 0) {
-        // Check if output.json was created
-        const outputJsonPath = path.join(rootDir, 'output.json');
-        if (fs.existsSync(outputJsonPath)) {
-          try {
-            // Read the output.json file
-            const jsonData = fs.readFileSync(outputJsonPath, 'utf8');
-            
-            // Send the analysis data to the renderer for visualization (not main output)
-            sendToRenderer('analysis-complete', jsonData);
-            
-            console.log('Python analysis completed successfully');
-          } catch (jsonError) {
-            console.error('Error reading analysis results:', jsonError);
+        // Check if output.json was created in various possible locations
+        const possibleOutputPaths = [
+          getResourcePath('output.json'),
+          getResourcePath('data', 'output.json'),
+          path.join(process.cwd(), 'output.json')
+        ];
+        
+        for (const outputJsonPath of possibleOutputPaths) {
+          if (fs.existsSync(outputJsonPath)) {
+            try {
+              // Read the output.json file
+              const jsonData = fs.readFileSync(outputJsonPath, 'utf8');
+              
+              // Send the analysis data to the renderer for visualization
+              sendToRenderer('analysis-complete', jsonData);
+              
+              console.log('Python analysis completed successfully');
+              return;
+            } catch (jsonError) {
+              console.error('Error reading analysis results:', jsonError);
+            }
           }
-        } else {
-          console.log('Python analysis completed but no output.json found');
         }
+        
+        console.log('Python analysis completed but no output.json found');
       } else {
         console.error(`Python analysis failed with exit code: ${code}`);
       }
@@ -473,8 +611,8 @@ ipcMain.handle('analyze-code', async (event, code: string) => {
       return `File write error: ${writeError instanceof Error ? writeError.message : String(writeError)}`;
     }
     
-    // Run code preprocessor
-    const preprocessorPath = path.join(__dirname, '..', '..', 'code_preprocessor.py');
+    // Run code preprocessor using the correct path
+    const preprocessorPath = getResourcePath('backend', 'code_preprocessor.py');
     const blocksDir = path.join(tempDir, 'code_blocks');
     
     // Check if preprocessor exists
@@ -489,7 +627,7 @@ ipcMain.handle('analyze-code', async (event, code: string) => {
       try {
         pythonProcess = spawn('python3', [preprocessorPath, cppFile, blocksDir], {
           stdio: ['pipe', 'pipe', 'pipe'],
-          cwd: path.join(__dirname, '..', '..'),
+          cwd: getResourcePath(),
           timeout: 60000
         });
         
@@ -572,5 +710,472 @@ ipcMain.handle('analyze-code', async (event, code: string) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error('Analyze-code error:', error);
     return `Analysis error: ${errorMessage}`;
+  }
+});
+
+// Handle GDB debugging
+ipcMain.handle('start-debugging', async (event, cppFileOrCode: string, breakpoints: any[] = []): Promise<string> => {
+  try {
+    console.log('Starting GDB debugging session...');
+    sendToRenderer('program-output', 'Starting GDB debugging session...\n');
+
+    // Clean up any existing debugging process
+    if (debuggerProcess && !debuggerProcess.killed) {
+      debuggerProcess.kill('SIGTERM');
+      debuggerProcess = null;
+    }
+
+    let cppFile = cppFileOrCode;
+    
+    // If the input looks like code (not a file path), create a temporary file
+    if (cppFileOrCode.includes('#include') || cppFileOrCode.includes('int main') || !fs.existsSync(cppFileOrCode)) {
+      const tempDir = path.join(os.tmpdir(), 'cpp-visualizer');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
+      
+      cppFile = path.join(tempDir, 'debug_temp.cpp');
+      fs.writeFileSync(cppFile, cppFileOrCode);
+      sendToRenderer('program-output', `Created temporary file: ${cppFile}\n`);
+    }
+
+    // Get the absolute path to the GDB debugger script
+    const debuggerScript = getResourcePath('backend', 'gdb_debugger.py');
+    
+    // Check if the debugger script exists
+    if (!fs.existsSync(debuggerScript)) {
+      const errorMsg = `GDB debugger script not found: ${debuggerScript}`;
+      sendToRenderer('program-output', `Error: ${errorMsg}\n`);
+      return 'debugger-not-found';
+    }
+
+    // Check if the C++ file exists
+    if (!fs.existsSync(cppFile)) {
+      const errorMsg = `C++ file not found: ${cppFile}`;
+      sendToRenderer('program-output', `Error: ${errorMsg}\n`);
+      return 'cpp-file-not-found';
+    }
+
+    // Create breakpoints file if breakpoints are provided
+    let breakpointsFile = '';
+    if (breakpoints && breakpoints.length > 0) {
+      const tempDir = path.join(os.tmpdir(), 'cpp-visualizer');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
+      
+      breakpointsFile = path.join(tempDir, 'breakpoints.json');
+      fs.writeFileSync(breakpointsFile, JSON.stringify(breakpoints, null, 2));
+    }
+
+    // Start the GDB debugger process
+    const args = [debuggerScript, cppFile];
+    if (breakpointsFile) {
+      args.push(breakpointsFile);
+    }
+
+    debuggerProcess = spawn('python3', args, {
+      cwd: getResourcePath(),
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
+
+    isDebugging = true;
+
+    // Handle stdout from debugger
+    debuggerProcess.stdout?.on('data', (data) => {
+      const output = data.toString();
+      sendToRenderer('debug-output', output);
+    });
+
+    // Handle stderr from debugger
+    debuggerProcess.stderr?.on('data', (data) => {
+      const output = data.toString();
+      sendToRenderer('debug-error', output);
+    });
+
+    // Handle debugger process completion
+    debuggerProcess.on('close', (code) => {
+      console.log(`GDB debugger process finished with exit code: ${code}`);
+      sendToRenderer('debug-session-ended', code);
+      debuggerProcess = null;
+      isDebugging = false;
+    });
+
+    // Handle debugger process errors
+    debuggerProcess.on('error', (err) => {
+      console.error('GDB debugger process error:', err);
+      sendToRenderer('debug-error', `Debugger Error: ${err.message}`);
+      debuggerProcess = null;
+      isDebugging = false;
+    });
+
+    return 'debugging-started';
+
+  } catch (error) {
+    console.error('Error starting debugging:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    sendToRenderer('program-output', `\n[System] Debugging Error: ${errorMessage}\n`);
+    return 'debugging-failed';
+  }
+});
+
+// Handle stopping debugging
+ipcMain.on('stop-debugging', () => {
+  if (debuggerProcess && !debuggerProcess.killed) {
+    debuggerProcess.kill('SIGTERM');
+    debuggerProcess = null;
+    isDebugging = false;
+    sendToRenderer('debug-output', 'Debugging session stopped by user\n');
+  }
+});
+
+// Debug control commands
+ipcMain.on('debug-step-over', () => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write('step\n');
+  }
+});
+
+ipcMain.on('debug-step-into', () => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write('stepi\n');
+  }
+});
+
+ipcMain.on('debug-step-out', () => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write('finish\n');
+  }
+});
+
+ipcMain.on('debug-continue', () => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write('continue\n');
+  }
+});
+
+ipcMain.on('debug-run', () => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write('run\n');
+  }
+});
+
+// Breakpoint management
+ipcMain.handle('set-breakpoint', async (event, file: string, line: number): Promise<string> => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write(`break ${file}:${line}\n`);
+    return `Breakpoint set at ${file}:${line}`;
+  }
+  return 'No debugging session active';
+});
+
+ipcMain.handle('remove-breakpoint', async (event, breakpointId: number): Promise<string> => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write(`delete ${breakpointId}\n`);
+    return `Breakpoint ${breakpointId} removed`;
+  }
+  return 'No debugging session active';
+});
+
+// Expression evaluation
+ipcMain.handle('evaluate-expression', async (event, expression: string): Promise<string> => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write(`print ${expression}\n`);
+    return `Evaluating: ${expression}`;
+  }
+  return 'No debugging session active';
+});
+
+// Send custom debug command
+ipcMain.on('debug-command', (event, command: string) => {
+  if (debuggerProcess && isDebugging) {
+    debuggerProcess.stdin?.write(`${command}\n`);
+  }
+});
+
+// Handle Java blocks compilation
+ipcMain.handle('compile-blocks', async (event, blocksDir: string): Promise<string> => {
+  try {
+    console.log('Starting Java blocks compilation...');
+    sendToRenderer('program-output', 'Starting Java blocks compilation...\n');
+
+    // Get the absolute path to the Java compiler runner script
+    const compilerScript = getResourcePath('backend', 'java_compiler_runner.py');
+    
+    // Check if the compiler script exists
+    if (!fs.existsSync(compilerScript)) {
+      const errorMsg = `Java compiler script not found: ${compilerScript}`;
+      sendToRenderer('program-output', `Error: ${errorMsg}\n`);
+      return 'compiler-not-found';
+    }
+
+    // Check if the blocks directory exists
+    if (!fs.existsSync(blocksDir)) {
+      const errorMsg = `Blocks directory not found: ${blocksDir}`;
+      sendToRenderer('program-output', `Error: ${errorMsg}\n`);
+      return 'blocks-dir-not-found';
+    }
+
+    return new Promise<string>((resolve) => {
+      // Start the Java compiler runner process
+      const compilerProcess = spawn('python3', [compilerScript, blocksDir], {
+        cwd: getResourcePath(),
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+
+      let outputData = '';
+      let errorData = '';
+
+      // Handle stdout from compiler
+      compilerProcess.stdout?.on('data', (data) => {
+        const output = data.toString();
+        outputData += output;
+        sendToRenderer('program-output', output);
+      });
+
+      // Handle stderr from compiler
+      compilerProcess.stderr?.on('data', (data) => {
+        const output = data.toString();
+        errorData += output;
+        sendToRenderer('program-output', `[Compiler Error] ${output}`);
+      });
+
+      // Handle compiler process completion
+      compilerProcess.on('close', (code) => {
+        console.log(`Java compiler process finished with exit code: ${code}`);
+        
+        if (code === 0) {
+          sendToRenderer('program-output', '\n--- Compilation completed successfully ---\n');
+          
+          // Check for compilation results file
+          const resultsFile = path.join(blocksDir, 'compilation_results.json');
+          if (fs.existsSync(resultsFile)) {
+            try {
+              const results = fs.readFileSync(resultsFile, 'utf8');
+              sendToRenderer('compilation-complete', JSON.parse(results));
+            } catch (err) {
+              console.error('Error reading compilation results:', err);
+            }
+          }
+          
+          resolve('compilation-successful');
+        } else {
+          sendToRenderer('program-output', `\n--- Compilation failed with exit code: ${code} ---\n`);
+          resolve('compilation-failed');
+        }
+      });
+
+      // Handle compiler process errors
+      compilerProcess.on('error', (err) => {
+        console.error('Java compiler process error:', err);
+        sendToRenderer('program-output', `\n[System] Compiler Error: ${err.message}\n`);
+        resolve('compilation-error');
+      });
+
+      // Set up timeout for compilation (5 minutes)
+      const compilationTimeout = setTimeout(() => {
+        compilerProcess.kill('SIGTERM');
+        sendToRenderer('program-output', `\n[System] Compilation terminated due to timeout (5 minutes)\n`);
+        resolve('compilation-timeout');
+      }, 300000);
+
+      // Clear timeout when process completes
+      compilerProcess.on('close', () => {
+        clearTimeout(compilationTimeout);
+      });
+    });
+
+  } catch (error) {
+    console.error('Error starting compilation:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    sendToRenderer('program-output', `\n[System] Compilation Error: ${errorMessage}\n`);
+    return 'compilation-system-error';
+  }
+});
+
+// Handle save-and-process pipeline
+ipcMain.handle('save-and-process', async (event, code: string): Promise<{ success: boolean; message: string; dataPath?: string }> => {
+  try {
+    console.log('🔄 Starting save-and-process pipeline...');
+    
+    const backendDir = getResourcePath('backend');
+    const testedCodeFile = path.join(backendDir, 'tested_code.txt');
+    const outputJsonFile = path.join(backendDir, 'output.json');
+    const testerScript = path.join(backendDir, 'tester_code.py');
+    const preprocessorScript = path.join(backendDir, 'code_preprocessor.py');
+    
+    // Step 1: Clean code by removing cout statements and save to tested_code.txt
+    console.log('📝 Cleaning code and saving to tested_code.txt...');
+    
+    // **AUTO-REMOVE COUT STATEMENTS**: Clean up output statements that break parsing
+    const cleanCode = (originalCode: string): string => {
+      console.log('🧹 Removing cout statements for better parsing...');
+      
+      let cleaned = originalCode;
+      
+      // **PRECISE COUT REMOVAL**: Only remove complete cout statements, preserve other tokens
+      // Remove simple cout statements (more precise patterns)
+      cleaned = cleaned.replace(/^\s*std::cout\s*<<[^;]*;\s*$/gm, '');
+      cleaned = cleaned.replace(/^\s*cout\s*<<[^;]*;\s*$/gm, '');
+      
+      // Remove cout with endl (more precise)
+      cleaned = cleaned.replace(/^\s*std::cout\s*<<.*?<<\s*std::endl\s*;\s*$/gm, '');
+      cleaned = cleaned.replace(/^\s*cout\s*<<.*?<<\s*endl\s*;\s*$/gm, '');
+      
+      // Remove standalone printf statements too
+      cleaned = cleaned.replace(/^\s*printf\s*\([^)]*\)\s*;\s*$/gm, '');
+      
+      // **SAFER APPROACH**: Comment out instead of deleting to preserve line structure
+      // This prevents token mangling issues
+      cleaned = cleaned.replace(/^(\s*)(std::cout|cout)(\s*<<[^;]*;)(.*)$/gm, '$1// $2$3 // Auto-commented for parsing$4');
+      
+      // Remove excessive blank lines
+      cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n\n');
+      
+      // Add comment to indicate cleaning
+      const cleaningNote = '// Note: cout statements removed for parsing optimization\n';
+      if (!cleaned.includes('// Note: cout statements removed')) {
+        cleaned = cleaningNote + cleaned;
+      }
+      
+      console.log(`🧹 Cleaned code: ${originalCode.length - cleaned.length} characters removed/commented`);
+      return cleaned;
+    };
+    
+    const cleanedCode = cleanCode(code);
+    fs.writeFileSync(testedCodeFile, cleanedCode);
+    sendToRenderer('program-output', `✅ Cleaned code saved to ${testedCodeFile}\n`);
+    
+    // Step 2: Run tester_code.py
+    console.log('🔄 Running tester_code.py...');
+    sendToRenderer('program-output', '🔄 Running parser (tester_code.py)...\n');
+    
+    const testerResult = await new Promise<boolean>((resolve) => {
+      const testerProcess = spawn('python3', [testerScript], {
+        cwd: backendDir,
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      
+      let testerOutput = '';
+      let testerError = '';
+      
+      testerProcess.stdout?.on('data', (data) => {
+        const output = data.toString();
+        testerOutput += output;
+        sendToRenderer('program-output', output);
+      });
+      
+      testerProcess.stderr?.on('data', (data) => {
+        const output = data.toString();
+        testerError += output;
+        sendToRenderer('program-output', `[Parser Error] ${output}`);
+      });
+      
+      testerProcess.on('close', (code) => {
+        if (code === 0) {
+          sendToRenderer('program-output', '✅ Parser completed successfully\n');
+          resolve(true);
+        } else {
+          sendToRenderer('program-output', `❌ Parser failed with exit code: ${code}\n`);
+          resolve(false);
+        }
+      });
+      
+      testerProcess.on('error', (err) => {
+        sendToRenderer('program-output', `❌ Parser process error: ${err.message}\n`);
+        resolve(false);
+      });
+    });
+    
+    if (!testerResult) {
+      return { success: false, message: 'Parser (tester_code.py) failed' };
+    }
+    
+    // Check if output.json was created
+    if (!fs.existsSync(outputJsonFile)) {
+      return { success: false, message: 'output.json was not created by parser' };
+    }
+    
+    // Step 3: Run code_preprocessor.py to process output.json
+    console.log('🔄 Running code_preprocessor.py for block detection...');
+    sendToRenderer('program-output', '🔄 Running block detection (code_preprocessor.py)...\n');
+    
+    const preprocessorResult = await new Promise<boolean>((resolve) => {
+      // Use the new pipeline method
+      const preprocessorProcess = spawn('python3', ['-c', `
+import sys
+sys.path.append('.')
+from code_preprocessor import CodeBlockPreprocessor
+
+preprocessor = CodeBlockPreprocessor('code_blocks')
+success = preprocessor.process_output_json_pipeline('output.json')
+sys.exit(0 if success else 1)
+`], {
+        cwd: backendDir,
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      
+      let preprocessorOutput = '';
+      let preprocessorError = '';
+      
+      preprocessorProcess.stdout?.on('data', (data) => {
+        const output = data.toString();
+        preprocessorOutput += output;
+        sendToRenderer('program-output', output);
+      });
+      
+      preprocessorProcess.stderr?.on('data', (data) => {
+        const output = data.toString();
+        preprocessorError += output;
+        sendToRenderer('program-output', `[Preprocessor Error] ${output}`);
+      });
+      
+      preprocessorProcess.on('close', (code) => {
+        if (code === 0) {
+          sendToRenderer('program-output', '✅ Block detection completed successfully\n');
+          resolve(true);
+        } else {
+          sendToRenderer('program-output', `❌ Block detection failed with exit code: ${code}\n`);
+          resolve(false);
+        }
+      });
+      
+      preprocessorProcess.on('error', (err) => {
+        sendToRenderer('program-output', `❌ Preprocessor process error: ${err.message}\n`);
+        resolve(false);
+      });
+    });
+    
+    if (!preprocessorResult) {
+      return { success: false, message: 'Block detection (code_preprocessor.py) failed' };
+    }
+    
+    // Step 4: Load and send the results
+    const analysisJsonFile = path.join(backendDir, 'code_blocks', 'analysis.json');
+    if (fs.existsSync(analysisJsonFile)) {
+      try {
+        const analysisData = JSON.parse(fs.readFileSync(analysisJsonFile, 'utf8'));
+        
+        // Send analysis complete event
+        sendToRenderer('analysis-complete', JSON.stringify(analysisData));
+        sendToRenderer('program-output', '🎯 Pipeline completed! Analysis data sent to frontend.\n');
+        
+        return {
+          success: true,
+          message: 'Save-and-process pipeline completed successfully',
+          dataPath: analysisJsonFile
+        };
+      } catch (parseError) {
+        return { success: false, message: `Failed to parse analysis results: ${parseError}` };
+      }
+    } else {
+      return { success: false, message: 'Analysis results file not found' };
+    }
+    
+  } catch (error) {
+    console.error('Error in save-and-process pipeline:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    sendToRenderer('program-output', `❌ Pipeline Error: ${errorMessage}\n`);
+    return { success: false, message: errorMessage };
   }
 });

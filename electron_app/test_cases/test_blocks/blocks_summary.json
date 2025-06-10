@@ -1,0 +1,41 @@
+{
+  "total_blocks": 4,
+  "blocks": [
+    {
+      "id": "struct_Node",
+      "description": "Node structure definition",
+      "line_range": [
+        4,
+        7
+      ],
+      "file": "struct_Node.cpp"
+    },
+    {
+      "id": "function_printList",
+      "description": "Function: printList",
+      "line_range": [
+        9,
+        16
+      ],
+      "file": "function_printList.cpp"
+    },
+    {
+      "id": "main_execution",
+      "description": "Main function execution",
+      "line_range": [
+        18,
+        25
+      ],
+      "file": "main_execution.cpp"
+    },
+    {
+      "id": "includes",
+      "description": "Header includes and using statements",
+      "line_range": [
+        1,
+        2
+      ],
+      "file": "includes.cpp"
+    }
+  ]
+}

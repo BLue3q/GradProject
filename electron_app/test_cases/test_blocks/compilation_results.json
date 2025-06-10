@@ -1,0 +1,32 @@
+{
+  "includes": {
+    "returncode": 0,
+    "stdout": "L1:\tx = 1\nL3:\ty = 2\nL2:\n",
+    "stderr": "",
+    "intermediate_code": "L1:\tx = 1\nL3:\ty = 2\nL2:\n"
+  },
+  "struct_Node": {
+    "returncode": 0,
+    "stdout": "L1:\tx = 1\nL3:\ty = 2\nL2:\n",
+    "stderr": "",
+    "intermediate_code": "L1:\tx = 1\nL3:\ty = 2\nL2:\n"
+  },
+  "main_execution": {
+    "returncode": 0,
+    "stdout": "L1:\tx = 1\nL5:\tx = 1\nL4:\ty = 2\nL3:\tx = 0\nL2:\n",
+    "stderr": "",
+    "intermediate_code": "L1:\tx = 1\nL5:\tx = 1\nL4:\ty = 2\nL3:\tx = 0\nL2:\n"
+  },
+  "temp_input": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.decls(Parser.java:59)\n\tat parser.Parser.block(Parser.java:47)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n",
+    "intermediate_code": null
+  },
+  "function_printList": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.decls(Parser.java:59)\n\tat parser.Parser.block(Parser.java:47)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n",
+    "intermediate_code": null
+  }
+}

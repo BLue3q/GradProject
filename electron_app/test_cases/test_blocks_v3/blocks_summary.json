@@ -1,0 +1,41 @@
+{
+  "total_blocks": 4,
+  "blocks": [
+    {
+      "id": "main_execution",
+      "description": "Main function with variable operations",
+      "line_range": [
+        1,
+        16
+      ],
+      "file": "main_execution.cpp"
+    },
+    {
+      "id": "function_printList",
+      "description": "Function printList with variable operations",
+      "line_range": [
+        1,
+        16
+      ],
+      "file": "function_printList.cpp"
+    },
+    {
+      "id": "simple_variables",
+      "description": "Simple variable declarations and assignments",
+      "line_range": [
+        1,
+        2
+      ],
+      "file": "simple_variables.cpp"
+    },
+    {
+      "id": "struct_Node",
+      "description": "Node structure definition",
+      "line_range": [
+        1,
+        7
+      ],
+      "file": "struct_Node.cpp"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import './CodeEditor.css';
 
 interface Breakpoint {
   line: number;
@@ -10,17 +11,26 @@ interface CodeEditorProps {
   onChange: (code: string) => void;
   breakpoints?: Breakpoint[];
   onSetBreakpoint?: (line: number) => void;
+  onSaveAndProcess?: (code: string) => void;
+  onAutoAnalyze?: (code: string) => void;
+  autoAnalyzeEnabled?: boolean;
+  showSaveButton?: boolean;
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ 
   initialCode, 
   onChange, 
   breakpoints = [], 
-  onSetBreakpoint 
+  onSetBreakpoint,
+  onSaveAndProcess,
+  onAutoAnalyze,
+  autoAnalyzeEnabled = true,
+  showSaveButton = false
 }) => {
   const [code, setCode] = useState(initialCode);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Update local state when initialCode prop changes
   useEffect(() => {
@@ -32,6 +42,20 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setCode(newCode);
     onChange(newCode);
     updateLineNumbers();
+
+    // Automatic analysis with debouncing
+    if (autoAnalyzeEnabled && onAutoAnalyze) {
+      // Clear existing timer
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+      
+      // Set new timer for auto-analysis (2 second delay after user stops typing)
+      debounceTimer.current = setTimeout(() => {
+        console.log('🔄 Auto-triggering analysis after code change...');
+        onAutoAnalyze(newCode);
+      }, 2000);
+    }
   };
 
   const updateLineNumbers = () => {
@@ -62,6 +86,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
+  const handleSaveAndProcess = () => {
+    if (onSaveAndProcess) {
+      onSaveAndProcess(code);
+    }
+  };
+
   useEffect(() => {
     updateLineNumbers();
   }, [code, breakpoints]);
@@ -74,8 +104,35 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   }, []);
 
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, []);
+
   return (
     <div className="code-editor">
+      {showSaveButton && onSaveAndProcess && (
+        <div className="editor-toolbar">
+          <button 
+            className="save-process-button"
+            onClick={handleSaveAndProcess}
+            title="Save code and run full analysis pipeline"
+          >
+            🔄 Save & Process
+          </button>
+        </div>
+      )}
+      {autoAnalyzeEnabled && (
+        <div className="auto-analysis-indicator">
+          <small style={{ color: '#888', fontStyle: 'italic' }}>
+            ⚡ Auto-analysis enabled - changes will be processed automatically
+          </small>
+        </div>
+      )}
       <div className="editor-container">
         <div 
           className="line-numbers" 

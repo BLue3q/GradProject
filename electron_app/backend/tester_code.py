@@ -8,6 +8,101 @@ import json
 import os
 from myparser import parse_cpp_code, clear_parse_state
 
+def count_heap_objects(ast):
+    """Count objects allocated on heap for visualization assessment"""
+    count = 0
+    for node in ast:
+        if isinstance(node, dict):
+            if node.get('type') == 'the standard Main_Function ':
+                for stmt in node.get('body', []):
+                    if stmt.get('type') == 'class_pointer_declaration' and stmt.get('allocation') == 'new':
+                        count += 1
+    return count
+
+def count_pointer_links(ast):
+    """Count pointer assignments that create visual connections"""
+    count = 0
+    for node in ast:
+        if isinstance(node, dict):
+            if node.get('type') == 'the standard Main_Function ':
+                for stmt in node.get('body', []):
+                    if (stmt.get('type') == 'member_assignment' and 
+                        stmt.get('pointer_access') and 
+                        isinstance(stmt.get('value'), dict) and 
+                        stmt.get('value', {}).get('type') == 'variable'):
+                        count += 1
+    return count
+
+def detect_data_structures(ast, classes_dict):
+    """Detect common data structures for better visualization"""
+    structures = []
+    
+    # Check for linked list pattern
+    node_class = classes_dict.get('Node')
+    if node_class:
+        has_data = any(m.get('name') == 'data' for m in node_class.get('members', []))
+        has_next = any(m.get('name') == 'next' and m.get('pointer') for m in node_class.get('members', []))
+        if has_data and has_next:
+            structures.append('LinkedList')
+    
+    # Check for tree pattern
+    if node_class:
+        has_left = any(m.get('name') == 'left' and m.get('pointer') for m in node_class.get('members', []))
+        has_right = any(m.get('name') == 'right' and m.get('pointer') for m in node_class.get('members', []))
+        if has_left and has_right:
+            structures.append('BinaryTree')
+    
+    return structures
+
+def assess_visualization_quality(ast, classes_dict):
+    """Assess how well this code will visualize"""
+    score = 0
+    issues = []
+    
+    # Check for proper class structure
+    if len(classes_dict) >= 1:
+        score += 25
+    else:
+        issues.append("No classes defined")
+    
+    # Check for heap allocations
+    heap_count = count_heap_objects(ast)
+    if heap_count >= 2:
+        score += 25
+    elif heap_count >= 1:
+        score += 15
+    else:
+        issues.append("No heap objects for visualization")
+    
+    # Check for pointer connections
+    link_count = count_pointer_links(ast)
+    if link_count >= 2:
+        score += 25
+    elif link_count >= 1:
+        score += 15
+    else:
+        issues.append("No pointer links for connections")
+    
+    # Check for public member access
+    public_members = 0
+    for class_info in classes_dict.values():
+        for member in class_info.get('members', []):
+            if member.get('type') == 'member_variable':
+                public_members += 1
+    
+    if public_members >= 2:
+        score += 25
+    elif public_members >= 1:
+        score += 15
+    else:
+        issues.append("No accessible member variables")
+    
+    return {
+        "score": score,
+        "rating": "Excellent" if score >= 90 else "Good" if score >= 70 else "Fair" if score >= 50 else "Poor",
+        "issues": issues
+    }
+
 def main():
     try:
         # Read code from tested_code.txt
@@ -38,7 +133,12 @@ def main():
                 "total_nodes": len(ast) if ast else 0,
                 "function_count": len(functions_dict),
                 "class_count": len(classes_dict),
-                "lines_of_code": len(tested_code.split('\n'))
+                "lines_of_code": len(tested_code.split('\n')),
+                # Enhanced metadata for visualization
+                "heap_objects": count_heap_objects(ast),
+                "pointer_links": count_pointer_links(ast),
+                "data_structures": detect_data_structures(ast, classes_dict),
+                "visualization_quality": assess_visualization_quality(ast, classes_dict)
             }
         }
         

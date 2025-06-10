@@ -1,146 +1,47 @@
 {
-  "total_blocks": 13,
+  "total_blocks": 4,
   "blocks": [
     {
-      "id": "block_1",
-      "description": "Node",
+      "id": "block_2",
+      "description": "unknown_function",
       "line_range": [
-        4,
+        7,
+        7
+      ],
+      "file": "block_2.cpp",
+      "type": "function",
+      "name": "unknown_function"
+    },
+    {
+      "id": "block_1",
+      "description": "code_block_263",
+      "line_range": [
+        3,
         8
       ],
       "file": "block_1.cpp",
-      "type": "class",
-      "name": "Node"
-    },
-    {
-      "id": "block_3",
-      "description": "code_block_46",
-      "line_range": [
-        14,
-        16
-      ],
-      "file": "block_3.cpp",
       "type": "code_block",
-      "name": "code_block_46"
-    },
-    {
-      "id": "block_5",
-      "description": "if_statement_293",
-      "line_range": [
-        23,
-        25
-      ],
-      "file": "block_5.cpp",
-      "type": "if_statement",
-      "name": "if_statement_293"
-    },
-    {
-      "id": "block_7",
-      "description": "while_loop_507",
-      "line_range": [
-        29,
-        31
-      ],
-      "file": "block_7.cpp",
-      "type": "while_loop",
-      "name": "while_loop_507"
-    },
-    {
-      "id": "block_6",
-      "description": "else_statement_913",
-      "line_range": [
-        26,
-        33
-      ],
-      "file": "block_6.cpp",
-      "type": "else_statement",
-      "name": "else_statement_913"
+      "name": "code_block_263"
     },
     {
       "id": "block_4",
-      "description": "append",
+      "description": "while_loop_890",
       "line_range": [
-        18,
-        34
+        28,
+        31
       ],
       "file": "block_4.cpp",
-      "type": "function",
-      "name": "append"
-    },
-    {
-      "id": "block_9",
-      "description": "while_loop_571",
-      "line_range": [
-        39,
-        41
-      ],
-      "file": "block_9.cpp",
       "type": "while_loop",
-      "name": "while_loop_571"
+      "name": "while_loop_890"
     },
     {
-      "id": "block_8",
-      "description": "print",
-      "line_range": [
-        36,
-        42
-      ],
-      "file": "block_8.cpp",
-      "type": "function",
-      "name": "print"
-    },
-    {
-      "id": "block_11",
-      "description": "while_loop_782",
-      "line_range": [
-        46,
-        50
-      ],
-      "file": "block_11.cpp",
-      "type": "while_loop",
-      "name": "while_loop_782"
-    },
-    {
-      "id": "block_10",
-      "description": "code_block_868",
-      "line_range": [
-        44,
-        51
-      ],
-      "file": "block_10.cpp",
-      "type": "code_block",
-      "name": "code_block_868"
-    },
-    {
-      "id": "block_2",
-      "description": "LinkedList",
-      "line_range": [
-        10,
-        52
-      ],
-      "file": "block_2.cpp",
-      "type": "class",
-      "name": "LinkedList"
-    },
-    {
-      "id": "block_13",
-      "description": "code_block_255",
-      "line_range": [
-        61,
-        61
-      ],
-      "file": "block_13.cpp",
-      "type": "code_block",
-      "name": "code_block_255"
-    },
-    {
-      "id": "block_12",
+      "id": "block_3",
       "description": "main",
       "line_range": [
-        54,
-        67
+        10,
+        34
       ],
-      "file": "block_12.cpp",
+      "file": "block_3.cpp",
       "type": "main_function",
       "name": "main"
     }

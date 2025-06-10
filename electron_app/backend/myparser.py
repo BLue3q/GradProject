@@ -103,6 +103,7 @@ def p_stmt(p):
             | main_function_stmt
             | class_declaration_stmt
             | assignment_stmt
+            | compound_assignment_stmt
             | member_assignment_stmt
             | method_call_stmt
             | function_call_stmt
@@ -171,7 +172,8 @@ def p_main_function_stmt(p):
     pop_scope()
 
 def p_class_declaration_stmt(p):
-    '''class_declaration_stmt : CLASS IDENTIFIER LBRACE class_members RBRACE SEMICOLON'''
+    '''class_declaration_stmt : CLASS IDENTIFIER LBRACE class_members RBRACE SEMICOLON
+                             | STRUCT IDENTIFIER LBRACE class_members RBRACE SEMICOLON'''
     class_name = p[2]
     class_scope = f'class:{class_name}'
     set_scope(class_scope)
@@ -231,6 +233,31 @@ def p_assignment_stmt(p):
     # Set scope for the assignment's value (e.g., new_array)
     if isinstance(p[3], dict):
         set_scope_for_value(p[3], current_scope)
+
+def p_compound_assignment_stmt(p):
+    '''compound_assignment_stmt : IDENTIFIER INCREMENT SEMICOLON
+                                | IDENTIFIER DECREMENT SEMICOLON
+                                | IDENTIFIER PLUS_EQUALS value SEMICOLON
+                                | IDENTIFIER MINUS_EQUALS value SEMICOLON
+                                | IDENTIFIER TIMES_EQUALS value SEMICOLON
+                                | IDENTIFIER DIVIDE_EQUALS value SEMICOLON'''
+    current_scope = get_current_scope()
+    if len(p) == 4:  # ++ or --
+        operator = '++' if 'INCREMENT' in str(p[2]) else '--'
+        value = None
+    else:  # +=, -=, *=, /=
+        operator = str(p[2]).replace('_EQUALS', '=')
+        value = p[3]
+        set_scope_for_value(value, current_scope)
+    
+    p[0] = {
+        'type': 'compound_assignment',
+        'line': p.lineno(1),
+        'scope': current_scope,
+        'name': p[1],
+        'operator': operator,
+        'value': value
+    }
 
 def p_member_assignment_stmt(p):
     '''member_assignment_stmt : value DOT IDENTIFIER EQUALS value SEMICOLON

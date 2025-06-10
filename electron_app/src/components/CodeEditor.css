@@ -1,0 +1,279 @@
+/* Code Editor Component Styles */
+.code-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  overflow: hidden;
+  max-height: 100%; /* Prevent expansion beyond container */
+  min-height: 0; /* Allow flex shrinking */
+  border-radius: 8px;
+}
+
+.editor-container {
+  display: flex;
+  height: 100%;
+  background: #1e1e1e;
+  overflow: hidden;
+  position: relative;
+  max-height: 100%; /* Ensure container respects parent height */
+  min-height: 0; /* Allow flex shrinking */
+  flex: 1; /* Take all available space */
+}
+
+/* Line Numbers with proper scrolling sync */
+.line-numbers {
+  background: #252526;
+  color: #858585;
+  font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px 8px;
+  user-select: none;
+  border-right: 1px solid #3e3e42;
+  overflow: hidden; /* Hide scrollbars but allow programmatic scrolling */
+  min-width: 50px;
+  max-width: 80px;
+  text-align: right;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0; /* Don't shrink line numbers */
+}
+
+.line-number {
+  cursor: pointer;
+  padding: 0 4px;
+  position: relative;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+  margin: 1px 0;
+}
+
+.line-number:hover {
+  background-color: #2a2d2e;
+  color: #ffffff;
+}
+
+.line-number.has-breakpoint {
+  background-color: #f44747;
+  color: white;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.line-number.has-breakpoint::before {
+  content: '●';
+  position: absolute;
+  left: -2px;
+  color: white;
+  font-size: 12px;
+}
+
+/* Code Textarea with proper overflow handling */
+.code-textarea {
+  flex: 1;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border: none;
+  padding: 10px;
+  font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  overflow-y: auto;
+  tab-size: 4;
+  -moz-tab-size: 4;
+  max-height: 100%; /* Prevent expansion beyond container */
+  min-height: 0; /* Allow flex shrinking */
+  box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.code-textarea::placeholder {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.code-textarea:focus {
+  outline: 2px solid #007acc;
+  outline-offset: -2px;
+}
+
+/* Scrollbar Styling for Code Editor */
+.code-textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-textarea::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.code-textarea::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 4px;
+}
+
+.code-textarea::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+.code-textarea::-webkit-scrollbar-corner {
+  background: #1e1e1e;
+}
+
+.line-numbers::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+/* Syntax highlighting simulation (basic) */
+.code-textarea {
+  /* C++ Keywords */
+  background-image: none; /* We'll handle this with proper syntax highlighting later */
+}
+
+/* Responsive adjustments for code editor */
+@media (max-width: 1200px) {
+  .code-textarea {
+    font-size: 13px;
+  }
+  
+  .line-numbers {
+    font-size: 13px;
+    min-width: 45px;
+    padding: 10px 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .code-textarea {
+    font-size: 12px;
+    padding: 8px;
+  }
+  
+  .line-numbers {
+    font-size: 12px;
+    min-width: 40px;
+    padding: 8px 4px;
+  }
+  
+  .line-number {
+    padding: 0 2px;
+  }
+}
+
+/* Error and Warning states */
+.code-editor.has-error {
+  border-left: 3px solid #f44747;
+}
+
+.code-editor.has-warning {
+  border-left: 3px solid #ffcc02;
+}
+
+/* Loading state */
+.code-editor.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.code-editor.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(30, 30, 30, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Selection styling */
+.code-textarea::selection {
+  background: rgba(173, 214, 255, 0.3);
+}
+
+.code-textarea::-moz-selection {
+  background: rgba(173, 214, 255, 0.3);
+}
+
+/* Line highlighting for current line */
+.code-textarea:focus {
+  background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.02) 10%, rgba(255, 255, 255, 0.02) 90%, transparent);
+}
+
+/* Accessibility improvements */
+.code-editor[aria-busy="true"] {
+  cursor: wait;
+}
+
+.line-number[aria-selected="true"] {
+  background-color: #264f78;
+  color: #ffffff;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .code-textarea {
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+  }
+  
+  .line-numbers {
+    background: #000000;
+    color: #ffffff;
+    border-right: 1px solid #ffffff;
+  }
+  
+  .line-number.has-breakpoint {
+    background-color: #ff0000;
+    color: #ffffff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .line-number,
+  .code-textarea {
+    transition: none;
+  }
+}
+
+.editor-toolbar {
+  display: flex;
+  padding: 8px 12px;
+  background: #2d2d30;
+  border-bottom: 1px solid #3e3e42;
+  gap: 8px;
+}
+
+.save-process-button {
+  padding: 6px 12px;
+  background: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.save-process-button:hover {
+  background: #106ebe;
+}
+
+.save-process-button:active {
+  background: #005a9e;
+} 

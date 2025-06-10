@@ -5,7 +5,9 @@ tokens = (
     'EQUALS', 'SEMICOLON', 'COMMA', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
     'LPAREN', 'RPAREN', 'NEW', 'DELETE', 'TILDE', 'POINTER', 'ADDRESS', 'NULLPTR', 'CLASS',
     'ARROW', 'DOT', 'IF', 'ELSE', 'WHILE', 'FOR', 'LT', 'GT', 'LE', 'GE', 
-    'EQ', 'NE', 'RETURN', 'PRIVATE', 'PUBLIC', 'PROTECTED', 'COLON', 'VOID'
+    'EQ', 'NE', 'RETURN', 'PRIVATE', 'PUBLIC', 'PROTECTED', 'COLON', 'VOID',
+    'STRUCT', 'PLUS_EQUALS', 'MINUS_EQUALS', 'TIMES_EQUALS', 'DIVIDE_EQUALS',
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'INCREMENT', 'DECREMENT'
 )
 
 def t_newline(t):
@@ -132,6 +134,66 @@ t_NE = r'!='
 t_LT = r'<'
 t_GT = r'>'
 
+# **COMPOUND ASSIGNMENT OPERATORS**: Add support for +=, -=, *=, /=
+def t_PLUS_EQUALS(t):
+    r'\+='
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_MINUS_EQUALS(t):
+    r'-='
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_TIMES_EQUALS(t):
+    r'\*='
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_DIVIDE_EQUALS(t):
+    r'/='
+    t.lineno = t.lexer.lineno
+    return t
+
+# **ARROW OPERATOR**: Must come before MINUS to prevent conflict
+def t_ARROW(t):
+    r'->'
+    t.lineno = t.lexer.lineno
+    return t
+
+# **INCREMENT/DECREMENT**: Add support for ++ and --
+def t_INCREMENT(t):
+    r'\+\+'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_DECREMENT(t):
+    r'--'
+    t.lineno = t.lexer.lineno
+    return t
+
+# **ARITHMETIC OPERATORS**: Add basic arithmetic (must be after compound operators)
+def t_PLUS(t):
+    r'\+'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_MINUS(t):
+    r'-'
+    t.lineno = t.lexer.lineno
+    return t
+
+# Note: TIMES (*) is handled by t_POINTER below for pointer declarations
+# def t_TIMES(t):
+#     r'\*'
+#     t.lineno = t.lexer.lineno
+#     return t
+
+def t_DIVIDE(t):
+    r'/'
+    t.lineno = t.lexer.lineno
+    return t
+
 t_ignore = ' \t\r'  # Ignore whitespace
 
 def t_POINTER(t):
@@ -159,11 +221,6 @@ def t_comment_multi(t):
     t.lexer.lineno += t.value.count('\n')
     pass  # Ignore multi-line comments
 
-def t_ARROW(t):
-    r'->'
-    t.lineno = t.lexer.lineno
-    return t
-
 def t_DOT(t):
     r'\.'
     t.lineno = t.lexer.lineno
@@ -171,6 +228,11 @@ def t_DOT(t):
 
 def t_TILDE(t):
     r'~'
+    t.lineno = t.lexer.lineno
+    return t
+
+def t_STRUCT(t):
+    r'\bstruct\b'
     t.lineno = t.lexer.lineno
     return t
 

@@ -1,0 +1,31 @@
+{
+  "total_blocks": 5,
+  "successful_compilations": 2,
+  "failed_compilations": 3,
+  "intermediate_files": [
+    {
+      "block": "pointer_variables",
+      "file": "test_blocks_v4/pointer_variables_intermediate.txt",
+      "lines": 4
+    },
+    {
+      "block": "simple_variables",
+      "file": "test_blocks_v4/simple_variables_intermediate.txt",
+      "lines": 4
+    }
+  ],
+  "errors": [
+    {
+      "block": "struct_Node",
+      "error": "Block skipped - not suitable for Java compiler"
+    },
+    {
+      "block": "main_execution",
+      "error": "Block skipped - not suitable for Java compiler"
+    },
+    {
+      "block": "function_printList",
+      "error": "Block skipped - not suitable for Java compiler"
+    }
+  ]
+}

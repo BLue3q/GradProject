@@ -13,6 +13,7 @@ else {
     let analysisCallbacks = [];
     let debugOutputCallbacks = [];
     let compilationCallbacks = [];
+    let parseCompleteCallbacks = [];
     // Listen for program output events from the main process
     electron_1.ipcRenderer.on('program-output', (_event, data) => {
         // Call all registered callbacks with the output data
@@ -32,6 +33,11 @@ else {
     electron_1.ipcRenderer.on('analysis-complete', (_event, data) => {
         // Call all registered callbacks with the analysis data
         analysisCallbacks.forEach(callback => callback(data));
+    });
+    // Listen for parse complete events
+    electron_1.ipcRenderer.on('parse-complete', (_event, data) => {
+        // Call all registered callbacks with the parse completion data
+        parseCompleteCallbacks.forEach(callback => callback(data));
     });
     // Listen for new analysis and debugging events
     electron_1.ipcRenderer.on('analysis-progress', (_event, data) => {
@@ -56,6 +62,10 @@ else {
         finishedCallbacks.forEach(callback => callback(code));
     });
     electron_1.contextBridge.exposeInMainWorld('electronAPI', {
+        // NEW: Save code and process pipeline
+        saveAndProcess: (code) => electron_1.ipcRenderer.invoke('save-and-process', code),
+        // NEW: Code parsing for visualization
+        parseCode: (code) => electron_1.ipcRenderer.invoke('parse-code', code),
         // Expose the compileCpp function to the renderer process
         compileCpp: (code) => electron_1.ipcRenderer.invoke('compile-cpp', code),
         // Expose the runPython function to the renderer process
@@ -141,6 +151,14 @@ else {
         // Remove callback for compilation results
         offCompilationComplete: (callback) => {
             compilationCallbacks = compilationCallbacks.filter(cb => cb !== callback);
+        },
+        // NEW: Register callback for parse complete events
+        onParseComplete: (callback) => {
+            parseCompleteCallbacks.push(callback);
+        },
+        // NEW: Remove callback for parse complete events
+        offParseComplete: (callback) => {
+            parseCompleteCallbacks = parseCompleteCallbacks.filter(cb => cb !== callback);
         },
         // Check if the process is waiting for input
         checkInputMode: () => electron_1.ipcRenderer.invoke('check-input-mode'),

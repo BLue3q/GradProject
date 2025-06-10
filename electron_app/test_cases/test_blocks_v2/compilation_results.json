@@ -1,0 +1,26 @@
+{
+  "struct_Node": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Exception in thread \"main\" java.lang.Error: near line 1: x undeclared\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.assign(Parser.java:173)\n\tat parser.Parser.stmt(Parser.java:163)\n\tat parser.Parser.stmts(Parser.java:98)\n\tat parser.Parser.block(Parser.java:48)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n",
+    "intermediate_code": null
+  },
+  "complete_program": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.assign(Parser.java:171)\n\tat parser.Parser.stmt(Parser.java:163)\n\tat parser.Parser.stmts(Parser.java:98)\n\tat parser.Parser.block(Parser.java:48)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n",
+    "intermediate_code": null
+  },
+  "main_execution": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.assign(Parser.java:171)\n\tat parser.Parser.stmt(Parser.java:163)\n\tat parser.Parser.stmts(Parser.java:98)\n\tat parser.Parser.block(Parser.java:48)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n",
+    "intermediate_code": null
+  },
+  "function_printList": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Exception in thread \"main\" java.lang.Error: near line 1: syntax error\n\tat parser.Parser.error(Parser.java:24)\n\tat parser.Parser.match(Parser.java:29)\n\tat parser.Parser.assign(Parser.java:171)\n\tat parser.Parser.stmt(Parser.java:163)\n\tat parser.Parser.stmts(Parser.java:98)\n\tat parser.Parser.block(Parser.java:48)\n\tat parser.Parser.program(Parser.java:34)\n\tat main.Main.main(Main.java:11)\n",
+    "intermediate_code": null
+  }
+}

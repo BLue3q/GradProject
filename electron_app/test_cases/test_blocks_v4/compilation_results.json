@@ -1,0 +1,35 @@
+{
+  "pointer_variables": {
+    "returncode": 0,
+    "stdout": "L1:\thead = 1\nL3:\tcurrent = 1\nL2:\n",
+    "stderr": "",
+    "intermediate_code": "L1:\thead = 1\nL3:\tcurrent = 1\nL2:\n"
+  },
+  "struct_Node": {
+    "returncode": -2,
+    "stdout": "",
+    "stderr": "Block skipped - not suitable for Java compiler",
+    "intermediate_code": null,
+    "skipped": true
+  },
+  "main_execution": {
+    "returncode": -2,
+    "stdout": "",
+    "stderr": "Block skipped - not suitable for Java compiler",
+    "intermediate_code": null,
+    "skipped": true
+  },
+  "simple_variables": {
+    "returncode": 0,
+    "stdout": "L1:\thead = 1\nL3:\tcurrent = 1\nL2:\n",
+    "stderr": "",
+    "intermediate_code": "L1:\thead = 1\nL3:\tcurrent = 1\nL2:\n"
+  },
+  "function_printList": {
+    "returncode": -2,
+    "stdout": "",
+    "stderr": "Block skipped - not suitable for Java compiler",
+    "intermediate_code": null,
+    "skipped": true
+  }
+}

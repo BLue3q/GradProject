@@ -2,1597 +2,286 @@
   "source_file": "tested_code.txt",
   "ast": [
     {
-      "type": "class_declaration",
-      "line": 4,
+      "type": "object_declaration",
+      "line": 1,
       "scope": "global",
-      "name": "Node",
-      "members": [
-        {
-          "type": "access_specifier",
-          "access": "public",
-          "line": 0
-        },
-        {
-          "type": "member_variable",
-          "data_type": "int",
-          "name": "data",
-          "line": 6,
-          "scope": "class:Node",
-          "id": 100000
-        },
-        {
-          "type": "member_variable",
-          "data_type": "class:Node",
-          "name": "next",
-          "pointer": "pointer declaration",
-          "line": 7,
-          "scope": "class:Node",
-          "id": 100001
-        }
-      ]
+      "id": 100000,
+      "constructor_type": "default_constructor_call",
+      "class_type": "Note",
+      "name": "cout"
     },
     {
-      "type": "class_declaration",
-      "line": 10,
+      "type": "class_pointer_declaration",
+      "line": 5,
       "scope": "global",
-      "name": "LinkedList",
-      "members": [
-        {
-          "type": "member_variable",
-          "data_type": "class:Node",
-          "name": "head",
-          "pointer": "pointer declaration",
-          "line": 11,
-          "scope": "class:LinkedList",
-          "id": 100006
-        },
-        {
-          "type": "access_specifier",
-          "access": "public",
-          "line": 0
-        },
-        {
-          "type": "constructor",
-          "name": "LinkedList",
-          "line": 14,
-          "params": [],
-          "body": [
-            {
-              "type": "assignment",
-              "line": 15,
-              "scope": "constructor:LinkedList",
-              "name": "head",
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "constructor:LinkedList"
-              }
-            }
-          ]
-        },
-        {
-          "type": "member_function",
-          "return_type": "void",
-          "name": "append",
-          "belongs_to_class": "LinkedList",
-          "params": [
-            {
-              "type": "parameter",
-              "data_type": "int",
-              "name": "value",
-              "scope": "function:LinkedList.append",
-              "id": 100007
-            }
-          ],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 19,
-              "scope": "function:LinkedList.append",
-              "id": 100002,
-              "class_type": "Node",
-              "name": "newNode",
-              "allocation": "new",
-              "allocated_type": "Node",
-              "constructor_type": "default_constructor_call"
-            },
-            {
-              "type": "member_assignment",
-              "line": 20,
-              "scope": "function:LinkedList.append",
-              "object": "newNode",
-              "member": "data",
-              "operator": "arrow",
-              "pointer_access": true,
-              "value": {
-                "type": "variable",
-                "name": "value",
-                "scope": "function:LinkedList.append"
-              }
-            },
-            {
-              "type": "member_assignment",
-              "line": 21,
-              "scope": "function:LinkedList.append",
-              "object": "newNode",
-              "member": "next",
-              "operator": "arrow",
-              "pointer_access": true,
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "function:LinkedList.append"
-              }
-            },
-            {
-              "type": "if_statement",
-              "line": 23,
-              "scope": "function:LinkedList.append",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "head",
-                  "scope": "function:LinkedList.append",
-                  "class_type": "Node"
-                },
-                "operator": "==",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.append"
-                }
-              },
-              "if_body": [
-                {
-                  "type": "assignment",
-                  "line": 24,
-                  "scope": "if_body",
-                  "name": "head",
-                  "value": {
-                    "type": "variable",
-                    "name": "newNode",
-                    "scope": "if_body",
-                    "class_type": "Node"
-                  }
-                }
-              ],
-              "else_body": [
-                {
-                  "type": "class_pointer_declaration",
-                  "line": 27,
-                  "scope": "else_body",
-                  "id": 100003,
-                  "class_type": "Node",
-                  "name": "temp",
-                  "pointer_category": "class_object"
-                },
-                {
-                  "type": "assignment",
-                  "line": 28,
-                  "scope": "else_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "variable",
-                    "name": "head",
-                    "scope": "else_body",
-                    "class_type": "Node"
-                  }
-                },
-                {
-                  "type": "while_statement",
-                  "line": 29,
-                  "scope": "else_body",
-                  "condition": {
-                    "type": "comparison",
-                    "left": {
-                      "type": "member_access",
-                      "object": {
-                        "type": "variable",
-                        "name": "temp",
-                        "scope": "else_body",
-                        "class_type": "Node"
-                      },
-                      "member": "next",
-                      "operator": "arrow",
-                      "pointer_access": true
-                    },
-                    "operator": "!=",
-                    "right": {
-                      "type": "variable",
-                      "name": "nullptr",
-                      "scope": "else_body"
-                    }
-                  },
-                  "body": [
-                    {
-                      "type": "assignment",
-                      "line": 30,
-                      "scope": "while_body",
-                      "name": "temp",
-                      "value": {
-                        "type": "member_access",
-                        "object": {
-                          "type": "variable",
-                          "name": "temp",
-                          "scope": "while_body",
-                          "class_type": "Node"
-                        },
-                        "member": "next",
-                        "operator": "arrow",
-                        "pointer_access": true
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "member_assignment",
-                  "line": 32,
-                  "scope": "else_body",
-                  "object": "temp",
-                  "member": "next",
-                  "operator": "arrow",
-                  "pointer_access": true,
-                  "value": {
-                    "type": "variable",
-                    "name": "newNode",
-                    "scope": "else_body",
-                    "class_type": "Node"
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 18
-        },
-        {
-          "type": "member_function",
-          "return_type": "void",
-          "name": "print",
-          "belongs_to_class": "LinkedList",
-          "params": [],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 37,
-              "scope": "function:LinkedList.print",
-              "id": 100004,
-              "class_type": "Node",
-              "name": "temp",
-              "pointer_category": "class_object"
-            },
-            {
-              "type": "assignment",
-              "line": 38,
-              "scope": "function:LinkedList.print",
-              "name": "temp",
-              "value": {
-                "type": "variable",
-                "name": "head",
-                "scope": "function:LinkedList.print",
-                "class_type": "Node"
-              }
-            },
-            {
-              "type": "while_statement",
-              "line": 39,
-              "scope": "function:LinkedList.print",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "temp",
-                  "scope": "function:LinkedList.print",
-                  "class_type": "Node"
-                },
-                "operator": "!=",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.print"
-                }
-              },
-              "body": [
-                {
-                  "type": "assignment",
-                  "line": 40,
-                  "scope": "while_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "member_access",
-                    "object": {
-                      "type": "variable",
-                      "name": "temp",
-                      "scope": "while_body",
-                      "class_type": "Node"
-                    },
-                    "member": "next",
-                    "operator": "arrow",
-                    "pointer_access": true
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 36
-        },
-        {
-          "type": "member_function",
-          "return_type": "~",
-          "name": "LinkedList",
-          "belongs_to_class": "LinkedList",
-          "params": [],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 45,
-              "scope": "function:LinkedList.LinkedList",
-              "id": 100005,
-              "class_type": "Node",
-              "name": "temp",
-              "pointer_category": "class_object"
-            },
-            {
-              "type": "while_statement",
-              "line": 46,
-              "scope": "function:LinkedList.LinkedList",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "head",
-                  "scope": "function:LinkedList.LinkedList",
-                  "class_type": "Node"
-                },
-                "operator": "!=",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.LinkedList"
-                }
-              },
-              "body": [
-                {
-                  "type": "assignment",
-                  "line": 47,
-                  "scope": "while_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "variable",
-                    "name": "head",
-                    "scope": "while_body",
-                    "class_type": "Node"
-                  }
-                },
-                {
-                  "type": "assignment",
-                  "line": 48,
-                  "scope": "while_body",
-                  "name": "head",
-                  "value": {
-                    "type": "member_access",
-                    "object": {
-                      "type": "variable",
-                      "name": "head",
-                      "scope": "while_body",
-                      "class_type": "Node"
-                    },
-                    "member": "next",
-                    "operator": "arrow",
-                    "pointer_access": true
-                  }
-                },
-                {
-                  "type": "delete_statement",
-                  "line": 49,
-                  "scope": "while_body",
-                  "target": {
-                    "type": "variable",
-                    "name": "temp",
-                    "scope": "while_body",
-                    "class_type": "Node"
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 44
-        }
-      ]
+      "id": 100001,
+      "class_type": "Node",
+      "name": "next",
+      "pointer_category": "class_object"
+    },
+    {
+      "type": "function_call",
+      "line": 7,
+      "scope": "global",
+      "name": "Node",
+      "arg_param_map": [],
+      "body": null
     },
     {
       "type": "the standard Main_Function ",
-      "line": 54,
+      "line": 10,
       "scope": "global",
       "name": "main",
       "return_type": "int",
       "body": [
         {
           "type": "object_declaration",
-          "line": 55,
+          "line": 11,
           "scope": "function:main",
-          "id": 100008,
-          "constructor_type": "default_constructor_call",
-          "class_type": "LinkedList",
-          "name": "list1"
-        },
-        {
-          "type": "method_call",
-          "line": 56,
-          "scope": "function:main",
-          "object": {
-            "type": "variable",
-            "name": "list1",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "append",
-          "operator": "dot",
-          "args": [
-            1
-          ],
-          "arg_param_map": [
-            {
-              "param_name": "value",
-              "arg_value": 1
-            }
-          ]
-        },
-        {
-          "type": "method_call",
-          "line": 57,
-          "scope": "function:main",
-          "object": {
-            "type": "variable",
-            "name": "list1",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "append",
-          "operator": "dot",
-          "args": [
-            2
-          ],
-          "arg_param_map": [
-            {
-              "param_name": "value",
-              "arg_value": 2
-            }
-          ]
-        },
-        {
-          "type": "method_call",
-          "line": 58,
-          "scope": "function:main",
-          "object": {
-            "type": "variable",
-            "name": "list1",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "append",
-          "operator": "dot",
-          "args": [
-            3
-          ],
-          "arg_param_map": [
-            {
-              "param_name": "value",
-              "arg_value": 3
-            }
-          ]
-        },
-        {
-          "type": "method_call",
-          "line": 59,
-          "scope": "function:main",
-          "object": {
-            "type": "variable",
-            "name": "list1",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "print",
-          "operator": "dot",
-          "args": [],
+          "id": 100002,
+          "constructor_type": "parameterized_constructor_call",
+          "class_type": "Create",
+          "object_name": "linked",
           "arg_param_map": []
         },
         {
           "type": "class_pointer_declaration",
-          "line": 61,
+          "line": 13,
           "scope": "function:main",
-          "id": 100009,
-          "class_type": "LinkedList",
-          "name": "list2",
+          "id": 100003,
+          "class_type": "Node",
+          "name": "second",
           "allocation": "new",
-          "allocated_type": "LinkedList",
-          "constructor_type": "parameterized_constructor_call",
-          "constructor_args": [],
-          "arg_param_map": []
+          "allocated_type": "Node",
+          "constructor_type": "default_constructor_call"
         },
         {
-          "type": "method_call",
-          "line": 62,
+          "type": "class_pointer_declaration",
+          "line": 14,
           "scope": "function:main",
-          "object": {
-            "type": "variable",
-            "name": "list2",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "append",
+          "id": 100004,
+          "class_type": "Node",
+          "name": "third",
+          "allocation": "new",
+          "allocated_type": "Node",
+          "constructor_type": "default_constructor_call"
+        },
+        {
+          "type": "object_declaration",
+          "line": 16,
+          "scope": "function:main",
+          "id": 100005,
+          "constructor_type": "default_constructor_call",
+          "class_type": "Link",
+          "name": "the"
+        },
+        {
+          "type": "member_assignment",
+          "line": 18,
+          "scope": "function:main",
+          "object": "second",
+          "member": "next",
           "operator": "arrow",
           "pointer_access": true,
-          "args": [
-            10
-          ],
-          "arg_param_map": [
-            {
-              "param_name": "value",
-              "arg_value": 10
-            }
-          ]
-        },
-        {
-          "type": "method_call",
-          "line": 63,
-          "scope": "function:main",
-          "object": {
+          "value": {
             "type": "variable",
-            "name": "list2",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "append",
-          "operator": "arrow",
-          "pointer_access": true,
-          "args": [
-            20
-          ],
-          "arg_param_map": [
-            {
-              "param_name": "value",
-              "arg_value": 20
-            }
-          ]
-        },
-        {
-          "type": "method_call",
-          "line": 64,
-          "scope": "function:main",
-          "object": {
-            "type": "variable",
-            "name": "list2",
-            "scope": "function:main",
-            "class_type": "LinkedList"
-          },
-          "method": "print",
-          "operator": "arrow",
-          "pointer_access": true,
-          "args": [],
-          "arg_param_map": []
-        },
-        {
-          "type": "delete_statement",
-          "line": 66,
-          "scope": "function:main",
-          "target": {
-            "type": "variable",
-            "name": "list2",
-            "scope": "function:main",
-            "class_type": "LinkedList"
+            "name": "third",
+            "scope": "function:main"
           }
+        },
+        {
+          "type": "object_declaration",
+          "line": 20,
+          "scope": "function:main",
+          "id": 100006,
+          "constructor_type": "parameterized_constructor_call",
+          "class_type": "Create",
+          "object_name": "another",
+          "arg_param_map": []
+        },
+        {
+          "type": "class_pointer_declaration",
+          "line": 22,
+          "scope": "function:main",
+          "id": 100007,
+          "class_type": "Node",
+          "name": "list2_second",
+          "allocation": "new",
+          "allocated_type": "Node",
+          "constructor_type": "default_constructor_call"
+        },
+        {
+          "type": "member_assignment",
+          "line": 23,
+          "scope": "function:main",
+          "object": "list2",
+          "member": "next",
+          "operator": "arrow",
+          "pointer_access": true,
+          "value": {
+            "type": "variable",
+            "name": "list2_second",
+            "scope": "function:main"
+          }
+        },
+        {
+          "type": "object_declaration",
+          "line": 25,
+          "scope": "function:main",
+          "id": 100008,
+          "constructor_type": "parameterized_constructor_call",
+          "class_type": "Traverse",
+          "object_name": "and",
+          "arg_param_map": []
+        },
+        {
+          "type": "declaration",
+          "data_type": "int",
+          "declarations": [
+            {
+              "name": "sum",
+              "value": 0,
+              "scope": "function:main",
+              "line": 27,
+              "id": 100010
+            }
+          ]
+        },
+        {
+          "type": "while_statement",
+          "line": 28,
+          "scope": "function:main",
+          "condition": {
+            "type": "comparison",
+            "left": {
+              "type": "variable",
+              "name": "current",
+              "scope": "function:main"
+            },
+            "operator": "!=",
+            "right": {
+              "type": "variable",
+              "name": "nullptr",
+              "scope": "function:main"
+            }
+          },
+          "body": [
+            {
+              "type": "compound_assignment",
+              "line": 29,
+              "scope": "global",
+              "name": "sum",
+              "operator": "+=",
+              "value": {
+                "type": "member_access",
+                "object": {
+                  "type": "variable",
+                  "name": "current",
+                  "scope": "global"
+                },
+                "member": "data",
+                "operator": "arrow",
+                "pointer_access": true
+              }
+            },
+            {
+              "type": "assignment",
+              "line": 30,
+              "scope": "while_body",
+              "name": "current",
+              "value": {
+                "type": "member_access",
+                "object": {
+                  "type": "variable",
+                  "name": "current",
+                  "scope": "while_body"
+                },
+                "member": "next",
+                "operator": "arrow",
+                "pointer_access": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "return_statement",
+          "line": 33,
+          "scope": "global",
+          "value": 0
         }
       ]
     }
   ],
   "functions": {},
-  "classes": {
-    "Node": {
-      "name": "Node",
-      "members": [
-        {
-          "type": "access_specifier",
-          "access": "public",
-          "line": 0
-        },
-        {
-          "type": "member_variable",
-          "data_type": "int",
-          "name": "data",
-          "line": 6,
-          "scope": "class:Node",
-          "id": 100000
-        },
-        {
-          "type": "member_variable",
-          "data_type": "class:Node",
-          "name": "next",
-          "pointer": "pointer declaration",
-          "line": 7,
-          "scope": "class:Node",
-          "id": 100001
-        }
-      ],
-      "constructors": [],
-      "destructors": [],
-      "line": 4
-    },
-    "LinkedList": {
-      "name": "LinkedList",
-      "members": [
-        {
-          "type": "member_variable",
-          "data_type": "class:Node",
-          "name": "head",
-          "pointer": "pointer declaration",
-          "line": 11,
-          "scope": "class:LinkedList",
-          "id": 100006
-        },
-        {
-          "type": "access_specifier",
-          "access": "public",
-          "line": 0
-        },
-        {
-          "type": "constructor",
-          "name": "LinkedList",
-          "line": 14,
-          "params": [],
-          "body": [
-            {
-              "type": "assignment",
-              "line": 15,
-              "scope": "constructor:LinkedList",
-              "name": "head",
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "constructor:LinkedList"
-              }
-            }
-          ]
-        },
-        {
-          "type": "member_function",
-          "return_type": "void",
-          "name": "append",
-          "belongs_to_class": "LinkedList",
-          "params": [
-            {
-              "type": "parameter",
-              "data_type": "int",
-              "name": "value",
-              "scope": "function:LinkedList.append",
-              "id": 100007
-            }
-          ],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 19,
-              "scope": "function:LinkedList.append",
-              "id": 100002,
-              "class_type": "Node",
-              "name": "newNode",
-              "allocation": "new",
-              "allocated_type": "Node",
-              "constructor_type": "default_constructor_call"
-            },
-            {
-              "type": "member_assignment",
-              "line": 20,
-              "scope": "function:LinkedList.append",
-              "object": "newNode",
-              "member": "data",
-              "operator": "arrow",
-              "pointer_access": true,
-              "value": {
-                "type": "variable",
-                "name": "value",
-                "scope": "function:LinkedList.append"
-              }
-            },
-            {
-              "type": "member_assignment",
-              "line": 21,
-              "scope": "function:LinkedList.append",
-              "object": "newNode",
-              "member": "next",
-              "operator": "arrow",
-              "pointer_access": true,
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "function:LinkedList.append"
-              }
-            },
-            {
-              "type": "if_statement",
-              "line": 23,
-              "scope": "function:LinkedList.append",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "head",
-                  "scope": "function:LinkedList.append",
-                  "class_type": "Node"
-                },
-                "operator": "==",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.append"
-                }
-              },
-              "if_body": [
-                {
-                  "type": "assignment",
-                  "line": 24,
-                  "scope": "if_body",
-                  "name": "head",
-                  "value": {
-                    "type": "variable",
-                    "name": "newNode",
-                    "scope": "if_body",
-                    "class_type": "Node"
-                  }
-                }
-              ],
-              "else_body": [
-                {
-                  "type": "class_pointer_declaration",
-                  "line": 27,
-                  "scope": "else_body",
-                  "id": 100003,
-                  "class_type": "Node",
-                  "name": "temp",
-                  "pointer_category": "class_object"
-                },
-                {
-                  "type": "assignment",
-                  "line": 28,
-                  "scope": "else_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "variable",
-                    "name": "head",
-                    "scope": "else_body",
-                    "class_type": "Node"
-                  }
-                },
-                {
-                  "type": "while_statement",
-                  "line": 29,
-                  "scope": "else_body",
-                  "condition": {
-                    "type": "comparison",
-                    "left": {
-                      "type": "member_access",
-                      "object": {
-                        "type": "variable",
-                        "name": "temp",
-                        "scope": "else_body",
-                        "class_type": "Node"
-                      },
-                      "member": "next",
-                      "operator": "arrow",
-                      "pointer_access": true
-                    },
-                    "operator": "!=",
-                    "right": {
-                      "type": "variable",
-                      "name": "nullptr",
-                      "scope": "else_body"
-                    }
-                  },
-                  "body": [
-                    {
-                      "type": "assignment",
-                      "line": 30,
-                      "scope": "while_body",
-                      "name": "temp",
-                      "value": {
-                        "type": "member_access",
-                        "object": {
-                          "type": "variable",
-                          "name": "temp",
-                          "scope": "while_body",
-                          "class_type": "Node"
-                        },
-                        "member": "next",
-                        "operator": "arrow",
-                        "pointer_access": true
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "member_assignment",
-                  "line": 32,
-                  "scope": "else_body",
-                  "object": "temp",
-                  "member": "next",
-                  "operator": "arrow",
-                  "pointer_access": true,
-                  "value": {
-                    "type": "variable",
-                    "name": "newNode",
-                    "scope": "else_body",
-                    "class_type": "Node"
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 18
-        },
-        {
-          "type": "member_function",
-          "return_type": "void",
-          "name": "print",
-          "belongs_to_class": "LinkedList",
-          "params": [],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 37,
-              "scope": "function:LinkedList.print",
-              "id": 100004,
-              "class_type": "Node",
-              "name": "temp",
-              "pointer_category": "class_object"
-            },
-            {
-              "type": "assignment",
-              "line": 38,
-              "scope": "function:LinkedList.print",
-              "name": "temp",
-              "value": {
-                "type": "variable",
-                "name": "head",
-                "scope": "function:LinkedList.print",
-                "class_type": "Node"
-              }
-            },
-            {
-              "type": "while_statement",
-              "line": 39,
-              "scope": "function:LinkedList.print",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "temp",
-                  "scope": "function:LinkedList.print",
-                  "class_type": "Node"
-                },
-                "operator": "!=",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.print"
-                }
-              },
-              "body": [
-                {
-                  "type": "assignment",
-                  "line": 40,
-                  "scope": "while_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "member_access",
-                    "object": {
-                      "type": "variable",
-                      "name": "temp",
-                      "scope": "while_body",
-                      "class_type": "Node"
-                    },
-                    "member": "next",
-                    "operator": "arrow",
-                    "pointer_access": true
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 36
-        },
-        {
-          "type": "member_function",
-          "return_type": "~",
-          "name": "LinkedList",
-          "belongs_to_class": "LinkedList",
-          "params": [],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 45,
-              "scope": "function:LinkedList.LinkedList",
-              "id": 100005,
-              "class_type": "Node",
-              "name": "temp",
-              "pointer_category": "class_object"
-            },
-            {
-              "type": "while_statement",
-              "line": 46,
-              "scope": "function:LinkedList.LinkedList",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "head",
-                  "scope": "function:LinkedList.LinkedList",
-                  "class_type": "Node"
-                },
-                "operator": "!=",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.LinkedList"
-                }
-              },
-              "body": [
-                {
-                  "type": "assignment",
-                  "line": 47,
-                  "scope": "while_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "variable",
-                    "name": "head",
-                    "scope": "while_body",
-                    "class_type": "Node"
-                  }
-                },
-                {
-                  "type": "assignment",
-                  "line": 48,
-                  "scope": "while_body",
-                  "name": "head",
-                  "value": {
-                    "type": "member_access",
-                    "object": {
-                      "type": "variable",
-                      "name": "head",
-                      "scope": "while_body",
-                      "class_type": "Node"
-                    },
-                    "member": "next",
-                    "operator": "arrow",
-                    "pointer_access": true
-                  }
-                },
-                {
-                  "type": "delete_statement",
-                  "line": 49,
-                  "scope": "while_body",
-                  "target": {
-                    "type": "variable",
-                    "name": "temp",
-                    "scope": "while_body",
-                    "class_type": "Node"
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 44
-        }
-      ],
-      "constructors": [
-        {
-          "type": "constructor",
-          "name": "LinkedList",
-          "line": 14,
-          "params": [],
-          "body": [
-            {
-              "type": "assignment",
-              "line": 15,
-              "scope": "constructor:LinkedList",
-              "name": "head",
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "constructor:LinkedList"
-              }
-            }
-          ]
-        }
-      ],
-      "destructors": [],
-      "line": 10
-    }
-  },
+  "classes": {},
   "blocks": [
     {
+      "id": "block_2",
+      "name": "unknown_function",
+      "type": "function",
+      "start_line": 7,
+      "end_line": 7,
+      "depth": 1,
+      "semantic": true,
+      "line_range": [
+        7,
+        7
+      ],
+      "code": "    Node(int value) : data(value), next(nullptr) {}",
+      "ast_info": {
+        "type": "function_call",
+        "scope": "global",
+        "line": 7
+      },
+      "return_type": null,
+      "parameters": [],
+      "parameter_count": 0
+    },
+    {
       "id": "block_1",
-      "name": "Node",
-      "type": "class",
-      "start_line": 4,
+      "name": "code_block_263",
+      "type": "code_block",
+      "start_line": 3,
       "end_line": 8,
       "depth": 0,
       "semantic": true,
       "line_range": [
-        4,
+        3,
         8
       ],
-      "code": "class Node {\npublic:\n    int data;\n    Node* next;\n};",
-      "ast_info": {
-        "type": "class_declaration",
-        "scope": "global",
-        "line": 4
-      },
-      "members": [
-        {
-          "type": "access_specifier",
-          "access": "public",
-          "line": 0
-        },
-        {
-          "type": "member_variable",
-          "data_type": "int",
-          "name": "data",
-          "line": 6,
-          "scope": "class:Node",
-          "id": 100000
-        },
-        {
-          "type": "member_variable",
-          "data_type": "class:Node",
-          "name": "next",
-          "pointer": "pointer declaration",
-          "line": 7,
-          "scope": "class:Node",
-          "id": 100001
-        }
-      ],
-      "member_count": 3
-    },
-    {
-      "id": "block_3",
-      "name": "code_block_46",
-      "type": "code_block",
-      "start_line": 14,
-      "end_line": 16,
-      "depth": 1,
-      "semantic": true,
-      "line_range": [
-        14,
-        16
-      ],
-      "code": "    LinkedList() {\n        head = nullptr;\n    }"
-    },
-    {
-      "id": "block_5",
-      "name": "if_statement_293",
-      "type": "if_statement",
-      "start_line": 23,
-      "end_line": 25,
-      "depth": 2,
-      "semantic": true,
-      "line_range": [
-        23,
-        25
-      ],
-      "code": "        if (head == nullptr) {\n            head = newNode;\n        }"
-    },
-    {
-      "id": "block_7",
-      "name": "while_loop_507",
-      "type": "while_loop",
-      "start_line": 29,
-      "end_line": 31,
-      "depth": 3,
-      "semantic": true,
-      "line_range": [
-        29,
-        31
-      ],
-      "code": "            while (temp->next != nullptr) {\n                temp = temp->next;\n            }"
-    },
-    {
-      "id": "block_6",
-      "name": "else_statement_913",
-      "type": "else_statement",
-      "start_line": 26,
-      "end_line": 33,
-      "depth": 2,
-      "semantic": true,
-      "line_range": [
-        26,
-        33
-      ],
-      "code": "        else {\n            Node* temp;\n            temp= head;\n            temp->next = newNode;\n        }"
+      "code": "struct Node {\n    int data;\n    Node* next;\n};"
     },
     {
       "id": "block_4",
-      "name": "append",
-      "type": "function",
-      "start_line": 18,
-      "end_line": 34,
-      "depth": 1,
-      "semantic": true,
-      "line_range": [
-        18,
-        34
-      ],
-      "code": "    void append(int value) {\n        Node* newNode = new Node;\n        newNode->data = value;\n        newNode->next = nullptr;\n    }"
-    },
-    {
-      "id": "block_9",
-      "name": "while_loop_571",
+      "name": "while_loop_890",
       "type": "while_loop",
-      "start_line": 39,
-      "end_line": 41,
-      "depth": 2,
-      "semantic": true,
-      "line_range": [
-        39,
-        41
-      ],
-      "code": "        while (temp != nullptr) {\n            temp = temp->next;\n        }"
-    },
-    {
-      "id": "block_8",
-      "name": "print",
-      "type": "function",
-      "start_line": 36,
-      "end_line": 42,
+      "start_line": 28,
+      "end_line": 31,
       "depth": 1,
       "semantic": true,
       "line_range": [
-        36,
-        42
+        28,
+        31
       ],
-      "code": "    void print() {\n        Node* temp;\n        temp= head;\n    }"
+      "code": "    while (current != nullptr) {\n        sum += current->data;\n        current = current->next;\n    }"
     },
     {
-      "id": "block_11",
-      "name": "while_loop_782",
-      "type": "while_loop",
-      "start_line": 46,
-      "end_line": 50,
-      "depth": 2,
-      "semantic": true,
-      "line_range": [
-        46,
-        50
-      ],
-      "code": "        while (head != nullptr) {\n            temp = head;\n            head = head->next;\n            delete temp;\n        }"
-    },
-    {
-      "id": "block_10",
-      "name": "code_block_868",
-      "type": "code_block",
-      "start_line": 44,
-      "end_line": 51,
-      "depth": 1,
-      "semantic": true,
-      "line_range": [
-        44,
-        51
-      ],
-      "code": "    ~LinkedList() {\n        Node* temp;\n    }"
-    },
-    {
-      "id": "block_2",
-      "name": "LinkedList",
-      "type": "class",
+      "id": "block_3",
+      "name": "main",
+      "type": "main_function",
       "start_line": 10,
-      "end_line": 52,
+      "end_line": 34,
       "depth": 0,
       "semantic": true,
       "line_range": [
         10,
-        52
+        34
       ],
-      "code": "class LinkedList {\n    Node* head;\npublic:\n};",
-      "ast_info": {
-        "type": "class_declaration",
-        "scope": "global",
-        "line": 10
-      },
-      "members": [
-        {
-          "type": "member_variable",
-          "data_type": "class:Node",
-          "name": "head",
-          "pointer": "pointer declaration",
-          "line": 11,
-          "scope": "class:LinkedList",
-          "id": 100006
-        },
-        {
-          "type": "access_specifier",
-          "access": "public",
-          "line": 0
-        },
-        {
-          "type": "constructor",
-          "name": "LinkedList",
-          "line": 14,
-          "params": [],
-          "body": [
-            {
-              "type": "assignment",
-              "line": 15,
-              "scope": "constructor:LinkedList",
-              "name": "head",
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "constructor:LinkedList"
-              }
-            }
-          ]
-        },
-        {
-          "type": "member_function",
-          "return_type": "void",
-          "name": "append",
-          "belongs_to_class": "LinkedList",
-          "params": [
-            {
-              "type": "parameter",
-              "data_type": "int",
-              "name": "value",
-              "scope": "function:LinkedList.append",
-              "id": 100007
-            }
-          ],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 19,
-              "scope": "function:LinkedList.append",
-              "id": 100002,
-              "class_type": "Node",
-              "name": "newNode",
-              "allocation": "new",
-              "allocated_type": "Node",
-              "constructor_type": "default_constructor_call"
-            },
-            {
-              "type": "member_assignment",
-              "line": 20,
-              "scope": "function:LinkedList.append",
-              "object": "newNode",
-              "member": "data",
-              "operator": "arrow",
-              "pointer_access": true,
-              "value": {
-                "type": "variable",
-                "name": "value",
-                "scope": "function:LinkedList.append"
-              }
-            },
-            {
-              "type": "member_assignment",
-              "line": 21,
-              "scope": "function:LinkedList.append",
-              "object": "newNode",
-              "member": "next",
-              "operator": "arrow",
-              "pointer_access": true,
-              "value": {
-                "type": "variable",
-                "name": "nullptr",
-                "scope": "function:LinkedList.append"
-              }
-            },
-            {
-              "type": "if_statement",
-              "line": 23,
-              "scope": "function:LinkedList.append",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "head",
-                  "scope": "function:LinkedList.append",
-                  "class_type": "Node"
-                },
-                "operator": "==",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.append"
-                }
-              },
-              "if_body": [
-                {
-                  "type": "assignment",
-                  "line": 24,
-                  "scope": "if_body",
-                  "name": "head",
-                  "value": {
-                    "type": "variable",
-                    "name": "newNode",
-                    "scope": "if_body",
-                    "class_type": "Node"
-                  }
-                }
-              ],
-              "else_body": [
-                {
-                  "type": "class_pointer_declaration",
-                  "line": 27,
-                  "scope": "else_body",
-                  "id": 100003,
-                  "class_type": "Node",
-                  "name": "temp",
-                  "pointer_category": "class_object"
-                },
-                {
-                  "type": "assignment",
-                  "line": 28,
-                  "scope": "else_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "variable",
-                    "name": "head",
-                    "scope": "else_body",
-                    "class_type": "Node"
-                  }
-                },
-                {
-                  "type": "while_statement",
-                  "line": 29,
-                  "scope": "else_body",
-                  "condition": {
-                    "type": "comparison",
-                    "left": {
-                      "type": "member_access",
-                      "object": {
-                        "type": "variable",
-                        "name": "temp",
-                        "scope": "else_body",
-                        "class_type": "Node"
-                      },
-                      "member": "next",
-                      "operator": "arrow",
-                      "pointer_access": true
-                    },
-                    "operator": "!=",
-                    "right": {
-                      "type": "variable",
-                      "name": "nullptr",
-                      "scope": "else_body"
-                    }
-                  },
-                  "body": [
-                    {
-                      "type": "assignment",
-                      "line": 30,
-                      "scope": "while_body",
-                      "name": "temp",
-                      "value": {
-                        "type": "member_access",
-                        "object": {
-                          "type": "variable",
-                          "name": "temp",
-                          "scope": "while_body",
-                          "class_type": "Node"
-                        },
-                        "member": "next",
-                        "operator": "arrow",
-                        "pointer_access": true
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "member_assignment",
-                  "line": 32,
-                  "scope": "else_body",
-                  "object": "temp",
-                  "member": "next",
-                  "operator": "arrow",
-                  "pointer_access": true,
-                  "value": {
-                    "type": "variable",
-                    "name": "newNode",
-                    "scope": "else_body",
-                    "class_type": "Node"
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 18
-        },
-        {
-          "type": "member_function",
-          "return_type": "void",
-          "name": "print",
-          "belongs_to_class": "LinkedList",
-          "params": [],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 37,
-              "scope": "function:LinkedList.print",
-              "id": 100004,
-              "class_type": "Node",
-              "name": "temp",
-              "pointer_category": "class_object"
-            },
-            {
-              "type": "assignment",
-              "line": 38,
-              "scope": "function:LinkedList.print",
-              "name": "temp",
-              "value": {
-                "type": "variable",
-                "name": "head",
-                "scope": "function:LinkedList.print",
-                "class_type": "Node"
-              }
-            },
-            {
-              "type": "while_statement",
-              "line": 39,
-              "scope": "function:LinkedList.print",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "temp",
-                  "scope": "function:LinkedList.print",
-                  "class_type": "Node"
-                },
-                "operator": "!=",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.print"
-                }
-              },
-              "body": [
-                {
-                  "type": "assignment",
-                  "line": 40,
-                  "scope": "while_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "member_access",
-                    "object": {
-                      "type": "variable",
-                      "name": "temp",
-                      "scope": "while_body",
-                      "class_type": "Node"
-                    },
-                    "member": "next",
-                    "operator": "arrow",
-                    "pointer_access": true
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 36
-        },
-        {
-          "type": "member_function",
-          "return_type": "~",
-          "name": "LinkedList",
-          "belongs_to_class": "LinkedList",
-          "params": [],
-          "body": [
-            {
-              "type": "class_pointer_declaration",
-              "line": 45,
-              "scope": "function:LinkedList.LinkedList",
-              "id": 100005,
-              "class_type": "Node",
-              "name": "temp",
-              "pointer_category": "class_object"
-            },
-            {
-              "type": "while_statement",
-              "line": 46,
-              "scope": "function:LinkedList.LinkedList",
-              "condition": {
-                "type": "comparison",
-                "left": {
-                  "type": "variable",
-                  "name": "head",
-                  "scope": "function:LinkedList.LinkedList",
-                  "class_type": "Node"
-                },
-                "operator": "!=",
-                "right": {
-                  "type": "variable",
-                  "name": "nullptr",
-                  "scope": "function:LinkedList.LinkedList"
-                }
-              },
-              "body": [
-                {
-                  "type": "assignment",
-                  "line": 47,
-                  "scope": "while_body",
-                  "name": "temp",
-                  "value": {
-                    "type": "variable",
-                    "name": "head",
-                    "scope": "while_body",
-                    "class_type": "Node"
-                  }
-                },
-                {
-                  "type": "assignment",
-                  "line": 48,
-                  "scope": "while_body",
-                  "name": "head",
-                  "value": {
-                    "type": "member_access",
-                    "object": {
-                      "type": "variable",
-                      "name": "head",
-                      "scope": "while_body",
-                      "class_type": "Node"
-                    },
-                    "member": "next",
-                    "operator": "arrow",
-                    "pointer_access": true
-                  }
-                },
-                {
-                  "type": "delete_statement",
-                  "line": 49,
-                  "scope": "while_body",
-                  "target": {
-                    "type": "variable",
-                    "name": "temp",
-                    "scope": "while_body",
-                    "class_type": "Node"
-                  }
-                }
-              ]
-            }
-          ],
-          "line": 44
-        }
-      ],
-      "member_count": 6
-    },
-    {
-      "id": "block_13",
-      "name": "code_block_255",
-      "type": "code_block",
-      "start_line": 61,
-      "end_line": 61,
-      "depth": 1,
-      "semantic": true,
-      "line_range": [
-        61,
-        61
-      ],
-      "code": "    LinkedList* list2 = new LinkedList{};"
-    },
-    {
-      "id": "block_12",
-      "name": "main",
-      "type": "main_function",
-      "start_line": 54,
-      "end_line": 67,
-      "depth": 0,
-      "semantic": true,
-      "line_range": [
-        54,
-        67
-      ],
-      "code": "int main() {\n    LinkedList list1;\n    list1.append(1);\n    list1.append(2);\n    list1.append(3);\n    list1.print();\n    list2->append(10);\n    list2->append(20);\n    list2->print();\n    delete list2;\n}",
+      "code": "int main() {\n    Node* head = new Node(10);\n    Node* second = new Node(20);\n    Node* third = new Node(30);\n    head->next = second;\n    second->next = third;\n    Node* list2 = new Node(100);\n    Node* list2_second = new Node(200);\n    list2->next = list2_second;\n    Node* current = head;\n    int sum = 0;\n    return 0;\n}",
       "ast_info": {
         "type": "the standard Main_Function ",
         "scope": "global",
-        "line": 54
+        "line": 10
       }
     }
   ]

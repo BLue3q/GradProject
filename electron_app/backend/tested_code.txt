@@ -1,67 +1,34 @@
+// Note: cout statements removed for parsing optimization
 #include <iostream>
-using namespace std;
-
-class Node {
-public:
+struct Node {
     int data;
     Node* next;
-};
-
-class LinkedList {
-    Node* head;
-
-public:
-    LinkedList() {
-        head = nullptr;
-    }
-
-    void append(int value) {
-        Node* newNode = new Node;
-        newNode->data = value;
-        newNode->next = nullptr;
-
-        if (head == nullptr) {
-            head = newNode;
-        }
-        else {
-            Node* temp;
-            temp= head;
-            while (temp->next != nullptr) {
-                temp = temp->next;
-            }
-            temp->next = newNode;
-        }
-    }
-
-    void print() {
-        Node* temp;
-        temp= head;
-        while (temp != nullptr) {
-            temp = temp->next;
-        }
-    }
-
-    ~LinkedList() {
-        Node* temp;
-        while (head != nullptr) {
-            temp = head;
-            head = head->next;
-            delete temp;
-        }
-    }
+    
+    Node(int value) : data(value), next(nullptr) {}
 };
 
 int main() {
-    LinkedList list1;
-    list1.append(1);
-    list1.append(2);
-    list1.append(3);
-    list1.print();
-
-    LinkedList* list2 = new LinkedList{};
-    list2->append(10);
-    list2->append(20);
-    list2->print();
-
-    delete list2;
+    // Create linked list nodes on heap
+    Node* head = new Node(10);
+    Node* second = new Node(20);
+    Node* third = new Node(30);
+    
+    // Link the nodes together
+    head->next = second;
+    second->next = third;
+    
+    // Create another linked list
+    Node* list2 = new Node(100);
+    Node* list2_second = new Node(200);
+    list2->next = list2_second;
+    
+    // Traverse and process (cout statements will be auto-removed for parsing)
+    Node* current = head;
+    int sum = 0;
+    while (current != nullptr) {
+        sum += current->data;
+        current = current->next;
+    }
+    
+    return 0;
 }

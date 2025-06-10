@@ -1,0 +1,35 @@
+// Note: cout statements removed for parsing optimization
+struct Node {
+    int data;
+    Node* next;
+    
+    Node(int value) : data(value), next(nullptr) {}
+};
+
+int main() {
+    // Create heap-allocated nodes for linked list visualization
+    Node* head = new Node(10);
+    Node* second = new Node(20);
+    Node* third = new Node(30);
+    
+    // Link nodes together (creates pointer connections for visualization)
+    head->next = second;
+    second->next = third;
+    
+    // Create another linked list for comparison
+    Node* list2 = new Node(100);
+    Node* list2_second = new Node(200);
+    list2->next = list2_second;
+    
+    // Local stack variables
+    int count = 0;
+    Node* current = head;
+    
+    // Traverse and process the list
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+    
+    return 0;
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "type": "object_declaration",
+    "line": 2,
+    "scope": "global",
+    "id": 100000,
+    "constructor_type": "default_constructor_call",
+    "class_type": "struct",
+    "name": "Node"
+  },
+  {
+    "type": "class_pointer_declaration",
+    "line": 4,
+    "scope": "global",
+    "id": 100001,
+    "class_type": "Node",
+    "name": "next",
+    "pointer_category": "class_object"
+  },
+  {
+    "type": "function_call",
+    "line": 6,
+    "scope": "global",
+    "name": "Node",
+    "arg_param_map": [],
+    "body": null
+  },
+  {
+    "type": "the standard Main_Function ",
+    "line": 9,
+    "scope": "global",
+    "name": "main",
+    "return_type": "int",
+    "body": [
+      {
+        "type": "object_declaration",
+        "line": 10,
+        "scope": "function:main",
+        "id": 100002,
+        "constructor_type": "parameterized_constructor_call",
+        "class_type": "Create",
+        "object_name": "linked",
+        "arg_param_map": []
+      },
+      {
+        "type": "class_pointer_declaration",
+        "line": 12,
+        "scope": "function:main",
+        "id": 100003,
+        "class_type": "Node",
+        "name": "second",
+        "allocation": "new",
+        "allocated_type": "Node",
+        "constructor_type": "default_constructor_call"
+      },
+      {
+        "type": "class_pointer_declaration",
+        "line": 13,
+        "scope": "function:main",
+        "id": 100004,
+        "class_type": "Node",
+        "name": "third",
+        "allocation": "new",
+        "allocated_type": "Node",
+        "constructor_type": "default_constructor_call"
+      },
+      {
+        "type": "object_declaration",
+        "line": 15,
+        "scope": "function:main",
+        "id": 100005,
+        "constructor_type": "default_constructor_call",
+        "class_type": "Link",
+        "name": "the"
+      },
+      {
+        "type": "member_assignment",
+        "line": 17,
+        "scope": "function:main",
+        "object": "second",
+        "member": "next",
+        "operator": "arrow",
+        "pointer_access": true,
+        "value": {
+          "type": "variable",
+          "name": "third",
+          "scope": "function:main"
+        }
+      },
+      {
+        "type": "object_declaration",
+        "line": 19,
+        "scope": "function:main",
+        "id": 100006,
+        "constructor_type": "parameterized_constructor_call",
+        "class_type": "Create",
+        "object_name": "another",
+        "arg_param_map": []
+      },
+      {
+        "type": "class_pointer_declaration",
+        "line": 21,
+        "scope": "function:main",
+        "id": 100007,
+        "class_type": "Node",
+        "name": "list2_second",
+        "allocation": "new",
+        "allocated_type": "Node",
+        "constructor_type": "default_constructor_call"
+      },
+      {
+        "type": "member_assignment",
+        "line": 22,
+        "scope": "function:main",
+        "object": "list2",
+        "member": "next",
+        "operator": "arrow",
+        "pointer_access": true,
+        "value": {
+          "type": "variable",
+          "name": "list2_second",
+          "scope": "function:main"
+        }
+      },
+      {
+        "type": "object_declaration",
+        "line": 24,
+        "scope": "function:main",
+        "id": 100008,
+        "constructor_type": "parameterized_constructor_call",
+        "class_type": "Traverse",
+        "object_name": "and",
+        "arg_param_map": []
+      },
+      {
+        "type": "declaration",
+        "data_type": "int",
+        "declarations": [
+          {
+            "name": "sum",
+            "value": 0,
+            "scope": "function:main",
+            "line": 26,
+            "id": 100010
+          }
+        ]
+      },
+      {
+        "type": "while_statement",
+        "line": 27,
+        "scope": "function:main",
+        "condition": {
+          "type": "comparison",
+          "left": {
+            "type": "variable",
+            "name": "current",
+            "scope": "function:main"
+          },
+          "operator": "!=",
+          "right": {
+            "type": "variable",
+            "name": "nullptr",
+            "scope": "function:main"
+          }
+        },
+        "body": [
+          {
+            "type": "compound_assignment",
+            "line": 28,
+            "scope": "global",
+            "name": "sum",
+            "operator": "+=",
+            "value": {
+              "type": "member_access",
+              "object": {
+                "type": "variable",
+                "name": "current",
+                "scope": "global"
+              },
+              "member": "data",
+              "operator": "arrow",
+              "pointer_access": true
+            }
+          },
+          {
+            "type": "assignment",
+            "line": 29,
+            "scope": "while_body",
+            "name": "current",
+            "value": {
+              "type": "member_access",
+              "object": {
+                "type": "variable",
+                "name": "current",
+                "scope": "while_body"
+              },
+              "member": "next",
+              "operator": "arrow",
+              "pointer_access": true
+            }
+          }
+        ]
+      },
+      {
+        "type": "return_statement",
+        "line": 32,
+        "scope": "global",
+        "value": 0
+      }
+    ]
+  }
+]

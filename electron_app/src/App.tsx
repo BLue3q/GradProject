@@ -1,15 +1,44 @@
 import { useState, useEffect, useRef } from 'react'
 import CodeEditor from './components/CodeEditor'
-import OutputPanel from './components/OutputPanel'
+import SimpleOutputPanel from './components/SimpleOutputPanel'
 import VisualizationPanel from './components/VisualizationPanel'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
 
+console.log('✅ App.tsx loaded - React app is running');
+
 function App() {
-  const [code, setCode] = useState<string>(`#include <iostream>
+  const [code, setCode] = useState(`#include <iostream>
+struct Node {
+    int data;
+    Node* next;
+    
+    Node(int value) : data(value), next(nullptr) {}
+};
 
 int main() {
-    std::cout << "Hello, C++ Visualizer!" << std::endl;
+    // Create linked list nodes on heap
+    Node* head = new Node(10);
+    Node* second = new Node(20);
+    Node* third = new Node(30);
+    
+    // Link the nodes together
+    head->next = second;
+    second->next = third;
+    
+    // Create another linked list
+    Node* list2 = new Node(100);
+    Node* list2_second = new Node(200);
+    list2->next = list2_second;
+    
+    // Traverse and process (cout statements will be auto-removed for parsing)
+    Node* current = head;
+    int sum = 0;
+    while (current != nullptr) {
+        sum += current->data;
+        current = current->next;
+    }
+    
     return 0;
 }`);
   const [output, setOutput] = useState<string>('');
@@ -26,6 +55,9 @@ int main() {
   const listenersRegistered = useRef<boolean>(false);
   const lastRunTime = useRef<number>(0);
   const initializationComplete = useRef<boolean>(false);
+  
+  // Add ref for triggering visualization
+  const triggerVisualization = useRef<((data: any) => void) | null>(null);
 
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
@@ -48,7 +80,12 @@ int main() {
       
       const handleOutput = (data: string) => {
         try {
-          setOutput(prev => prev + data);
+          console.log('📥 Received output data:', data);
+          setOutput(prev => {
+            const newOutput = prev + data;
+            console.log('📝 Updated output state:', newOutput);
+            return newOutput;
+          });
         } catch (error) {
           console.error('Error updating output:', error);
         }
@@ -97,6 +134,7 @@ int main() {
 
       const handleDebugOutput = (data: string) => {
         try {
+          console.log('🐛 Received debug output:', data);
           setOutput(prev => prev + data);
         } catch (error) {
           console.error('Error updating debug output:', error);
@@ -161,9 +199,15 @@ int main() {
       setHasError(false);
       setOutput(''); // Clear previous output completely
       
+      // Add debugging to track output state
+      console.log('🚀 Starting compilation, output cleared');
+      
       if (window.electronAPI) {
         try {
           const result = await window.electronAPI.compileCpp(code);
+          
+          console.log('📊 Compilation result:', result);
+          console.log('📺 Current output state:', output);
           
           // Handle different status results
           switch (result) {
@@ -207,6 +251,42 @@ int main() {
     }
   };
 
+  // Save and process handler (currently unused but available for manual triggering)
+  // const handleSaveAndProcess = async (code: string) => {
+  //   if (!window.electronAPI) {
+  //     setOutput('Electron API not available');
+  //     return;
+  //   }
+
+  //   setIsAnalyzing(true);
+  //   setHasError(false);
+  //   setOutput('Starting save and process pipeline...\n');
+
+  //   try {
+  //     const result = await (window.electronAPI as any).saveAndProcess(code);
+      
+  //     if (result.success) {
+  //       setOutput(prev => prev + `Pipeline completed successfully!\n`);
+  //       setOutput(prev => prev + `Results saved to: ${result.dataPath}\n`);
+        
+  //       // Trigger visualization if data is available
+  //       if (analysisData && triggerVisualization.current) {
+  //         console.log('🎨 Triggering visualization after save-and-process:', analysisData);
+  //         triggerVisualization.current(analysisData);
+  //       }
+  //     } else {
+  //       setOutput(prev => prev + `Pipeline failed: ${result.message}\n`);
+  //       setHasError(true);
+  //     }
+  //   } catch (error) {
+  //     const errorMessage = error instanceof Error ? error.message : String(error);
+  //     setOutput(prev => prev + `Save and process error: ${errorMessage}\n`);
+  //     setHasError(true);
+  //   } finally {
+  //     setIsAnalyzing(false);
+  //   }
+  // };
+
   const handleAnalyzeCode = async () => {
     if (!window.electronAPI) {
       setOutput('Electron API not available');
@@ -219,9 +299,33 @@ int main() {
 
     try {
       const result = await (window.electronAPI as any).analyzeCode(code);
+      
+      // Check for specific import errors
+      if (typeof result === 'string' && result.includes('cannot import name')) {
+        setOutput(prev => prev + `Analysis Error: ${result}\n\nThis indicates a parser module issue. Check that:\n- backend/myparser.py exports parse_cpp_code function\n- All required dependencies are installed\n- Parser files are syntactically correct\n`);
+        setHasError(true);
+        return;
+      }
+      
       setOutput(prev => prev + result + '\n');
+      
+      // Trigger visualization if analysis was successful and data is available
+      if (analysisData && triggerVisualization.current) {
+        console.log('🎨 Triggering visualization with analysis data:', analysisData);
+        triggerVisualization.current(analysisData);
+      }
     } catch (error) {
-      setOutput(prev => prev + `Analysis error: ${error instanceof Error ? error.message : String(error)}\n`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      // Provide specific guidance for common errors
+      let specificGuidance = '';
+      if (errorMessage.includes('parse_cpp_code')) {
+        specificGuidance = '\n\n🔧 Parser Function Missing:\n- Check that myparser.py contains parse_cpp_code function\n- Verify function is properly exported\n- Ensure no syntax errors in parser files';
+      } else if (errorMessage.includes('import')) {
+        specificGuidance = '\n\n🔧 Import Error:\n- Check Python module paths\n- Verify all dependencies are installed\n- Check for circular imports';
+      }
+      
+      setOutput(prev => prev + `Analysis Error: ${errorMessage}${specificGuidance}\n`);
       setHasError(true);
     } finally {
       setIsAnalyzing(false);
@@ -258,10 +362,13 @@ int main() {
     setOutput(prev => prev + 'Starting debugging session...\n');
 
     try {
-      // For now, we'll create a temporary file with the current code
-      // In a real implementation, you might want to save this properly
-      const result = await (window.electronAPI as any).startDebugging('temp.cpp', breakpoints);
-      setOutput(prev => prev + result + '\n');
+      // Pass the actual code to the debugger, which will create a temporary file
+      const result = await (window.electronAPI as any).startDebugging(code, breakpoints);
+      setOutput(prev => prev + `Debug session result: ${result}\n`);
+      
+      if (result !== 'debugging-started') {
+        setIsDebugging(false);
+      }
     } catch (error) {
       setOutput(prev => prev + `Debug error: ${error instanceof Error ? error.message : String(error)}\n`);
       setHasError(true);
@@ -305,11 +412,68 @@ int main() {
     if (!window.electronAPI) return;
 
     try {
-      const result = await (window.electronAPI as any).setBreakpoint('temp.cpp', line);
-      setBreakpoints(prev => [...prev, { line, file: 'temp.cpp' }]);
+      // Use the same temporary file name that will be created during debugging
+      const result = await (window.electronAPI as any).setBreakpoint('debug_temp.cpp', line);
+      setBreakpoints(prev => [...prev, { line, file: 'debug_temp.cpp' }]);
       setOutput(prev => prev + result + '\n');
     } catch (error) {
       setOutput(prev => prev + `Breakpoint error: ${error}\n`);
+    }
+  };
+
+  // Handle visualization trigger registration
+  const handleVisualizationTrigger = (triggerFn: (data: any) => void) => {
+    triggerVisualization.current = triggerFn;
+  };
+
+  // New auto-analysis handler
+  const handleAutoAnalyze = async (code: string) => {
+    console.log('🔄 Auto-analysis triggered for code length:', code.length);
+    
+    // Skip analysis for very short code or empty code
+    if (!code.trim() || code.trim().length < 10) {
+      console.log('⏭️ Skipping auto-analysis for short/empty code');
+      return;
+    }
+
+    if (!window.electronAPI) {
+      console.warn('⚠️ Electron API not available for auto-analysis');
+      return;
+    }
+
+    // Prevent multiple simultaneous analyses
+    if (isAnalyzing) {
+      console.log('⏭️ Analysis already in progress, skipping auto-analysis');
+      return;
+    }
+
+    setIsAnalyzing(true);
+    console.log('🎯 Starting automatic analysis...');
+
+    try {
+      // Use the saveAndProcess function for complete pipeline
+      const result = await (window.electronAPI as any).saveAndProcess(code);
+      
+      if (result.success) {
+        console.log('✅ Auto-analysis completed successfully');
+        console.log('📊 Analysis result:', result);
+        
+        // The analysisData will be updated via handleAnalysisComplete callback
+        // Trigger visualization if data becomes available
+        setTimeout(() => {
+          if (analysisData && triggerVisualization.current) {
+            console.log('🎨 Auto-triggering visualization after analysis:', analysisData);
+            triggerVisualization.current(analysisData);
+          }
+        }, 500); // Small delay to ensure analysisData is updated
+      } else {
+        console.warn('⚠️ Auto-analysis failed:', result.message);
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('❌ Auto-analysis error:', errorMessage);
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -373,27 +537,33 @@ int main() {
         </header>
         
         <main className="app-main">
-          <div className="left-panel">
-            <div className="panel-header">
-              <h2>Code Editor</h2>
-              {analysisData && (
-                <span className="blocks-info">
-                  {analysisData.summary?.total_blocks || 0} blocks analyzed
-                </span>
-              )}
-            </div>
-            <CodeEditor 
-              initialCode={code} 
-              onChange={handleCodeChange}
-              breakpoints={breakpoints}
-              onSetBreakpoint={handleSetBreakpoint}
-            />
-          </div>
-          
-          <div className="right-panels">
-            <div className="top-panel">
+          {/* Left Side: Code Editor + Terminal */}
+          <div className="left-section">
+            {/* Code Editor - Top Left */}
+            <div className="code-editor-panel">
               <div className="panel-header">
-                <h2>Output</h2>
+                <h2>Code Editor</h2>
+                {analysisData && (
+                  <span className="blocks-info">
+                    {analysisData.summary?.total_blocks || 0} blocks analyzed
+                  </span>
+                )}
+              </div>
+              <div className="panel-content">
+                <CodeEditor 
+                  initialCode={code} 
+                  onChange={handleCodeChange}
+                  breakpoints={breakpoints}
+                  onSetBreakpoint={handleSetBreakpoint}
+                  onAutoAnalyze={handleAutoAnalyze}
+                />
+              </div>
+            </div>
+            
+            {/* Output Panel - Bottom Left */}
+            <div className="output-panel">
+              <div className="panel-header">
+                <h2>Terminal</h2>
                 {compilationData && (
                   <span className="compilation-info">
                     {compilationData.summary?.successful_compilations || 0}/
@@ -401,22 +571,30 @@ int main() {
                   </span>
                 )}
               </div>
-              <OutputPanel 
-                output={output} 
-                isLoading={isCompiling || isAnalyzing} 
-                hasError={hasError} 
-              />
-            </div>
-            
-            <div className="bottom-panel">
-              <div className="panel-header">
-                <h2>Visualization</h2>
+              <div className="panel-content">
+                <SimpleOutputPanel 
+                  output={output} 
+                  isLoading={isCompiling || isAnalyzing} 
+                  hasError={hasError} 
+                />
               </div>
-              <VisualizationPanel 
-                analysisData={safeAnalysisData}
-                compilationData={safeCompilationData}
-                isDebugging={isDebugging}
-              />
+            </div>
+          </div>
+          
+          {/* Right Side: Visualization Panel */}
+          <div className="right-section">
+            <div className="visualization-panel">
+              <div className="panel-header">
+                <h2>Visualization & Tools</h2>
+              </div>
+              <div className="panel-content">
+                <VisualizationPanel 
+                  analysisData={safeAnalysisData}
+                  compilationData={safeCompilationData}
+                  isDebugging={isDebugging}
+                  onVisualizationTrigger={handleVisualizationTrigger}
+                />
+              </div>
             </div>
           </div>
         </main>

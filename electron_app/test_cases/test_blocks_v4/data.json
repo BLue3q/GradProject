@@ -1,0 +1,887 @@
+{
+  "ast": [
+    {
+      "type": "declaration",
+      "declarations": [
+        {
+          "name": "head",
+          "value": "1",
+          "scope": "global",
+          "allocation": null,
+          "pointer": false
+        },
+        {
+          "name": "current",
+          "value": "1",
+          "scope": "global",
+          "allocation": null,
+          "pointer": false
+        }
+      ]
+    },
+    {
+      "type": "declaration",
+      "declarations": [
+        {
+          "name": "head",
+          "value": "pointer",
+          "scope": "main",
+          "allocation": "new",
+          "pointer": true
+        }
+      ]
+    },
+    {
+      "type": "declaration",
+      "declarations": [
+        {
+          "name": "head",
+          "value": "1",
+          "scope": "global",
+          "allocation": null,
+          "pointer": false
+        },
+        {
+          "name": "current",
+          "value": "1",
+          "scope": "global",
+          "allocation": null,
+          "pointer": false
+        }
+      ]
+    },
+    {
+      "type": "declaration",
+      "declarations": [
+        {
+          "name": "current",
+          "value": "pointer",
+          "scope": "global",
+          "allocation": null,
+          "pointer": true
+        }
+      ]
+    }
+  ],
+  "functions": {},
+  "analysis": {
+    "source_file": "electron_app/compiler/input.cpp",
+    "tokens": [
+      {
+        "type": "STRUCT",
+        "value": "struct",
+        "line": 4
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 4
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 4
+      },
+      {
+        "type": "TYPE",
+        "value": "int",
+        "line": 5
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "data",
+        "line": 5
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 5
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 6
+      },
+      {
+        "type": "POINTER",
+        "value": "*",
+        "line": 6
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "next",
+        "line": 6
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 6
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 7
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 7
+      },
+      {
+        "type": "TYPE",
+        "value": "void",
+        "line": 9
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "printList",
+        "line": 9
+      },
+      {
+        "type": "LPAREN",
+        "value": "(",
+        "line": 9
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 9
+      },
+      {
+        "type": "POINTER",
+        "value": "*",
+        "line": 9
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "head",
+        "line": 9
+      },
+      {
+        "type": "RPAREN",
+        "value": ")",
+        "line": 9
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 9
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 10
+      },
+      {
+        "type": "POINTER",
+        "value": "*",
+        "line": 10
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "current",
+        "line": 10
+      },
+      {
+        "type": "EQUALS",
+        "value": "=",
+        "line": 10
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "head",
+        "line": 10
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 10
+      },
+      {
+        "type": "WHILE",
+        "value": "while",
+        "line": 11
+      },
+      {
+        "type": "LPAREN",
+        "value": "(",
+        "line": 11
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "current",
+        "line": 11
+      },
+      {
+        "type": "NE",
+        "value": "!=",
+        "line": 11
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "nullptr",
+        "line": 11
+      },
+      {
+        "type": "RPAREN",
+        "value": ")",
+        "line": 11
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 11
+      },
+      {
+        "type": "COUT",
+        "value": "cout",
+        "line": 12
+      },
+      {
+        "type": "LSHIFT",
+        "value": "<<",
+        "line": 12
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "current",
+        "line": 12
+      },
+      {
+        "type": "ARROW",
+        "value": "->",
+        "line": 12
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "data",
+        "line": 12
+      },
+      {
+        "type": "LSHIFT",
+        "value": "<<",
+        "line": 12
+      },
+      {
+        "type": "STRING_LITERAL",
+        "value": " -> ",
+        "line": 12
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 12
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "current",
+        "line": 13
+      },
+      {
+        "type": "EQUALS",
+        "value": "=",
+        "line": 13
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "current",
+        "line": 13
+      },
+      {
+        "type": "ARROW",
+        "value": "->",
+        "line": 13
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "next",
+        "line": 13
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 13
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 14
+      },
+      {
+        "type": "COUT",
+        "value": "cout",
+        "line": 15
+      },
+      {
+        "type": "LSHIFT",
+        "value": "<<",
+        "line": 15
+      },
+      {
+        "type": "STRING_LITERAL",
+        "value": "NULL",
+        "line": 15
+      },
+      {
+        "type": "LSHIFT",
+        "value": "<<",
+        "line": 15
+      },
+      {
+        "type": "ENDL",
+        "value": "endl",
+        "line": 15
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 15
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 16
+      },
+      {
+        "type": "TYPE",
+        "value": "int",
+        "line": 18
+      },
+      {
+        "type": "MAIN",
+        "value": "main",
+        "line": 18
+      },
+      {
+        "type": "LPAREN",
+        "value": "(",
+        "line": 18
+      },
+      {
+        "type": "RPAREN",
+        "value": ")",
+        "line": 18
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 18
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 19
+      },
+      {
+        "type": "POINTER",
+        "value": "*",
+        "line": 19
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "head",
+        "line": 19
+      },
+      {
+        "type": "EQUALS",
+        "value": "=",
+        "line": 19
+      },
+      {
+        "type": "NEW",
+        "value": "new",
+        "line": 19
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 19
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 19
+      },
+      {
+        "type": "NUMBER",
+        "value": "1",
+        "line": 19
+      },
+      {
+        "type": "COMMA",
+        "value": ",",
+        "line": 19
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "nullptr",
+        "line": 19
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 19
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 19
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "head",
+        "line": 20
+      },
+      {
+        "type": "ARROW",
+        "value": "->",
+        "line": 20
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "next",
+        "line": 20
+      },
+      {
+        "type": "EQUALS",
+        "value": "=",
+        "line": 20
+      },
+      {
+        "type": "NEW",
+        "value": "new",
+        "line": 20
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 20
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 20
+      },
+      {
+        "type": "NUMBER",
+        "value": "2",
+        "line": 20
+      },
+      {
+        "type": "COMMA",
+        "value": ",",
+        "line": 20
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "nullptr",
+        "line": 20
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 20
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 20
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "head",
+        "line": 21
+      },
+      {
+        "type": "ARROW",
+        "value": "->",
+        "line": 21
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "next",
+        "line": 21
+      },
+      {
+        "type": "ARROW",
+        "value": "->",
+        "line": 21
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "next",
+        "line": 21
+      },
+      {
+        "type": "EQUALS",
+        "value": "=",
+        "line": 21
+      },
+      {
+        "type": "NEW",
+        "value": "new",
+        "line": 21
+      },
+      {
+        "type": "TYPE",
+        "value": "Node",
+        "line": 21
+      },
+      {
+        "type": "LBRACE",
+        "value": "{",
+        "line": 21
+      },
+      {
+        "type": "NUMBER",
+        "value": "3",
+        "line": 21
+      },
+      {
+        "type": "COMMA",
+        "value": ",",
+        "line": 21
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "nullptr",
+        "line": 21
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 21
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 21
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "printList",
+        "line": 23
+      },
+      {
+        "type": "LPAREN",
+        "value": "(",
+        "line": 23
+      },
+      {
+        "type": "IDENTIFIER",
+        "value": "head",
+        "line": 23
+      },
+      {
+        "type": "RPAREN",
+        "value": ")",
+        "line": 23
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 23
+      },
+      {
+        "type": "RETURN",
+        "value": "return",
+        "line": 24
+      },
+      {
+        "type": "NUMBER",
+        "value": "0",
+        "line": 24
+      },
+      {
+        "type": "SEMICOLON",
+        "value": ";",
+        "line": 24
+      },
+      {
+        "type": "RBRACE",
+        "value": "}",
+        "line": 25
+      }
+    ],
+    "ast": [],
+    "functions": {},
+    "blocks": [
+      {
+        "id": "simple_variables",
+        "description": "Simple variable declarations and assignments",
+        "lines": [
+          [
+            1,
+            "int head = 1;"
+          ],
+          [
+            2,
+            "int current = 1;"
+          ]
+        ],
+        "line_range": [
+          1,
+          2
+        ],
+        "code": "int head = 1;\nint current = 1;",
+        "type": "simple_variables",
+        "independent": true,
+        "java_compilable": true,
+        "variables": {
+          "head": {
+            "type": "int",
+            "value": "1"
+          },
+          "current": {
+            "type": "int",
+            "value": "1"
+          }
+        }
+      },
+      {
+        "id": "pointer_variables",
+        "description": "Pointer variables converted to integers",
+        "lines": [
+          [
+            1,
+            "int head = 1;"
+          ],
+          [
+            2,
+            "int current = 1;"
+          ]
+        ],
+        "line_range": [
+          1,
+          2
+        ],
+        "code": "int head = 1;\nint current = 1;",
+        "type": "pointer_variables",
+        "independent": true,
+        "java_compilable": true,
+        "variables": {
+          "head": {
+            "type": "int",
+            "value": "1"
+          },
+          "current": {
+            "type": "int",
+            "value": "1"
+          }
+        }
+      },
+      {
+        "id": "struct_Node",
+        "description": "Node structure definition",
+        "lines": [
+          [
+            1,
+            "#include <iostream>"
+          ],
+          [
+            2,
+            "using namespace std;"
+          ],
+          [
+            3,
+            ""
+          ],
+          [
+            4,
+            "struct Node {"
+          ],
+          [
+            5,
+            " int data;"
+          ],
+          [
+            6,
+            " Node* next;"
+          ],
+          [
+            7,
+            "};"
+          ]
+        ],
+        "line_range": [
+          1,
+          7
+        ],
+        "code": "#include <iostream>\nusing namespace std;\n\nstruct Node {\n int data;\n Node* next;\n};",
+        "struct_name": "Node",
+        "dependencies": [
+          "includes"
+        ],
+        "independent": true,
+        "java_compilable": false
+      },
+      {
+        "id": "main_execution",
+        "description": "Main function (documentation only)",
+        "lines": [
+          [
+            1,
+            "#include <iostream>"
+          ],
+          [
+            2,
+            "using namespace std;"
+          ],
+          [
+            3,
+            ""
+          ],
+          [
+            4,
+            "struct Node {"
+          ],
+          [
+            5,
+            " int data;"
+          ],
+          [
+            6,
+            " Node* next;"
+          ],
+          [
+            7,
+            "};"
+          ],
+          [
+            8,
+            ""
+          ],
+          [
+            9,
+            "int main() {"
+          ],
+          [
+            10,
+            " Node* head = new Node{1, nullptr};"
+          ],
+          [
+            11,
+            " head->next = new Node{2, nullptr};"
+          ],
+          [
+            12,
+            " head->next->next = new Node{3, nullptr};"
+          ],
+          [
+            13,
+            ""
+          ],
+          [
+            14,
+            " printList(head);"
+          ],
+          [
+            15,
+            " return 0;"
+          ],
+          [
+            16,
+            "}"
+          ]
+        ],
+        "line_range": [
+          1,
+          16
+        ],
+        "code": "#include <iostream>\nusing namespace std;\n\nstruct Node {\n int data;\n Node* next;\n};\n\nint main() {\n Node* head = new Node{1, nullptr};\n head->next = new Node{2, nullptr};\n head->next->next = new Node{3, nullptr};\n\n printList(head);\n return 0;\n}",
+        "function_name": "main",
+        "dependencies": [
+          "includes",
+          "struct_Node"
+        ],
+        "independent": true,
+        "complete_program": true,
+        "java_compilable": false
+      },
+      {
+        "id": "function_printList",
+        "description": "Function printList (documentation only)",
+        "lines": [
+          [
+            1,
+            "#include <iostream>"
+          ],
+          [
+            2,
+            "using namespace std;"
+          ],
+          [
+            3,
+            ""
+          ],
+          [
+            4,
+            "struct Node {"
+          ],
+          [
+            5,
+            " int data;"
+          ],
+          [
+            6,
+            " Node* next;"
+          ],
+          [
+            7,
+            "};"
+          ],
+          [
+            8,
+            ""
+          ],
+          [
+            9,
+            "void printList(Node* head) {"
+          ],
+          [
+            10,
+            " Node* current = head;"
+          ],
+          [
+            11,
+            " while (current != nullptr) {"
+          ],
+          [
+            12,
+            "     cout << current->data << \" -> \";"
+          ],
+          [
+            13,
+            "     current = current->next;"
+          ],
+          [
+            14,
+            " }"
+          ],
+          [
+            15,
+            " cout << \"NULL\" << endl;"
+          ],
+          [
+            16,
+            "}"
+          ]
+        ],
+        "line_range": [
+          1,
+          16
+        ],
+        "code": "#include <iostream>\nusing namespace std;\n\nstruct Node {\n int data;\n Node* next;\n};\n\nvoid printList(Node* head) {\n Node* current = head;\n while (current != nullptr) {\n     cout << current->data << \" -> \";\n     current = current->next;\n }\n cout << \"NULL\" << endl;\n}",
+        "function_name": "printList",
+        "dependencies": [
+          "includes",
+          "struct_Node"
+        ],
+        "independent": true,
+        "uses_iostream": true,
+        "uses_custom_types": true,
+        "java_compilable": false
+      }
+    ]
+  }
+}
